@@ -15,8 +15,8 @@ Contenido de la Competencia de Python (POO + Django)
     4. [Guia de Aprendizaje](https://github.com/aperezn298/POODjangoSENA/blob/main/01_InfoCompetencia_3147912/GA_POO_Python_Django.pdf)
 2. Contextualización de la Competencia --> [Clic para ver la información](https://github.com/aperezn298/POODjangoSENA/blob/main/002_POO/00ContextualizacionCompetencia.pdf)
 3. Programación Orientada a Objetos - POO 
-    1. [Material de Clase](https://github.com/aperezn298/POODjangoSENA/blob/main/002_POO/01ConceptoPOO.pdf)
-    2. [Métodos mágicos](https://github.com/aperezn298/POODjangoSENA/blob/main/002_POO/02Metodos_Magicos_Python.pdf)
+    1. [Material de Clase](https://github.com/aperezn298/POODjangoSENA/blob/main/02_POO/01ConceptoPOO.pdf)
+    2. [Métodos mágicos](https://github.com/aperezn298/POODjangoSENA/blob/main/02_POO/02Metodos_Magicos_Python.pdf)
 
 
 # Guia Interactiva Online:
