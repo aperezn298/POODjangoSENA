@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principios Fundamentales de POO - Guía Interactiva Python</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Iconos de Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Highlight.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/vs2015.min.css">
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-braces-asterisk"></i> Python POO
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+                            Temáticas
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="fundamentos.html">1. Fundamentos de POO</a></li>
+                            <li><a class="dropdown-item active" href="principios.html">2. Principios Fundamentales</a></li>
+                            <li><a class="dropdown-item" href="abstraccion.html">3. Abstracción y Diseño</a></li>
+                            <li><a class="dropdown-item" href="avanzado.html">4. Conceptos Avanzados</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="mb-4">Principios Fundamentales de la POO</h1>
+                
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+                        <li class="breadcrumb-item active">Principios Fundamentales</li>
+                    </ol>
+                </nav>
+
+                <!-- Introducción -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">Los Pilares de la Programación Orientada a Objetos</h2>
+                        <p>La POO se basa en cuatro principios fundamentales que nos permiten crear sistemas más organizados, mantenibles y reusables: <strong>encapsulamiento, herencia, polimorfismo y abstracción</strong>.</p>
+                        
+                        <p>En esta sección exploraremos los tres primeros principios, mientras que la abstracción se cubrirá con mayor detalle en la siguiente sección.</p>
+                        
+                        <div class="explanation-card">
+                            <h5><i class="bi bi-lightbulb"></i> ¿Por qué son importantes estos principios?</h5>
+                            <p>Estos principios nos permiten:</p>
+                            <ul>
+                                <li>Crear código más organizado y fácil de mantener</li>
+                                <li>Proteger los datos y asegurar su integridad</li>
+                                <li>Reutilizar código de manera eficiente</li>
+                                <li>Diseñar sistemas flexibles y extensibles</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Encapsulamiento -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Encapsulamiento</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>¿Qué es el Encapsulamiento?</h4>
+                        <p>El <strong>encapsulamiento</strong> consiste en ocultar los detalles internos de una clase y proporcionar una interfaz controlada para interactuar con ella. Esto nos permite:</p>
+                        <ul>
+                            <li>Proteger los datos contra modificaciones no deseadas</li>
+                            <li>Ocultar la complejidad interna del objeto</li>
+                            <li>Proporcionar una interfaz clara y bien definida</li>
+                        </ul>
+
+                        <div class="syntax-card">
+                            <h5>Convenciones de visibilidad en Python</h5>
+                            <p>Python utiliza convenciones de nomenclatura para indicar la visibilidad:</p>
+                            <ul>
+                                <li><code class="code-inline">atributo</code> - Atributo público (accesible desde cualquier lugar)</li>
+                                <li><code class="code-inline">_atributo</code> - Atributo protegido (debería ser usado solo dentro de la clase y sus subclases)</li>
+                                <li><code class="code-inline">__atributo</code> - Atributo privado (name mangling: solo accesible dentro de la clase)</li>
+                            </ul>
+                        </div>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>encapsulamiento.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-encapsulation-example">class CuentaBancaria:
+    def __init__(self, titular, saldo_inicial=0):
+        self.titular = titular       # Atributo público
+        self._saldo = saldo_inicial  # Atributo protegido
+        self.__pin = "1234"          # Atributo privado
+    
+    def depositar(self, cantidad):
+        if cantidad > 0:
+            self._saldo += cantidad
+            return True
+        return False
+    
+    def retirar(self, cantidad, pin):
+        if pin != self.__pin:
+            print("PIN incorrecto. Operación denegada.")
+            return False
+        
+        if cantidad <= 0:
+            return False
+        
+        if cantidad > self._saldo:
+            print("Saldo insuficiente.")
+            return False
+        
+        self._saldo -= cantidad
+        return True
+    
+    def consultar_saldo(self, pin):
+        if pin == self.__pin:
+            return self._saldo
+        else:
+            print("PIN incorrecto. Operación denegada.")
+            return None
+    
+    # Propiedades (getters y setters)
+    @property
+    def saldo(self):
+        return self._saldo
+    
+    # No permitimos modificar el saldo directamente
+    
+    @property
+    def titular(self):
+        return self._titular
+    
+    @titular.setter
+    def titular(self, nuevo_titular):
+        self._titular = nuevo_titular
+
+# Creamos una cuenta
+cuenta = CuentaBancaria("Ana López", 1000)
+
+# Operaciones permitidas
+print(f"Titular: {cuenta.titular}")
+cuenta.depositar(500)
+print(f"Saldo: {cuenta.saldo}")  # Usando property
+
+# Intentamos acceder a atributos protegidos y privados
+print("\nIntentando acceder directamente:")
+print(f"Acceso a _saldo: {cuenta._saldo}")  # No recomendado pero posible
+try:
+    print(f"Acceso a __pin: {cuenta.__pin}")
+except AttributeError as e:
+    print(f"Error: {e}")
+
+# La forma correcta de consultar el saldo
+print("\nConsulta correcta:")
+print(f"Saldo (con PIN correcto): {cuenta.consultar_saldo('1234')}")
+print(f"Saldo (con PIN incorrecto): {cuenta.consultar_saldo('0000')}")</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-encapsulation-example">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-encapsulation-example" data-output="output-encapsulation-example">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <div class="explanation-card mt-4">
+                            <h5><i class="bi bi-info-circle"></i> Propiedades en Python</h5>
+                            <p>Las propiedades (usando el decorador <code class="code-inline">@property</code>) son una forma elegante de implementar el encapsulamiento en Python. Permiten:</p>
+                            <ul>
+                                <li>Acceder a atributos como si fueran públicos</li>
+                                <li>Ejecutar código al obtener o establecer un valor</li>
+                                <li>Validar valores antes de asignarlos</li>
+                                <li>Cambiar la implementación interna sin modificar la interfaz</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Herencia -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Herencia</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>¿Qué es la Herencia?</h4>
+                        <p>La <strong>herencia</strong> es un mecanismo que permite crear nuevas clases basadas en clases existentes, heredando sus atributos y métodos. La herencia permite:</p>
+                        <ul>
+                            <li>Reutilizar código existente</li>
+                            <li>Extender la funcionalidad de clases existentes</li>
+                            <li>Crear jerarquías de clases para modelar relaciones "es-un"</li>
+                        </ul>
+
+                        <div class="syntax-card">
+                            <h5>Sintaxis de herencia en Python</h5>
+                            <pre><code class="language-python">class ClaseBase:
+    # Atributos y métodos de la clase base
+    pass
+
+class ClaseDerivada(ClaseBase):
+    # Atributos y métodos de la clase derivada
+    # Puede añadir nuevos o sobrescribir los existentes
+    pass</code></pre>
+                        </div>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>herencia.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-inheritance-example">class Vehiculo:
+    def __init__(self, marca, modelo, año):
+        self.marca = marca
+        self.modelo = modelo
+        self.año = año
+        self.encendido = False
+    
+    def encender(self):
+        if not self.encendido:
+            self.encendido = True
+            return f"{self.marca} {self.modelo} encendido"
+        return f"{self.marca} {self.modelo} ya está encendido"
+    
+    def apagar(self):
+        if self.encendido:
+            self.encendido = False
+            return f"{self.marca} {self.modelo} apagado"
+        return f"{self.marca} {self.modelo} ya está apagado"
+    
+    def informacion(self):
+        return f"Vehículo: {self.marca} {self.modelo} ({self.año})"
+
+
+class Automovil(Vehiculo):
+    def __init__(self, marca, modelo, año, tipo_carroceria):
+        # Llamada al constructor de la clase base
+        super().__init__(marca, modelo, año)
+        
+        # Atributos específicos de Automovil
+        self.tipo_carroceria = tipo_carroceria
+        self.velocidad = 0
+    
+    def acelerar(self, incremento):
+        if self.encendido:
+            self.velocidad += incremento
+            return f"Acelerando a {self.velocidad} km/h"
+        else:
+            return "No se puede acelerar. El vehículo está apagado."
+    
+    # Sobrescribimos el método informacion de la clase base
+    def informacion(self):
+        info_base = super().informacion()  # Reutilizamos el método de la clase base
+        return f"{info_base}, Tipo: {self.tipo_carroceria}"
+
+
+class Motocicleta(Vehiculo):
+    def __init__(self, marca, modelo, año, cilindrada):
+        super().__init__(marca, modelo, año)
+        self.cilindrada = cilindrada
+    
+    def hacer_caballito(self):
+        if self.encendido:
+            return "¡Haciendo un caballito con la moto!"
+        return "No puedes hacer un caballito. La moto está apagada."
+    
+    def informacion(self):
+        return f"{super().informacion()}, Cilindrada: {self.cilindrada}cc"
+
+
+# Crear instancias
+auto = Automovil("Toyota", "Corolla", 2022, "Sedán")
+moto = Motocicleta("Honda", "CBR", 2021, 600)
+
+# Usar métodos de la clase base
+print(auto.encender())
+print(moto.encender())
+
+# Usar métodos específicos de cada clase
+print(auto.acelerar(60))
+print(moto.hacer_caballito())
+
+# Llamar al método sobrescrito
+print("\nInformación de los vehículos:")
+print(auto.informacion())
+print(moto.informacion())</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-inheritance-example">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-inheritance-example" data-output="output-inheritance-example">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <div class="explanation-card mt-4">
+                            <h5><i class="bi bi-info-circle"></i> Conceptos importantes de herencia</h5>
+                            <ul>
+                                <li><strong>Clase base/padre</strong>: La clase original de la que se hereda.</li>
+                                <li><strong>Clase derivada/hija</strong>: La nueva clase que hereda de la clase base.</li>
+                                <li><strong>super()</strong>: Función que permite acceder a métodos de la clase padre.</li>
+                                <li><strong>Sobrescritura (override)</strong>: Reemplazar un método heredado con una nueva implementación.</li>
+                                <li><strong>Herencia múltiple</strong>: En Python, una clase puede heredar de múltiples clases base.</li>
+                            </ul>
+                        </div>
+
+                        <h4 class="mt-4">Herencia múltiple</h4>
+                        <p>A diferencia de otros lenguajes como Java o C#, Python admite <strong>herencia múltiple</strong>, lo que significa que una clase puede heredar de varias clases base.</p>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>herencia_multiple.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-multiple-inheritance">class Dispositivo:
+    def __init__(self, fabricante, modelo):
+        self.fabricante = fabricante
+        self.modelo = modelo
+        self.encendido = False
+    
+    def encender(self):
+        self.encendido = True
+        return "Dispositivo encendido"
+    
+    def apagar(self):
+        self.encendido = False
+        return "Dispositivo apagado"
+
+
+class DispositivoConectado:
+    def __init__(self, direccion_ip="192.168.1.1"):
+        self.direccion_ip = direccion_ip
+        self.conectado = False
+    
+    def conectar(self):
+        self.conectado = True
+        return f"Conectado a la red con IP {self.direccion_ip}"
+    
+    def desconectar(self):
+        self.conectado = False
+        return "Desconectado de la red"
+
+
+class SmartTV(Dispositivo, DispositivoConectado):
+    def __init__(self, fabricante, modelo, pulgadas, direccion_ip="192.168.1.100"):
+        Dispositivo.__init__(self, fabricante, modelo)
+        DispositivoConectado.__init__(self, direccion_ip)
+        self.pulgadas = pulgadas
+        self.canal = 1
+    
+    def cambiar_canal(self, canal):
+        if self.encendido and self.conectado:
+            self.canal = canal
+            return f"Canal cambiado a {canal}"
+        return "No se puede cambiar el canal. Verifica que la TV esté encendida y conectada."
+    
+    def informacion(self):
+        estado_encendido = "encendido" if self.encendido else "apagado"
+        estado_conexion = "conectado" if self.conectado else "desconectado"
+        return f"{self.fabricante} {self.modelo} {self.pulgadas}\" - {estado_encendido}, {estado_conexion}"
+
+
+# Crear una Smart TV
+tv = SmartTV("Samsung", "Neo QLED", 55)
+
+# Usar métodos de ambas clases base
+print(tv.encender())  # De Dispositivo
+print(tv.conectar())  # De DispositivoConectado
+
+# Usar método propio de SmartTV
+print(tv.cambiar_canal(5))
+
+# Mostrar información
+print(tv.informacion())</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-multiple-inheritance">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-multiple-inheritance" data-output="output-multiple-inheritance">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Polimorfismo -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Polimorfismo</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>¿Qué es el Polimorfismo?</h4>
+                        <p>El <strong>polimorfismo</strong> permite que diferentes clases implementen métodos con el mismo nombre pero con comportamientos diferentes. En Python, el polimorfismo se logra de varias formas:</p>
+                        <ul>
+                            <li>Sobrescritura de métodos en clases heredadas</li>
+                            <li>Duck typing: "Si camina como un pato y hace cuac como un pato, entonces es un pato"</li>
+                            <li>Interfaces y protocolos implícitos</li>
+                        </ul>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>polimorfismo.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-polymorphism">class Animal:
+    def __init__(self, nombre):
+        self.nombre = nombre
+    
+    def hacer_sonido(self):
+        raise NotImplementedError("Las subclases deben implementar este método")
+    
+    def presentarse(self):
+        return f"Soy {self.nombre} y hago: {self.hacer_sonido()}"
+
+
+class Perro(Animal):
+    def hacer_sonido(self):
+        return "¡Guau!"
+    
+    def jugar(self):
+        return f"{self.nombre} está jugando con una pelota"
+
+
+class Gato(Animal):
+    def hacer_sonido(self):
+        return "¡Miau!"
+    
+    def dormir(self):
+        return f"{self.nombre} está durmiendo en el sofá"
+
+
+class Pato(Animal):
+    def hacer_sonido(self):
+        return "¡Cuac!"
+    
+    def nadar(self):
+        return f"{self.nombre} está nadando en el lago"
+
+
+# Función que muestra el polimorfismo
+def hacer_sonar_animal(animal):
+    return animal.hacer_sonido()
+
+
+# Crear instancias de diferentes animales
+perro = Perro("Rex")
+gato = Gato("Whiskers")
+pato = Pato("Donald")
+
+# Lista de animales (diferentes tipos)
+animales = [perro, gato, pato]
+
+# Demostración de polimorfismo
+print("Demostración de polimorfismo:")
+for animal in animales:
+    print(f"{animal.nombre}: {animal.hacer_sonido()}")
+
+# Uso de la función polimórfica
+print("\nUso de función polimórfica:")
+print(f"El perro dice: {hacer_sonar_animal(perro)}")
+print(f"El gato dice: {hacer_sonar_animal(gato)}")
+print(f"El pato dice: {hacer_sonar_animal(pato)}")
+
+# Métodos específicos de cada clase
+print("\nComportamientos específicos:")
+print(perro.jugar())
+print(gato.dormir())
+print(pato.nadar())</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-polymorphism">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-polymorphism" data-output="output-polymorphism">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <div class="explanation-card mt-4">
+                            <h5><i class="bi bi-info-circle"></i> Duck Typing en Python</h5>
+                            <p>Python utiliza "duck typing" (tipado pato), una forma de polimorfismo donde el tipo o la clase de un objeto es menos importante que los métodos que implementa o las propiedades que tiene.</p>
+                            <p>A diferencia de lenguajes como Java o C#, Python no requiere que una clase implemente explícitamente una interfaz. En su lugar, cualquier objeto que proporcione los métodos esperados funcionará, independientemente de su tipo.</p>
+                        </div>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>duck_typing.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-ducktyping">class Pato:
+    def volar(self):
+        return "El pato está volando"
+    
+    def nadar(self):
+        return "El pato está nadando"
+    
+    def hacer_sonido(self):
+        return "¡Cuac!"
+
+
+class Avion:
+    def volar(self):
+        return "El avión está volando"
+    
+    def nadar(self):
+        return "Los aviones no nadan"
+    
+    def hacer_sonido(self):
+        return "¡Brrrrrr!"
+
+
+class Persona:
+    def volar(self):
+        return "Las personas no pueden volar naturalmente"
+    
+    def nadar(self):
+        return "La persona está nadando"
+    
+    def hacer_sonido(self):
+        return "¡Hola!"
+
+
+# Función que utiliza duck typing
+def hacer_volar(objeto):
+    return objeto.volar()
+
+def hacer_nadar(objeto):
+    return objeto.nadar()
+
+# Crear instancias
+pato = Pato()
+avion = Avion()
+persona = Persona()
+
+# Lista de objetos completamente diferentes
+objetos = [pato, avion, persona]
+
+# Demostración de duck typing
+print("Demostración de Duck Typing:")
+for obj in objetos:
+    print(f"Volar: {hacer_volar(obj)}")
+    print(f"Nadar: {hacer_nadar(obj)}")
+    print(f"Sonido: {obj.hacer_sonido()}")
+    print()</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-ducktyping">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-ducktyping" data-output="output-ducktyping">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ejercicio Práctico -->
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="mb-0">Ejercicio Práctico</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>Sistema de Empleados</h4>
+                        <p>Diseña un sistema para gestionar diferentes tipos de empleados con las siguientes características:</p>
+                        <ul>
+                            <li>Una clase base <code class="code-inline">Empleado</code> con atributos comunes como nombre, ID y salario base.</li>
+                            <li>Clases derivadas como <code class="code-inline">EmpleadoTiempoCompleto</code> y <code class="code-inline">EmpleadoTiempoParcial</code>.</li>
+                            <li>Cada tipo de empleado debe calcular su salario de forma diferente (polimorfismo).</li>
+                            <li>Implementa encapsulamiento adecuado para los atributos sensibles.</li>
+                        </ul>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>ejercicio_empleados.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-employee-exercise">class Empleado:
+    # Implementa la clase base aquí
+    pass
+
+class EmpleadoTiempoCompleto(Empleado):
+    # Implementa esta clase derivada
+    pass
+
+class EmpleadoTiempoParcial(Empleado):
+    # Implementa esta clase derivada
+    pass
+
+# Crea empleados y calcula sus salarios
+# empleado1 = EmpleadoTiempoCompleto(...)
+# empleado2 = EmpleadoTiempoParcial(...)
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary mt-3 toggle-solution" data-solution="solution-employee">
+                            Mostrar Solución
+                        </button>
+
+                        <div id="solution-employee" style="display: none">
+                            <div class="vscode-container mt-4">
+                                <div class="vscode-header">
+                                    <div class="vscode-header-title">
+                                        <span>solucion_empleados.py</span>
+                                    </div>
+                                    <div class="vscode-header-actions">
+                                        <button class="vscode-header-button vscode-header-minimize"></button>
+                                        <button class="vscode-header-button vscode-header-maximize"></button>
+                                        <button class="vscode-header-button vscode-header-close"></button>
+                                    </div>
+                                </div>
+                                <div class="vscode-content">
+                                    <div class="vscode-editor">
+                                        <pre><code class="language-python" id="code-employee-solution">class Empleado:
+    def __init__(self, nombre, id_empleado):
+        self.nombre = nombre
+        self._id_empleado = id_empleado  # Atributo protegido
+        self.__salario_base = 0  # Atributo privado
+    
+    def calcular_salario(self):
+        raise NotImplementedError("Las subclases deben implementar este método")
+    
+    def asignar_salario_base(self, salario):
+        if salario >= 0:
+            self.__salario_base = salario
+            return True
+        return False
+    
+    def obtener_salario_base(self):
+        return self.__salario_base
+    
+    def mostrar_detalles(self):
+        return f"ID: {self._id_empleado}, Nombre: {self.nombre}, Salario Base: ${self.__salario_base:.2f}"
+
+
+class EmpleadoTiempoCompleto(Empleado):
+    def __init__(self, nombre, id_empleado, salario_base, bono_anual=0):
+        super().__init__(nombre, id_empleado)
+        self.asignar_salario_base(salario_base)
+        self.__bono_anual = bono_anual
+    
+    def calcular_salario(self):
+        # Salario mensual = salario base + bono anual / 12
+        return self.obtener_salario_base() + (self.__bono_anual / 12)
+    
+    def asignar_bono(self, bono):
+        if bono >= 0:
+            self.__bono_anual = bono
+            return True
+        return False
+    
+    def mostrar_detalles(self):
+        detalles_base = super().mostrar_detalles()
+        return f"{detalles_base}, Bono Anual: ${self.__bono_anual:.2f}, Salario Mensual: ${self.calcular_salario():.2f}"
+
+
+class EmpleadoTiempoParcial(Empleado):
+    def __init__(self, nombre, id_empleado, tarifa_hora, horas_trabajadas):
+        super().__init__(nombre, id_empleado)
+        self.asignar_salario_base(tarifa_hora)  # La tarifa por hora es el salario base
+        self.__horas_trabajadas = horas_trabajadas
+    
+    def calcular_salario(self):
+        # Salario mensual = tarifa por hora * horas trabajadas
+        return self.obtener_salario_base() * self.__horas_trabajadas
+    
+    def asignar_horas(self, horas):
+        if horas >= 0:
+            self.__horas_trabajadas = horas
+            return True
+        return False
+    
+    def mostrar_detalles(self):
+        detalles_base = super().mostrar_detalles()
+        return f"{detalles_base}, Horas: {self.__horas_trabajadas}, Salario Mensual: ${self.calcular_salario():.2f}"
+
+
+# Crear instancias de empleados
+empleado1 = EmpleadoTiempoCompleto("Ana López", "E001", 5000, 12000)
+empleado2 = EmpleadoTiempoParcial("Juan Pérez", "E002", 20, 80)
+
+# Mostrar detalles
+print(empleado1.mostrar_detalles())
+print(empleado2.mostrar_detalles())
+
+# Demostración de polimorfismo
+empleados = [empleado1, empleado2]
+print("\nCálculo de salarios (polimorfismo):")
+for empleado in empleados:
+    print(f"{empleado.nombre}: ${empleado.calcular_salario():.2f}")
+
+# Modificar datos y recalcular
+print("\nDespués de modificaciones:")
+empleado1.asignar_bono(15000)
+empleado2.asignar_horas(100)
+print(f"{empleado1.nombre}: ${empleado1.calcular_salario():.2f}")
+print(f"{empleado2.nombre}: ${empleado2.calcular_salario():.2f}")</code></pre>
+                                    </div>
+                                </div>
+                                <div class="vscode-terminal">
+                                    <div id="output-employee-solution">
+                                        <span class="vscode-terminal-prompt">>>> </span>ID: E001, Nombre: Ana López, Salario Base: $5000.00, Bono Anual: $12000.00, Salario Mensual: $6000.00
+ID: E002, Nombre: Juan Pérez, Salario Base: $20.00, Horas: 80, Salario Mensual: $1600.00
+
+Cálculo de salarios (polimorfismo):
+Ana López: $6000.00
+Juan Pérez: $1600.00
+
+Después de modificaciones:
+Ana López: $6250.00
+Juan Pérez: $2000.00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navegación de lecciones -->
+                <div class="lesson-navigation">
+                    <a href="fundamentos.html" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left"></i> Anterior: Fundamentos de POO
+                    </a>
+                    <a href="abstraccion.html" class="btn btn-primary">
+                        Siguiente: Abstracción y Diseño <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p class="mb-0">Guía Interactiva POO con Python &copy; 2025</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Highlight.js para código -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+    <!-- JS personalizado -->
+    <script src="js/scripts.js"></script>
+</body>
+</html>

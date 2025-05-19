@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentos de POO - Guía Interactiva Python</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Iconos de Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Highlight.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/vs2015.min.css">
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-braces-asterisk"></i> Python POO
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+                            Temáticas
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item active" href="fundamentos.html">1. Fundamentos de POO</a></li>
+                            <li><a class="dropdown-item" href="principios.html">2. Principios Fundamentales</a></li>
+                            <li><a class="dropdown-item" href="abstraccion.html">3. Abstracción y Diseño</a></li>
+                            <li><a class="dropdown-item" href="avanzado.html">4. Conceptos Avanzados</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="mb-4">Fundamentos de Programación Orientada a Objetos en Python</h1>
+                
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+                        <li class="breadcrumb-item active">Fundamentos de POO</li>
+                    </ol>
+                </nav>
+
+                <!-- Introducción -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">¿Qué es la Programación Orientada a Objetos?</h2>
+                        <p>La <strong>Programación Orientada a Objetos (POO)</strong> es un paradigma de programación basado en el concepto de "objetos", que representan entidades del mundo real. Cada objeto contiene datos (atributos) y código (métodos) para manipular esos datos.</p>
+                        <p>La POO nos permite organizar nuestro código de manera modular, facilitando su reutilización y mantenimiento.</p>
+                        
+                        <div class="explanation-card">
+                            <h5><i class="bi bi-lightbulb"></i> Ventajas de la POO</h5>
+                            <ul>
+                                <li><strong>Modularidad</strong>: El código se organiza en unidades separadas y reutilizables.</li>
+                                <li><strong>Reutilización</strong>: Las clases pueden ser utilizadas para crear múltiples objetos.</li>
+                                <li><strong>Mantenibilidad</strong>: Los cambios afectan solo a partes específicas del código.</li>
+                                <li><strong>Escalabilidad</strong>: Facilita la ampliación del sistema con nuevas funcionalidades.</li>
+                                <li><strong>Abstracción</strong>: Permite representar entidades complejas de forma simplificada.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clases y Objetos -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Clases y Objetos</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>¿Qué son las Clases?</h4>
+                        <p>Una <strong>clase</strong> es un plano o plantilla que define las características y comportamientos de un tipo de objeto. Es como un molde para crear objetos.</p>
+                        
+                        <h4>¿Qué son los Objetos?</h4>
+                        <p>Un <strong>objeto</strong> es una instancia particular de una clase. Representa una entidad específica basada en la plantilla definida por su clase.</p>
+
+                        <div class="syntax-card">
+                            <h5>Sintaxis para Definir una Clase</h5>
+                            <pre><code class="language-python">class NombreClase:
+    # Atributos de clase
+    atributo_clase = valor
+    
+    # Método constructor
+    def __init__(self, parámetros):
+        # Atributos de instancia
+        self.atributo1 = valor1
+        self.atributo2 = valor2
+    
+    # Métodos de instancia
+    def nombre_metodo(self, parámetros):
+        # Código del método
+        pass</code></pre>
+                        </div>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>clase_y_objeto.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-clase-objeto">class Persona:
+    """
+    Clase que representa a una persona.
+    """
+    # Atributo de clase (compartido por todas las instancias)
+    especie = "Humano"
+    
+    # Método constructor
+    def __init__(self, nombre, edad):
+        # Atributos de instancia (únicos para cada objeto)
+        self.nombre = nombre
+        self.edad = edad
+    
+    # Método de instancia
+    def presentarse(self):
+        return f"¡Hola! Me llamo {self.nombre} y tengo {self.edad} años."
+    
+    # Otro método de instancia
+    def cumplir_años(self):
+        self.edad += 1
+        return f"{self.nombre} ahora tiene {self.edad} años."
+
+
+# Crear instancias (objetos) de la clase Persona
+persona1 = Persona("Ana", 25)
+persona2 = Persona("Carlos", 30)
+
+# Acceder a atributos
+print(f"Nombre de persona1: {persona1.nombre}")
+print(f"Edad de persona1: {persona1.edad}")
+print(f"Especie de persona1: {persona1.especie}")
+
+print(f"Nombre de persona2: {persona2.nombre}")
+print(f"Edad de persona2: {persona2.edad}")
+print(f"Especie de persona2: {persona2.especie}")
+
+# Llamar a métodos
+print(persona1.presentarse())
+print(persona2.presentarse())
+
+# Modificar atributos
+persona1.nombre = "Ana María"
+print(f"Nuevo nombre de persona1: {persona1.nombre}")
+
+# Llamar al método cumplir_años
+print(persona1.cumplir_años())</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-clase-objeto">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-clase-objeto" data-output="output-clase-objeto">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <div class="explanation-card mt-4">
+                            <h5><i class="bi bi-info-circle"></i> Puntos Clave</h5>
+                            <ul>
+                                <li><strong>self</strong>: Es una referencia al objeto actual. Es el primer parámetro de cada método de instancia.</li>
+                                <li><strong>Atributos de clase</strong>: Son compartidos por todas las instancias de la clase.</li>
+                                <li><strong>Atributos de instancia</strong>: Son específicos para cada objeto creado.</li>
+                                <li><strong>__init__</strong>: Es el método constructor que se llama automáticamente al crear un objeto.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Métodos en Python -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Tipos de Métodos en Python</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Python permite definir varios tipos de métodos dentro de una clase, cada uno con un propósito específico:</p>
+
+                        <h4>1. Métodos de Instancia</h4>
+                        <p>Son los métodos más comunes. Operan en una instancia específica de la clase y pueden acceder y modificar los atributos del objeto.</p>
+
+                        <h4>2. Métodos de Clase</h4>
+                        <p>Operan en la clase en sí misma, en lugar de en instancias específicas. Se definen usando el decorador <code>@classmethod</code>.</p>
+
+                        <h4>3. Métodos Estáticos</h4>
+                        <p>No operan en la clase ni en sus instancias. Son funciones normales que pertenecen al espacio de nombres de la clase. Se definen usando el decorador <code>@staticmethod</code>.</p>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>tipos_metodos.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-metodos">class Estudiante:
+    # Atributo de clase
+    escuela = "Instituto Tecnológico"
+    
+    def __init__(self, nombre, edad, calificaciones=None):
+        # Atributos de instancia
+        self.nombre = nombre
+        self.edad = edad
+        self.calificaciones = calificaciones if calificaciones else []
+    
+    # Método de instancia
+    def agregar_calificacion(self, calificacion):
+        self.calificaciones.append(calificacion)
+        return f"Calificación {calificacion} agregada para {self.nombre}"
+    
+    def promedio(self):
+        if not self.calificaciones:
+            return 0
+        return sum(self.calificaciones) / len(self.calificaciones)
+    
+    # Método de clase
+    @classmethod
+    def cambiar_escuela(cls, nueva_escuela):
+        cls.escuela = nueva_escuela
+        return f"La escuela ahora es: {cls.escuela}"
+    
+    @classmethod
+    def crear_desde_cadena(cls, cadena):
+        """Crea un estudiante desde una cadena con formato 'nombre,edad,cal1,cal2,...'"""
+        partes = cadena.split(',')
+        nombre = partes[0]
+        edad = int(partes[1])
+        calificaciones = [float(cal) for cal in partes[2:]]
+        
+        return cls(nombre, edad, calificaciones)
+    
+    # Método estático
+    @staticmethod
+    def es_aprobado(calificacion):
+        """Verifica si una calificación es aprobatoria (>= 70)"""
+        return calificacion >= 70
+
+
+# Crear estudiantes
+estudiante1 = Estudiante("María", 20)
+estudiante2 = Estudiante("Juan", 19, [85, 90, 78])
+
+# Usar método de instancia
+print(estudiante1.agregar_calificacion(95))
+print(estudiante1.agregar_calificacion(87))
+print(f"Promedio de {estudiante1.nombre}: {estudiante1.promedio()}")
+print(f"Promedio de {estudiante2.nombre}: {estudiante2.promedio()}")
+
+# Usar método de clase
+print(Estudiante.cambiar_escuela("Universidad Nacional"))
+print(f"Escuela de estudiante1: {estudiante1.escuela}")
+print(f"Escuela de estudiante2: {estudiante2.escuela}")
+
+# Usar método de clase para crear un nuevo estudiante
+nuevo_estudiante = Estudiante.crear_desde_cadena("Pedro,21,76,82,91")
+print(f"Nuevo estudiante: {nuevo_estudiante.nombre}")
+print(f"Calificaciones: {nuevo_estudiante.calificaciones}")
+print(f"Promedio: {nuevo_estudiante.promedio()}")
+
+# Usar método estático
+for calificacion in [65, 70, 90]:
+    estado = "aprobado" if Estudiante.es_aprobado(calificacion) else "reprobado"
+    print(f"Calificación {calificacion}: {estado}")</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-metodos">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-metodos" data-output="output-metodos">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <div class="explanation-card mt-4">
+                            <h5><i class="bi bi-info-circle"></i> Comparación de Tipos de Métodos</h5>
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Decorador</th>
+                                        <th>Primer parámetro</th>
+                                        <th>Acceso a atributos de clase</th>
+                                        <th>Acceso a atributos de instancia</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Instancia</td>
+                                        <td>Ninguno</td>
+                                        <td><code>self</code></td>
+                                        <td>Sí</td>
+                                        <td>Sí</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Clase</td>
+                                        <td><code>@classmethod</code></td>
+                                        <td><code>cls</code></td>
+                                        <td>Sí</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Estático</td>
+                                        <td><code>@staticmethod</code></td>
+                                        <td>Ninguno</td>
+                                        <td>No</td>
+                                        <td>No</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Constructor -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">El Constructor en Python</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>El <strong>constructor</strong> es un método especial que se llama automáticamente cuando se crea una instancia de una clase. En Python, el constructor se define con el método <code>__init__</code>.</p>
+
+                        <div class="syntax-card">
+                            <h5>Sintaxis del Constructor</h5>
+                            <pre><code class="language-python">class MiClase:
+    def __init__(self, parametro1, parametro2, ...):
+        self.atributo1 = parametro1
+        self.atributo2 = parametro2
+        # Inicialización de otros atributos
+        ...</code></pre>
+                        </div>
+
+                        <h4 class="mt-4">Usos del Constructor</h4>
+                        <ul>
+                            <li>Inicializar atributos de instancia</li>
+                            <li>Realizar configuraciones necesarias al crear el objeto</li>
+                            <li>Validar datos iniciales</li>
+                            <li>Asignar valores por defecto</li>
+                        </ul>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>constructores.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-constructores">class Producto:
+    # Constructor con parámetros obligatorios y opcionales
+    def __init__(self, nombre, precio, stock=0, categoria=None):
+        # Inicialización de atributos
+        self.nombre = nombre
+        self.precio = precio
+        self.stock = stock
+        self.categoria = categoria if categoria else "Sin categoría"
+        
+        # Validación básica
+        if precio < 0:
+            print(f"Advertencia: El precio de {nombre} no debería ser negativo")
+        
+        # Cálculo de atributos derivados
+        self.impuesto = precio * 0.16  # 16% de impuesto
+        
+        # Contador de productos vendidos
+        self.vendidos = 0
+    
+    def mostrar_info(self):
+        return f"Producto: {self.nombre}, Precio: ${self.precio}, Stock: {self.stock}, Categoría: {self.categoria}"
+    
+    def vender(self, cantidad=1):
+        if cantidad <= self.stock:
+            self.stock -= cantidad
+            self.vendidos += cantidad
+            return f"Vendidos {cantidad} de {self.nombre}. Stock restante: {self.stock}"
+        else:
+            return f"Error: Stock insuficiente. Solo hay {self.stock} unidades disponibles."
+
+
+# Crear productos con diferentes combinaciones de parámetros
+producto1 = Producto("Laptop", 999.99, 10, "Electrónica")
+producto2 = Producto("Teclado", 49.99, 20)  # Sin categoría (usa el valor por defecto)
+producto3 = Producto("Mouse", 19.99)  # Sin stock ni categoría (usa los valores por defecto)
+producto4 = Producto("Monitor", -150, 5, "Periféricos")  # Precio negativo (generará advertencia)
+
+# Mostrar información de los productos
+print(producto1.mostrar_info())
+print(producto2.mostrar_info())
+print(producto3.mostrar_info())
+print(producto4.mostrar_info())
+
+# Vender productos
+print("\nRealizando ventas:")
+print(producto1.vender(2))
+print(producto2.vender(25))  # Intentar vender más de lo que hay en stock
+print(producto3.vender())  # Usar el valor por defecto (1)</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-constructores">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-constructores" data-output="output-constructores">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <h4 class="mt-4">Constructor con Valores por Defecto</h4>
+                        <p>En el ejemplo anterior, vimos cómo definir valores por defecto para parámetros opcionales. Esto es muy útil para hacer que las clases sean flexibles y fáciles de usar.</p>
+
+                        <div class="explanation-card">
+                            <h5><i class="bi bi-lightbulb"></i> Buenas Prácticas</h5>
+                            <ul>
+                                <li>Coloca los parámetros obligatorios primero en el constructor</li>
+                                <li>Usa valores por defecto para parámetros opcionales</li>
+                                <li>Realiza validaciones en el constructor para garantizar que los objetos se creen en un estado válido</li>
+                                <li>No realices operaciones complejas o que consuman mucho tiempo en el constructor</li>
+                                <li>Considera usar métodos de clase como constructores alternativos para diferentes formas de crear objetos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Métodos Mágicos -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Métodos Mágicos (Dunder Methods)</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Los <strong>métodos mágicos</strong> (o <em>dunder methods</em>, por "<em>double underscore</em>") son métodos especiales que comienzan y terminan con doble guion bajo. Permiten definir cómo se comportan los objetos con operadores y funciones integradas de Python.</p>
+
+                        <div class="explanation-card">
+                            <h5><i class="bi bi-info-circle"></i> Métodos Mágicos Comunes</h5>
+                            <ul>
+                                <li><code>__init__</code>: El constructor</li>
+                                <li><code>__str__</code>: Representación legible para humanos (llamada por <code>str()</code> y <code>print()</code>)</li>
+                                <li><code>__repr__</code>: Representación oficial del objeto (llamada por <code>repr()</code>)</li>
+                                <li><code>__len__</code>: Implementa el comportamiento de <code>len()</code></li>
+                                <li><code>__add__, __sub__, __mul__</code>, etc.: Sobrecarga de operadores (+, -, *, etc.)</li>
+                                <li><code>__eq__, __lt__, __gt__</code>, etc.: Comparaciones (==, <, >, etc.)</li>
+                                <li><code>__getitem__, __setitem__</code>: Acceso a índices y asignación</li>
+                            </ul>
+                        </div>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>metodos_magicos.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-magicos">class Vector:
+    """Clase que representa un vector matemático en 2D."""
+    
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
+    
+    # Representación para humanos
+    def __str__(self):
+        return f"Vector({self.x}, {self.y})"
+    
+    # Representación para desarrolladores
+    def __repr__(self):
+        return f"Vector(x={self.x}, y={self.y})"
+    
+    # Sobrecarga de operadores
+    def __add__(self, otro):
+        """Vector + Vector"""
+        if isinstance(otro, Vector):
+            return Vector(self.x + otro.x, self.y + otro.y)
+        else:
+            raise TypeError("Solo se puede sumar con otro Vector")
+    
+    def __sub__(self, otro):
+        """Vector - Vector"""
+        if isinstance(otro, Vector):
+            return Vector(self.x - otro.x, self.y - otro.y)
+        else:
+            raise TypeError("Solo se puede restar con otro Vector")
+    
+    def __mul__(self, escalar):
+        """Vector * escalar"""
+        if isinstance(escalar, (int, float)):
+            return Vector(self.x * escalar, self.y * escalar)
+        else:
+            raise TypeError("Solo se puede multiplicar por un número")
+    
+    # Para permitir: escalar * Vector
+    def __rmul__(self, escalar):
+        """escalar * Vector"""
+        return self.__mul__(escalar)
+    
+    # Comparación
+    def __eq__(self, otro):
+        """Vector == Vector"""
+        if isinstance(otro, Vector):
+            return self.x == otro.x and self.y == otro.y
+        return False
+    
+    # Para obtener la longitud (magnitud) del vector
+    def __abs__(self):
+        """Magnitud del vector: |Vector|"""
+        return (self.x**2 + self.y**2)**0.5
+    
+    # Para el operador len()
+    def __len__(self):
+        """Dimensión del vector (siempre 2 para vectores 2D)"""
+        return 2
+
+
+# Crear vectores
+v1 = Vector(3, 4)
+v2 = Vector(1, 1)
+v3 = Vector(3, 4)
+
+print("Vectores creados:")
+print(f"v1 = {v1}")
+print(f"v2 = {v2}")
+print(f"v3 = {v3}")
+
+# Representación para desarrolladores
+print("\nRepresentación para desarrolladores:")
+print(f"repr(v1) = {repr(v1)}")
+
+# Operaciones aritméticas
+print("\nOperaciones:")
+print(f"v1 + v2 = {v1 + v2}")
+print(f"v1 - v2 = {v1 - v2}")
+print(f"v1 * 2 = {v1 * 2}")
+print(f"3 * v2 = {3 * v2}")  # Esto usa __rmul__
+
+# Comparaciones
+print("\nComparaciones:")
+print(f"v1 == v2: {v1 == v2}")
+print(f"v1 == v3: {v1 == v3}")
+
+# Funciones integradas
+print("\nFunciones integradas:")
+print(f"abs(v1) = {abs(v1)}")  # Magnitud del vector
+print(f"len(v1) = {len(v1)}")  # Dimensión del vector
+
+# Usar un método mágico directamente (no recomendado, pero posible)
+print("\nLlamada directa a un método mágico:")
+print(f"v1.__add__(v2) = {v1.__add__(v2)}")
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-magicos">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-magicos" data-output="output-magicos">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <div class="explanation-card mt-4">
+                            <h5><i class="bi bi-lightbulb"></i> Ventajas de los Métodos Mágicos</h5>
+                            <ul>
+                                <li>Permiten que los objetos de nuestras clases se comporten como tipos integrados de Python</li>
+                                <li>Hacen que el código sea más intuitivo al usar operadores comunes</li>
+                                <li>Mejoran la legibilidad del código al utilizar sintaxis natural</li>
+                                <li>Facilitan la integración con bibliotecas y funciones existentes</li>
+                            </ul>
+                        </div>
+
+                        <p class="mt-4">Los métodos mágicos son una de las características más potentes de Python para la programación orientada a objetos, ya que permiten crear clases que se integran perfectamente con el resto del lenguaje.</p>
+                    </div>
+                </div>
+
+                <!-- Ejercicio práctico -->
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="mb-0">Ejercicio Práctico</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>Creación de una Clase Cuenta Bancaria</h4>
+                        <p>Vamos a poner en práctica los conceptos aprendidos creando una clase <code>CuentaBancaria</code> con las siguientes características:</p>
+                        <ul>
+                            <li>Atributos para número de cuenta, titular y saldo</li>
+                            <li>Métodos para depositar y retirar dinero</li>
+                            <li>Métodos mágicos para comparación y representación</li>
+                            <li>Un método de clase para crear cuentas con bonificación</li>
+                            <li>Un método estático para validar números de cuenta</li>
+                        </ul>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>ejercicio_cuenta.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-ejercicio"># Crea aquí tu clase CuentaBancaria
+# ...
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary mt-3 toggle-solution" data-solution="solution-cuenta">
+                            Mostrar Solución
+                        </button>
+
+                        <div id="solution-cuenta" style="display: none">
+                            <div class="vscode-container mt-4">
+                                <div class="vscode-header">
+                                    <div class="vscode-header-title">
+                                        <span>solucion_cuenta.py</span>
+                                    </div>
+                                    <div class="vscode-header-actions">
+                                        <button class="vscode-header-button vscode-header-minimize"></button>
+                                        <button class="vscode-header-button vscode-header-maximize"></button>
+                                        <button class="vscode-header-button vscode-header-close"></button>
+                                    </div>
+                                </div>
+                                <div class="vscode-content">
+                                    <div class="vscode-editor">
+                                        <pre><code class="language-python" id="code-solucion">class CuentaBancaria:
+    # Atributo de clase
+    banco = "Banco Nacional"
+    
+    def __init__(self, numero_cuenta, titular, saldo=0.0):
+        # Validar número de cuenta
+        if not CuentaBancaria.es_numero_valido(numero_cuenta):
+            raise ValueError(f"Número de cuenta inválido: {numero_cuenta}")
+        
+        self.numero_cuenta = numero_cuenta
+        self.titular = titular
+        self.saldo = saldo
+        self.activa = True
+        self.movimientos = []
+        
+        # Registrar creación
+        self._registrar_movimiento("Apertura de cuenta", saldo)
+    
+    def depositar(self, cantidad):
+        if not self.activa:
+            return "Error: La cuenta está inactiva"
+        
+        if cantidad <= 0:
+            return "Error: La cantidad debe ser positiva"
+        
+        self.saldo += cantidad
+        self._registrar_movimiento("Depósito", cantidad)
+        return f"Depósito de ${cantidad} realizado. Nuevo saldo: ${self.saldo}"
+    
+    def retirar(self, cantidad):
+        if not self.activa:
+            return "Error: La cuenta está inactiva"
+        
+        if cantidad <= 0:
+            return "Error: La cantidad debe ser positiva"
+        
+        if cantidad > self.saldo:
+            return f"Error: Fondos insuficientes. Saldo actual: ${self.saldo}"
+        
+        self.saldo -= cantidad
+        self._registrar_movimiento("Retiro", -cantidad)
+        return f"Retiro de ${cantidad} realizado. Nuevo saldo: ${self.saldo}"
+    
+    def consultar_saldo(self):
+        return f"Saldo actual de la cuenta {self.numero_cuenta}: ${self.saldo}"
+    
+    def desactivar(self):
+        if not self.activa:
+            return "La cuenta ya está inactiva"
+        
+        self.activa = False
+        self._registrar_movimiento("Desactivación", 0)
+        return f"Cuenta {self.numero_cuenta} desactivada"
+    
+    def activar(self):
+        if self.activa:
+            return "La cuenta ya está activa"
+        
+        self.activa = True
+        self._registrar_movimiento("Activación", 0)
+        return f"Cuenta {self.numero_cuenta} activada"
+    
+    def ver_movimientos(self):
+        return self.movimientos
+    
+    def _registrar_movimiento(self, tipo, cantidad):
+        """Método privado para registrar movimientos"""
+        self.movimientos.append(f"{tipo}: ${abs(cantidad)}")
+    
+    # Métodos mágicos
+    def __str__(self):
+        estado = "activa" if self.activa else "inactiva"
+        return f"Cuenta {self.numero_cuenta} de {self.titular} - Saldo: ${self.saldo} ({estado})"
+    
+    def __repr__(self):
+        return f"CuentaBancaria('{self.numero_cuenta}', '{self.titular}', {self.saldo})"
+    
+    def __eq__(self, otra):
+        if not isinstance(otra, CuentaBancaria):
+            return False
+        return self.numero_cuenta == otra.numero_cuenta
+    
+    def __lt__(self, otra):
+        if not isinstance(otra, CuentaBancaria):
+            raise TypeError("Solo se pueden comparar cuentas bancarias")
+        return self.saldo < otra.saldo
+    
+    # Método de clase
+    @classmethod
+    def crear_con_bonificacion(cls, numero_cuenta, titular, bonificacion=100):
+        """Crea una cuenta con una bonificación inicial"""
+        cuenta = cls(numero_cuenta, titular, bonificacion)
+        cuenta._registrar_movimiento("Bonificación inicial", bonificacion)
+        return cuenta
+    
+    @classmethod
+    def cambiar_banco(cls, nuevo_banco):
+        """Cambia el nombre del banco para todas las cuentas"""
+        cls.banco = nuevo_banco
+        return f"Nombre del banco actualizado a: {cls.banco}"
+    
+    # Método estático
+    @staticmethod
+    def es_numero_valido(numero_cuenta):
+        """Verifica si un número de cuenta es válido (10 dígitos)"""
+        return isinstance(numero_cuenta, str) and numero_cuenta.isdigit() and len(numero_cuenta) == 10
+
+
+# Probar la clase CuentaBancaria
+print("=== Creación de cuentas ===")
+try:
+    cuenta1 = CuentaBancaria("1234567890", "Ana García", 1000)
+    print(f"Cuenta 1: {cuenta1}")
+    
+    cuenta2 = CuentaBancaria("9876543210", "Luis Pérez", 500)
+    print(f"Cuenta 2: {cuenta2}")
+    
+    # Cuenta con bonificación
+    cuenta3 = CuentaBancaria.crear_con_bonificacion("5555555555", "Carlos Ruiz")
+    print(f"Cuenta 3: {cuenta3}")
+    
+    # Cuenta con número inválido
+    try:
+        cuenta_invalida = CuentaBancaria("123", "Inválido", 200)
+    except ValueError as e:
+        print(f"Error: {e}")
+    
+    print(f"\nTodas las cuentas pertenecen a: {CuentaBancaria.banco}")
+    
+    print("\n=== Operaciones bancarias ===")
+    print(cuenta1.depositar(500))
+    print(cuenta1.retirar(200))
+    print(cuenta1.retirar(2000))  # Fondos insuficientes
+    
+    print(cuenta2.consultar_saldo())
+    print(cuenta2.desactivar())
+    print(cuenta2.depositar(100))  # Debería dar error
+    print(cuenta2.activar())
+    print(cuenta2.depositar(100))
+    
+    print("\n=== Movimientos de cuenta1 ===")
+    for i, mov in enumerate(cuenta1.ver_movimientos(), 1):
+        print(f"Movimiento {i}: {mov}")
+    
+    print("\n=== Comparaciones ===")
+    print(f"¿cuenta1 == cuenta2? {cuenta1 == cuenta2}")
+    print(f"¿cuenta1 < cuenta2? {cuenta1 < cuenta2}")
+    print(f"¿cuenta2 < cuenta3? {cuenta2 < cuenta3}")
+    
+    print("\n=== Cambio de banco ===")
+    print(CuentaBancaria.cambiar_banco("Banco Internacional"))
+    print(f"Banco de cuenta1: {cuenta1.banco}")
+    print(f"Banco de cuenta2: {cuenta2.banco}")
+except Exception as e:
+    print(f"Error inesperado: {e}")</code></pre>
+                                    </div>
+                                </div>
+                                <div class="vscode-terminal">
+                                    <div id="output-solucion">
+                                        <span class="vscode-terminal-prompt">>>> </span>=== Creación de cuentas ===
+Cuenta 1: Cuenta 1234567890 de Ana García - Saldo: $1000 (activa)
+Cuenta 2: Cuenta 9876543210 de Luis Pérez - Saldo: $500 (activa)
+Cuenta 3: Cuenta 5555555555 de Carlos Ruiz - Saldo: $100 (activa)
+Error: Número de cuenta inválido: 123
+
+Todas las cuentas pertenecen a: Banco Nacional
+
+=== Operaciones bancarias ===
+Depósito de $500 realizado. Nuevo saldo: $1500
+Retiro de $200 realizado. Nuevo saldo: $1300
+Error: Fondos insuficientes. Saldo actual: $1300
+Saldo actual de la cuenta 9876543210: $500
+Cuenta 9876543210 desactivada
+Error: La cuenta está inactiva
+Cuenta 9876543210 activada
+Depósito de $100 realizado. Nuevo saldo: $600
+
+=== Movimientos de cuenta1 ===
+Movimiento 1: Apertura de cuenta: $1000
+Movimiento 2: Depósito: $500
+Movimiento 3: Retiro: $200
+
+=== Comparaciones ===
+¿cuenta1 == cuenta2? False
+¿cuenta1 < cuenta2? False
+¿cuenta2 < cuenta3? False
+
+=== Cambio de banco ===
+Nombre del banco actualizado a: Banco Internacional
+Banco de cuenta1: Banco Internacional
+Banco de cuenta2: Banco Internacional
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-2">
+                                <button class="btn btn-primary" onclick="document.getElementById('output-solucion').style.display = 'block'">
+                                    <i class="bi bi-play-fill"></i> Mostrar Resultado
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen -->
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="mb-0">Resumen: Fundamentos de POO</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>En esta sección, hemos aprendido los conceptos fundamentales de la Programación Orientada a Objetos en Python:</p>
+                        
+                        <ul>
+                            <li><strong>Clases y objetos</strong>: Las clases son plantillas que definen atributos y métodos, mientras que los objetos son instancias específicas de una clase.</li>
+                            <li><strong>Atributos</strong>: Pueden ser de clase (compartidos entre todas las instancias) o de instancia (específicos de cada objeto).</li>
+                            <li><strong>Métodos</strong>: Incluyen métodos de instancia, métodos de clase y métodos estáticos, cada uno con un propósito específico.</li>
+                            <li><strong>Constructor</strong>: El método <code>__init__</code> que inicializa un objeto cuando se crea.</li>
+                            <li><strong>Métodos mágicos</strong>: Permiten que nuestros objetos interactúen con operadores y funciones integradas de Python.</li>
+                        </ul>
+                        
+                        <div class="alert alert-primary">
+                            <h5><i class="bi bi-check-circle"></i> Puntos Clave</h5>
+                            <ul>
+                                <li>La POO es un paradigma que organiza el código en torno a objetos que contienen datos y comportamiento.</li>
+                                <li>Python es un lenguaje flexible que permite implementar la POO de manera elegante y expresiva.</li>
+                                <li>Los conceptos fundamentales (clases, objetos, métodos) son la base para temas más avanzados como herencia, polimorfismo y encapsulamiento.</li>
+                                <li>El uso adecuado de métodos de clase, estáticos y métodos mágicos puede hacer que nuestro código sea más limpio y expresivo.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navegación de lecciones -->
+                <div class="lesson-navigation">
+                    <a href="index.html" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left"></i> Volver al Inicio
+                    </a>
+                    <a href="principios.html" class="btn btn-primary">
+                        Siguiente: Principios Fundamentales <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p class="mb-0">Guía Interactiva POO con Python &copy; 2025</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Highlight.js para código -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+    <!-- JS personalizado -->
+    <script src="js/scripts.js"></script>
+</body>
+</html>

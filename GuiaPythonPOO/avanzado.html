@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conceptos Avanzados de POO - Guía Interactiva Python</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Iconos de Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Highlight.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/vs2015.min.css">
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-braces-asterisk"></i> Python POO
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+                            Temáticas
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="fundamentos.html">1. Fundamentos de POO</a></li>
+                            <li><a class="dropdown-item" href="principios.html">2. Principios Fundamentales</a></li>
+                            <li><a class="dropdown-item" href="abstraccion.html">3. Abstracción y Diseño</a></li>
+                            <li><a class="dropdown-item active" href="avanzado.html">4. Conceptos Avanzados</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="mb-4">Conceptos Avanzados de POO en Python</h1>
+                
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+                        <li class="breadcrumb-item active">Conceptos Avanzados</li>
+                    </ol>
+                </nav>
+
+                <!-- Introducción -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">Potenciando tus habilidades en Python</h2>
+                        <p>En esta sección final, exploraremos conceptos avanzados que te permitirán aprovechar al máximo las capacidades de Python para el desarrollo orientado a objetos:</p>
+                        
+                        <ul>
+                            <li><strong>Decoradores</strong>: Una poderosa herramienta para modificar o extender el comportamiento de funciones y métodos</li>
+                            <li><strong>Manejo de excepciones</strong>: Técnicas para gestionar errores y situaciones excepcionales de manera elegante</li>
+                        </ul>
+                        
+                        <div class="explanation-card">
+                            <h5><i class="bi bi-lightbulb"></i> ¿Por qué son importantes?</h5>
+                            <p>Estos conceptos no son exclusivos de la POO, pero su dominio te permitirá:</p>
+                            <ul>
+                                <li>Escribir código más limpio y mantenible</li>
+                                <li>Implementar patrones de diseño avanzados</li>
+                                <li>Crear soluciones robustas que manejen adecuadamente los errores</li>
+                                <li>Extender la funcionalidad de clases y métodos sin modificar su código fuente</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Decoradores -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Decoradores</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>¿Qué son los Decoradores?</h4>
+                        <p>Los <strong>decoradores</strong> son una característica poderosa de Python que permite modificar el comportamiento de funciones o métodos sin cambiar su código interno. En esencia, un decorador es una función que toma otra función como entrada y devuelve una función modificada.</p>
+
+                        <div class="explanation-card">
+                            <h5><i class="bi bi-info-circle"></i> Principios del Decorador</h5>
+                            <p>Los decoradores se basan en tres conceptos clave:</p>
+                            <ol>
+                                <li>Las funciones son objetos de primera clase en Python (pueden asignarse a variables, pasarse como argumentos, etc.)</li>
+                                <li>Una función puede definir otras funciones (funciones anidadas)</li>
+                                <li>Una función puede devolver otra función</li>
+                            </ol>
+                        </div>
+
+                        <h4 class="mt-4">Decoradores Básicos</h4>
+                        <p>Veamos un ejemplo sencillo de decorador:</p>
+
+                        <div class="vscode-container">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>decorador_basico.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-basic-decorator">def mi_decorador(funcion):
+    """Un decorador simple que imprime mensajes antes y después de llamar a la función."""
+    
+    def funcion_envolvente(*args, **kwargs):
+        print("-" * 30)
+        print(f"Ejecutando: {funcion.__name__}")
+        
+        # Llamar a la función original
+        resultado = funcion(*args, **kwargs)
+        
+        print(f"Finalizada: {funcion.__name__}")
+        print("-" * 30)
+        
+        # Devolver el resultado de la función original
+        return resultado
+    
+    # Devolver la función envolvente
+    return funcion_envolvente
+
+
+# Aplicando el decorador con la sintaxis @
+@mi_decorador
+def saludar(nombre):
+    print(f"¡Hola, {nombre}!")
+    return f"Saludo a {nombre} completado"
+
+
+# La función saludar ahora está decorada
+resultado = saludar("María")
+print(f"Resultado: {resultado}")
+
+print("\n")
+
+# Esto es equivalente a:
+def despedir(nombre):
+    print(f"¡Adiós, {nombre}!")
+    return f"Despedida a {nombre} completada"
+
+# Decorar la función manualmente
+despedir_decorada = mi_decorador(despedir)
+
+# Llamar a la función decorada
+resultado2 = despedir_decorada("Carlos")
+print(f"Resultado: {resultado2}")
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-basic-decorator">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-basic-decorator" data-output="output-basic-decorator">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <h4 class="mt-4">Decoradores con Argumentos</h4>
+                        <p>También podemos crear decoradores que acepten argumentos:</p>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>decorador_con_argumentos.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-decorator-with-args">def repetir(veces):
+    """
+    Decorador que repite la función decorada un número específico de veces.
+    Este decorador acepta un argumento: el número de veces a repetir.
+    """
+    def decorador_real(funcion):
+        def funcion_envolvente(*args, **kwargs):
+            resultados = []
+            for i in range(veces):
+                print(f"Ejecución {i+1}/{veces}")
+                resultado = funcion(*args, **kwargs)
+                resultados.append(resultado)
+            return resultados
+        return funcion_envolvente
+    return decorador_real
+
+
+@repetir(veces=3)
+def saludar(nombre):
+    return f"¡Hola, {nombre}!"
+
+
+@repetir(veces=2)
+def sumar(a, b):
+    return a + b
+
+
+# Probar las funciones decoradas
+print("\nProbando saludar:")
+resultados_saludos = saludar("Ana")
+for i, resultado in enumerate(resultados_saludos):
+    print(f"  Resultado {i+1}: {resultado}")
+
+print("\nProbando sumar:")
+resultados_suma = sumar(5, 3)
+for i, resultado in enumerate(resultados_suma):
+    print(f"  Resultado {i+1}: {resultado}")
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-decorator-with-args">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-decorator-with-args" data-output="output-decorator-with-args">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <h4 class="mt-4">Decoradores de Clases en POO</h4>
+                        <p>Los decoradores son especialmente útiles en la Programación Orientada a Objetos para añadir funcionalidades a clases y métodos:</p>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>decoradores_poo.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-class-decorators">import time
+from functools import wraps
+
+
+# Decorador para medir el tiempo de ejecución
+def medir_tiempo(funcion):
+    @wraps(funcion)  # Para preservar los metadatos de la función original
+    def wrapper(*args, **kwargs):
+        inicio = time.time()
+        resultado = funcion(*args, **kwargs)
+        fin = time.time()
+        print(f"Tiempo de ejecución de {funcion.__name__}: {fin - inicio:.6f} segundos")
+        return resultado
+    return wrapper
+
+
+# Decorador para registrar llamadas a métodos
+def registrar_llamada(funcion):
+    @wraps(funcion)
+    def wrapper(*args, **kwargs):
+        # args[0] es 'self' en métodos de instancia
+        clase = args[0].__class__.__name__ if args else "?"
+        print(f"Llamada a {clase}.{funcion.__name__}()")
+        return funcion(*args, **kwargs)
+    return wrapper
+
+
+# Ejemplo de una clase con métodos decorados
+class Calculadora:
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.historial = []
+    
+    @registrar_llamada
+    def sumar(self, a, b):
+        resultado = a + b
+        self.historial.append(f"Suma: {a} + {b} = {resultado}")
+        return resultado
+    
+    @registrar_llamada
+    @medir_tiempo
+    def operacion_compleja(self, n):
+        """Simula una operación que toma tiempo."""
+        print(f"Realizando cálculo complejo con n={n}...")
+        time.sleep(1)  # Simular proceso que toma tiempo
+        resultado = sum(i**2 for i in range(n))
+        self.historial.append(f"Operación compleja con n={n}, resultado={resultado}")
+        return resultado
+    
+    @registrar_llamada
+    def mostrar_historial(self):
+        print(f"Historial de {self.nombre}:")
+        for operacion in self.historial:
+            print(f"  {operacion}")
+
+
+# Usamos la clase con métodos decorados
+calc = Calculadora("MiCalculadora")
+
+print("Realizando operaciones:")
+print(f"2 + 3 = {calc.sumar(2, 3)}")
+print(f"4 + 5 = {calc.sumar(4, 5)}")
+print(f"Operación compleja: {calc.operacion_compleja(1000)}")
+
+print("\nMostrando historial:")
+calc.mostrar_historial()
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-class-decorators">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-class-decorators" data-output="output-class-decorators">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <h4 class="mt-4">Decorando Clases Completas</h4>
+                        <p>También podemos decorar clases enteras para modificar su comportamiento:</p>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>decorador_clase.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-class-decorator">def agregar_representacion(cls):
+    """
+    Decorador que agrega métodos __str__ y __repr__ a una clase
+    si no están ya definidos.
+    """
+    # Verificar si la clase ya tiene el método __str__
+    if '__str__' not in cls.__dict__:
+        # Definir un método __str__ automático
+        def auto_str(self):
+            atributos = [f"{key}={value!r}" for key, value in self.__dict__.items()]
+            return f"{cls.__name__}({', '.join(atributos)})"
+        
+        # Agregar el método a la clase
+        cls.__str__ = auto_str
+    
+    # Verificar si la clase ya tiene el método __repr__
+    if '__repr__' not in cls.__dict__:
+        # Definir un método __repr__ automático
+        def auto_repr(self):
+            atributos = [f"{key}={value!r}" for key, value in self.__dict__.items()]
+            return f"{cls.__name__}({', '.join(atributos)})"
+        
+        # Agregar el método a la clase
+        cls.__repr__ = auto_repr
+    
+    # Devolver la clase modificada
+    return cls
+
+
+def singleton(cls):
+    """
+    Decorador que convierte una clase en un singleton.
+    Un singleton es una clase que solo puede tener una instancia.
+    """
+    # Almacenar la única instancia
+    instancias = {}
+    
+    # Reemplazar el método __new__ para controlar la creación de instancias
+    original_new = cls.__new__
+    
+    def __new__(cls, *args, **kwargs):
+        # Si la clase no tiene una instancia, créala
+        if cls not in instancias:
+            # Llamar al método __new__ original
+            instancias[cls] = original_new(cls)
+        # Devolver la instancia existente
+        return instancias[cls]
+    
+    # Reemplazar el método __new__ de la clase
+    cls.__new__ = __new__
+    
+    # Devolver la clase modificada
+    return cls
+
+
+# Usar los decoradores en clases
+
+@agregar_representacion
+class Persona:
+    def __init__(self, nombre, edad):
+        self.nombre = nombre
+        self.edad = edad
+
+
+@singleton
+@agregar_representacion
+class ConfiguracionApp:
+    def __init__(self):
+        self.tema = "Claro"
+        self.idioma = "Español"
+        self.version = "1.0.0"
+    
+    def cambiar_tema(self, nuevo_tema):
+        self.tema = nuevo_tema
+
+
+# Probar las clases decoradas
+print("=== Clase con representación automática ===")
+p1 = Persona("Ana", 30)
+p2 = Persona("Carlos", 25)
+
+print(f"p1: {p1}")
+print(f"p2: {p2}")
+print(f"repr(p1): {repr(p1)}")
+
+print("\n=== Clase Singleton ===")
+config1 = ConfiguracionApp()
+config1.cambiar_tema("Oscuro")
+print(f"config1: {config1}")
+
+# Intentar crear otra instancia (debería devolver la misma)
+config2 = ConfiguracionApp()
+print(f"config2: {config2}")
+
+# Demostrar que son el mismo objeto
+print("Cambiando idioma en config2...")
+config2.idioma = "Inglés"
+print(f"config1 después del cambio: {config1}")
+print(f"¿Son el mismo objeto? {config1 is config2}")
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-class-decorator">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-class-decorator" data-output="output-class-decorator">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <div class="explanation-card mt-4">
+                            <h5><i class="bi bi-info-circle"></i> Usos Comunes de los Decoradores</h5>
+                            <p>Los decoradores son ampliamente utilizados para implementar:</p>
+                            <ul>
+                                <li><strong>Registro (logging)</strong>: Para rastrear llamadas a funciones y sus resultados</li>
+                                <li><strong>Memoización</strong>: Para almacenar en caché resultados de funciones</li>
+                                <li><strong>Validación de entrada</strong>: Para verificar argumentos antes de ejecutar una función</li>
+                                <li><strong>Medición de rendimiento</strong>: Para medir cuánto tiempo tarda una función</li>
+                                <li><strong>Control de acceso</strong>: Para implementar autenticación y autorización</li>
+                                <li><strong>Patrones de diseño</strong>: Para implementar patrones como Singleton, Factory, etc.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manejo de Excepciones -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Manejo de Excepciones</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>Introducción al Manejo de Excepciones</h4>
+                        <p>El <strong>manejo de excepciones</strong> es una técnica para manejar errores y situaciones inusuales en tiempo de ejecución, permitiendo que tu programa continúe funcionando incluso cuando se encuentren problemas.</p>
+
+                        <div class="syntax-card">
+                            <h5>Estructura básica del manejo de excepciones</h5>
+                            <pre><code class="language-python">try:
+    # Código que podría generar una excepción
+    pass
+except TipoDeExcepcion:
+    # Código que se ejecuta si ocurre una excepción del tipo especificado
+    pass
+except OtroTipoDeExcepcion as error:
+    # Puedes capturar el objeto de excepción para obtener más información
+    pass
+else:
+    # Código que se ejecuta si no ocurre ninguna excepción
+    pass
+finally:
+    # Código que siempre se ejecuta, haya ocurrido una excepción o no
+    pass</code></pre>
+                        </div>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>excepciones_basicas.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-basic-exceptions">def dividir(a, b):
+    try:
+        resultado = a / b
+        return resultado
+    except ZeroDivisionError:
+        print("¡Error! No se puede dividir por cero.")
+        return None
+    except TypeError as e:
+        print(f"Error de tipo: {e}")
+        return None
+    finally:
+        print("División finalizada.")
+
+
+def acceder_elemento(lista, indice):
+    try:
+        elemento = lista[indice]
+        print(f"Elemento encontrado: {elemento}")
+        return elemento
+    except IndexError:
+        print(f"¡Error! Índice {indice} fuera de rango. La lista tiene {len(lista)} elementos.")
+        return None
+    except TypeError:
+        print("¡Error! El tipo de dato no admite indexación.")
+        return None
+
+
+# Probar la función dividir
+print("=== Pruebas de división ===")
+print(f"10 / 2 = {dividir(10, 2)}")
+print(f"10 / 0 = {dividir(10, 0)}")
+print(f"10 / 'a' = {dividir(10, 'a')}")
+
+# Probar la función acceder_elemento
+print("\n=== Pruebas de acceso a elementos ===")
+mi_lista = [10, 20, 30, 40, 50]
+acceder_elemento(mi_lista, 2)
+acceder_elemento(mi_lista, 10)
+acceder_elemento(123, 0)  # No se puede indexar un entero
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-basic-exceptions">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-basic-exceptions" data-output="output-basic-exceptions">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <h4 class="mt-4">Excepciones Personalizadas</h4>
+                        <p>Podemos definir nuestras propias clases de excepción para manejar errores específicos de nuestra aplicación:</p>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>excepciones_personalizadas.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-custom-exceptions">class ErrorCuentaBancaria(Exception):
+    """Clase base para excepciones relacionadas con cuentas bancarias."""
+    pass
+
+
+class SaldoInsuficiente(ErrorCuentaBancaria):
+    """Se lanza cuando se intenta retirar más dinero del disponible."""
+    def __init__(self, saldo_actual, cantidad):
+        self.saldo_actual = saldo_actual
+        self.cantidad = cantidad
+        self.deficit = cantidad - saldo_actual
+        mensaje = f"Saldo insuficiente. Tienes {saldo_actual}€, intentas retirar {cantidad}€. Faltan {self.deficit}€."
+        super().__init__(mensaje)
+
+
+class CuentaBloqueada(ErrorCuentaBancaria):
+    """Se lanza cuando se intenta operar con una cuenta bloqueada."""
+    def __init__(self, razon="No especificada"):
+        self.razon = razon
+        mensaje = f"La cuenta está bloqueada. Razón: {razon}"
+        super().__init__(mensaje)
+
+
+class CuentaBancaria:
+    def __init__(self, titular, saldo_inicial=0):
+        self.titular = titular
+        self._saldo = saldo_inicial
+        self._bloqueada = False
+        self._razon_bloqueo = ""
+    
+    def depositar(self, cantidad):
+        try:
+            if self._bloqueada:
+                raise CuentaBloqueada(self._razon_bloqueo)
+            
+            if cantidad <= 0:
+                raise ValueError("La cantidad a depositar debe ser positiva")
+            
+            self._saldo += cantidad
+            print(f"Depósito de {cantidad}€ realizado. Nuevo saldo: {self._saldo}€")
+            return True
+        except Exception as e:
+            print(f"Error al depositar: {e}")
+            return False
+    
+    def retirar(self, cantidad):
+        try:
+            if self._bloqueada:
+                raise CuentaBloqueada(self._razon_bloqueo)
+            
+            if cantidad <= 0:
+                raise ValueError("La cantidad a retirar debe ser positiva")
+            
+            if cantidad > self._saldo:
+                raise SaldoInsuficiente(self._saldo, cantidad)
+            
+            self._saldo -= cantidad
+            print(f"Retiro de {cantidad}€ realizado. Nuevo saldo: {self._saldo}€")
+            return True
+        except Exception as e:
+            print(f"Error al retirar: {e}")
+            return False
+    
+    def bloquear(self, razon="Cuenta bloqueada por seguridad"):
+        self._bloqueada = True
+        self._razon_bloqueo = razon
+        print(f"Cuenta de {self.titular} bloqueada. Razón: {razon}")
+    
+    def desbloquear(self):
+        self._bloqueada = False
+        self._razon_bloqueo = ""
+        print(f"Cuenta de {self.titular} desbloqueada")
+    
+    @property
+    def saldo(self):
+        return self._saldo
+
+
+# Probar la clase con manejo de excepciones
+print("=== Simulación de Operaciones Bancarias ===\n")
+
+# Crear una cuenta
+cuenta = CuentaBancaria("Juan Pérez", 1000)
+print(f"Cuenta creada para {cuenta.titular} con saldo inicial de {cuenta.saldo}€\n")
+
+# Realizar operaciones
+cuenta.depositar(500)
+cuenta.retirar(300)
+
+# Intentar retirar más dinero del disponible
+cuenta.retirar(2000)
+
+# Bloquear la cuenta
+cuenta.bloquear("Actividad sospechosa detectada")
+
+# Intentar operar con la cuenta bloqueada
+cuenta.depositar(100)
+cuenta.retirar(50)
+
+# Desbloquear la cuenta
+cuenta.desbloquear()
+
+# Operación exitosa después de desbloquear
+cuenta.depositar(200)
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-custom-exceptions">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-custom-exceptions" data-output="output-custom-exceptions">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <h4 class="mt-4">Combinar Decoradores y Manejo de Excepciones</h4>
+                        <p>Podemos crear decoradores que manejen excepciones para proporcionar un manejo de errores consistente:</p>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>decorador_excepciones.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-exception-decorator">from functools import wraps
+import logging
+
+# Configurar el sistema de logging
+logging.basicConfig(level=logging.INFO,
+                   format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger("AppDemo")
+
+
+def manejar_excepciones(func=None, reintento=0, valor_por_defecto=None, log_level=logging.ERROR):
+    """
+    Decorador que maneja las excepciones de una función.
+    Args:
+        func: La función a decorar
+        reintento: Número de veces que se reintenta ejecutar la función en caso de error
+        valor_por_defecto: Valor a devolver si la función falla después de todos los reintentos
+        log_level: Nivel de logging para los errores
+    """
+    # Permitir que el decorador se use con o sin parámetros
+    if func is None:
+        return lambda f: manejar_excepciones(f, reintento, valor_por_defecto, log_level)
+    
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        intentos = 0
+        max_intentos = reintento + 1  # +1 para el intento inicial
+        
+        while intentos < max_intentos:
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                intentos += 1
+                
+                # Registrar el error
+                if intentos < max_intentos:
+                    logger.warning(f"Error en {func.__name__}: {e}. Reintentando ({intentos}/{reintento})...")
+                else:
+                    logger.log(log_level, f"Error en {func.__name__}: {e}. No hay más reintentos.")
+                
+                # Si es el último intento, devolver el valor por defecto
+                if intentos >= max_intentos:
+                    return valor_por_defecto
+    
+    return wrapper
+
+
+class BaseDeDatos:
+    def __init__(self):
+        self.conectado = False
+        self.datos = {"usuario1": {"nombre": "Ana", "edad": 30},
+                     "usuario2": {"nombre": "Carlos", "edad": 25}}
+    
+    def conectar(self):
+        # Simulamos una conexión a base de datos
+        print("Conectando a la base de datos...")
+        self.conectado = True
+        print("Conexión establecida")
+    
+    def desconectar(self):
+        # Simulamos cerrar la conexión
+        if self.conectado:
+            print("Cerrando conexión...")
+            self.conectado = False
+            print("Conexión cerrada")
+    
+    @manejar_excepciones(reintento=2, valor_por_defecto=None)
+    def obtener_usuario(self, id_usuario):
+        """
+        Busca un usuario en la base de datos.
+        Reintenta hasta 2 veces en caso de error.
+        """
+        if not self.conectado:
+            raise ConnectionError("No hay conexión a la base de datos")
+        
+        if id_usuario not in self.datos:
+            raise KeyError(f"Usuario con ID '{id_usuario}' no encontrado")
+        
+        return self.datos[id_usuario]
+    
+    @manejar_excepciones(log_level=logging.CRITICAL)
+    def operacion_critica(self):
+        """
+        Operación que no debe fallar, los errores se registran como críticos.
+        """
+        if not self.conectado:
+            raise ConnectionError("No hay conexión para operación crítica")
+        
+        # Simular una operación importante
+        print("Ejecutando operación crítica en la base de datos...")
+        return "Operación completada con éxito"
+
+
+# Probar el decorador de manejo de excepciones
+print("=== Sistema de Base de Datos con Manejo de Excepciones ===\n")
+
+db = BaseDeDatos()
+
+# Intentar operaciones sin conectar
+print("Intentando operaciones sin conectar:")
+usuario = db.obtener_usuario("usuario1")
+print(f"Resultado: {usuario}")
+
+operacion = db.operacion_critica()
+print(f"Resultado: {operacion}")
+
+# Conectar y volver a intentar
+print("\nConectando a la base de datos y reintentando:")
+db.conectar()
+
+usuario = db.obtener_usuario("usuario1")
+print(f"Usuario encontrado: {usuario}")
+
+usuario_inexistente = db.obtener_usuario("usuario999")
+print(f"Búsqueda de usuario inexistente: {usuario_inexistente}")
+
+operacion = db.operacion_critica()
+print(f"Operación crítica: {operacion}")
+
+# Cerrar conexión
+db.desconectar()
+</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-exception-decorator">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-exception-decorator" data-output="output-exception-decorator">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <div class="explanation-card mt-4">
+                            <h5><i class="bi bi-info-circle"></i> Buenas Prácticas en el Manejo de Excepciones</h5>
+                            <ul>
+                                <li><strong>Ser específico</strong>: Captura solo las excepciones que puedes manejar de forma adecuada</li>
+                                <li><strong>No silenciar errores</strong>: Evita bloques try-except vacíos que ocultan problemas</li>
+                                <li><strong>Usar el bloque finally</strong>: Para liberar recursos independientemente de lo que ocurra</li>
+                                <li><strong>Crear jerarquías de excepciones</strong>: Para organizar los diferentes tipos de errores</li>
+                                <li><strong>Documentar las excepciones</strong>: Indica qué excepciones puede lanzar cada función</li>
+                                <li><strong>Lanzar excepciones apropiadas</strong>: Usa el tipo de excepción más adecuado al problema</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ejercicio Práctico -->
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="mb-0">Ejercicio Práctico</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>Sistema de Validación</h4>
+                        <p>Implementa un sistema de validación para una clase <code class="code-inline">Producto</code> usando decoradores y manejo de excepciones:</p>
+                        <ul>
+                            <li>Crea un decorador <code class="code-inline">@validar_datos</code> que verifique si los datos del producto son válidos</li>
+                            <li>Define excepciones personalizadas para diferentes errores (precio negativo, nombre vacío, etc.)</li>
+                            <li>Implementa la clase <code class="code-inline">Producto</code> con métodos para establecer sus atributos</li>
+                        </ul>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>ejercicio_validador.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-validator-exercise"># Define aquí tus excepciones personalizadas
+
+# Implementa el decorador validar_datos
+
+# Implementa la clase Producto
+
+# Crea productos y prueba tu sistema
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary mt-3 toggle-solution" data-solution="solution-validator">
+                            Mostrar Solución
+                        </button>
+
+                        <div id="solution-validator" style="display: none">
+                            <div class="vscode-container mt-4">
+                                <div class="vscode-header">
+                                    <div class="vscode-header-title">
+                                        <span>solucion_validador.py</span>
+                                    </div>
+                                    <div class="vscode-header-actions">
+                                        <button class="vscode-header-button vscode-header-minimize"></button>
+                                        <button class="vscode-header-button vscode-header-maximize"></button>
+                                        <button class="vscode-header-button vscode-header-close"></button>
+                                    </div>
+                                </div>
+                                <div class="vscode-content">
+                                    <div class="vscode-editor">
+                                        <pre><code class="language-python" id="code-validator-solution">from functools import wraps
+
+# Excepciones personalizadas
+class ErrorValidacionProducto(Exception):
+    """Clase base para errores de validación de productos"""
+    pass
+
+class NombreInvalido(ErrorValidacionProducto):
+    """Se lanza cuando el nombre está vacío o no es una cadena de texto"""
+    def __init__(self, nombre):
+        self.nombre = nombre
+        mensaje = f"Nombre inválido: '{nombre}'. El nombre debe ser una cadena no vacía."
+        super().__init__(mensaje)
+
+class PrecioInvalido(ErrorValidacionProducto):
+    """Se lanza cuando el precio es negativo o no es un número"""
+    def __init__(self, precio):
+        self.precio = precio
+        mensaje = f"Precio inválido: {precio}. El precio debe ser un número positivo."
+        super().__init__(mensaje)
+
+class StockInvalido(ErrorValidacionProducto):
+    """Se lanza cuando el stock es negativo o no es un número entero"""
+    def __init__(self, stock):
+        self.stock = stock
+        mensaje = f"Stock inválido: {stock}. El stock debe ser un número entero no negativo."
+        super().__init__(mensaje)
+
+
+# Decorador para validar datos
+def validar_datos(metodo):
+    @wraps(metodo)
+    def wrapper(self, *args, **kwargs):
+        try:
+            # Ejecutar el método original
+            resultado = metodo(self, *args, **kwargs)
+            
+            # Validaciones después de la ejecución
+            # Validar nombre
+            if not isinstance(self._nombre, str) or not self._nombre:
+                raise NombreInvalido(self._nombre)
+            
+            # Validar precio
+            if not isinstance(self._precio, (int, float)) or self._precio < 0:
+                raise PrecioInvalido(self._precio)
+            
+            # Validar stock
+            if not isinstance(self._stock, int) or self._stock < 0:
+                raise StockInvalido(self._stock)
+            
+            return resultado
+            
+        except ErrorValidacionProducto as e:
+            print(f"Error de validación: {e}")
+            # Revertir los cambios si es necesario
+            return False
+        except Exception as e:
+            print(f"Error inesperado: {e}")
+            return False
+    
+    return wrapper
+
+
+# Clase Producto
+class Producto:
+    def __init__(self, codigo, nombre="", precio=0, stock=0):
+        self._codigo = codigo
+        self._nombre = nombre
+        self._precio = precio
+        self._stock = stock
+        
+        # Validar datos iniciales
+        try:
+            self._validar_todos_los_datos()
+        except ErrorValidacionProducto as e:
+            print(f"Error al crear producto: {e}")
+    
+    def _validar_todos_los_datos(self):
+        # Validar nombre
+        if not isinstance(self._nombre, str) or not self._nombre:
+            raise NombreInvalido(self._nombre)
+        
+        # Validar precio
+        if not isinstance(self._precio, (int, float)) or self._precio < 0:
+            raise PrecioInvalido(self._precio)
+        
+        # Validar stock
+        if not isinstance(self._stock, int) or self._stock < 0:
+            raise StockInvalido(self._stock)
+    
+    @validar_datos
+    def actualizar_nombre(self, nombre):
+        """Actualiza el nombre del producto"""
+        self._nombre = nombre
+        print(f"Nombre actualizado a: {nombre}")
+        return True
+    
+    @validar_datos
+    def actualizar_precio(self, precio):
+        """Actualiza el precio del producto"""
+        self._precio = precio
+        print(f"Precio actualizado a: {precio}")
+        return True
+    
+    @validar_datos
+    def actualizar_stock(self, stock):
+        """Actualiza el stock del producto"""
+        self._stock = stock
+        print(f"Stock actualizado a: {stock}")
+        return True
+    
+    def mostrar_detalles(self):
+        """Muestra los detalles del producto"""
+        return f"Producto[código={self._codigo}, nombre='{self._nombre}', precio={self._precio}, stock={self._stock}]"
+    
+    def __str__(self):
+        return self.mostrar_detalles()
+
+
+# Probar el sistema
+print("=== Sistema de Validación de Productos ===\n")
+
+# Crear productos
+print("Creando productos:")
+producto1 = Producto("P001", "Teclado Mecánico", 89.99, 15)
+print(f"Producto 1: {producto1}")
+
+# Producto con datos inválidos
+print("\nCreando producto con datos inválidos:")
+producto_invalido = Producto("P002", "", -10, -5)
+print(f"Producto inválido: {producto_invalido}")
+
+# Actualizar datos
+print("\nActualizando datos del Producto 1:")
+producto1.actualizar_nombre("Teclado Mecánico RGB")
+producto1.actualizar_precio(99.99)
+producto1.actualizar_stock(20)
+print(f"Producto 1 actualizado: {producto1}")
+
+# Intentar actualizar con datos inválidos
+print("\nIntentando actualizar con datos inválidos:")
+producto1.actualizar_nombre("")
+producto1.actualizar_precio(-50)
+producto1.actualizar_stock(-10)
+print(f"Producto 1 después de intentos inválidos: {producto1}")
+
+# Crear otro producto válido
+print("\nCreando otro producto válido:")
+producto2 = Producto("P003", "Mouse Inalámbrico", 45.50, 30)
+print(f"Producto 2: {producto2}")
+
+# Actualizar varios productos
+productos = [producto1, producto2]
+print("\nDescuento del 10% en todos los productos:")
+for producto in productos:
+    nuevo_precio = producto._precio * 0.9
+    producto.actualizar_precio(nuevo_precio)
+    print(f"  {producto}")</code></pre>
+                                    </div>
+                                </div>
+                                <div class="vscode-terminal">
+                                    <div id="output-validator-solution">
+                                        <span class="vscode-terminal-prompt">>>> </span>=== Sistema de Validación de Productos ===
+
+Creando productos:
+Producto 1: Producto[código=P001, nombre='Teclado Mecánico', precio=89.99, stock=15]
+
+Creando producto con datos inválidos:
+Error al crear producto: Nombre inválido: ''. El nombre debe ser una cadena no vacía.
+Producto inválido: Producto[código=P002, nombre='', precio=-10, stock=-5]
+
+Actualizando datos del Producto 1:
+Nombre actualizado a: Teclado Mecánico RGB
+Precio actualizado a: 99.99
+Stock actualizado a: 20
+Producto 1 actualizado: Producto[código=P001, nombre='Teclado Mecánico RGB', precio=99.99, stock=20]
+
+Intentando actualizar con datos inválidos:
+Error de validación: Nombre inválido: ''. El nombre debe ser una cadena no vacía.
+Error de validación: Precio inválido: -50. El precio debe ser un número positivo.
+Error de validación: Stock inválido: -10. El stock debe ser un número entero no negativo.
+Producto 1 después de intentos inválidos: Producto[código=P001, nombre='Teclado Mecánico RGB', precio=99.99, stock=20]
+
+Creando otro producto válido:
+Producto 2: Producto[código=P003, nombre='Mouse Inalámbrico', precio=45.5, stock=30]
+
+Descuento del 10% en todos los productos:
+Precio actualizado a: 89.991
+  Producto[código=P001, nombre='Teclado Mecánico RGB', precio=89.991, stock=20]
+Precio actualizado a: 40.95
+  Producto[código=P003, nombre='Mouse Inalámbrico', precio=40.95, stock=30]</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen y Conclusión -->
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="mb-0">Resumen y Conclusión</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>En esta sección, hemos explorado conceptos avanzados que complementan tus habilidades de Programación Orientada a Objetos en Python:</p>
+                        
+                        <ul>
+                            <li><strong>Decoradores</strong>: Te permiten extender el comportamiento de funciones y clases de manera elegante, siguiendo el principio de composición sobre herencia.</li>
+                            <li><strong>Manejo de excepciones</strong>: Te ayuda a crear código más robusto que puede manejar errores de manera controlada y recuperarse de situaciones inesperadas.</li>
+                        </ul>
+                        
+                        <p>Estos conceptos son esenciales para el desarrollo de software profesional en Python y te permitirán crear aplicaciones más robustas, mantenibles y flexibles.</p>
+                        
+                        <div class="alert alert-info">
+                            <h5><i class="bi bi-bookmark-star"></i> Próximos pasos en tu aprendizaje</h5>
+                            <p>Para seguir mejorando tus habilidades en Programación Orientada a Objetos con Python, te recomendamos explorar:</p>
+                            <ul>
+                                <li>Metaprogramación y metaclases</li>
+                                <li>Patrones de diseño en Python</li>
+                                <li>Testing de aplicaciones orientadas a objetos</li>
+                                <li>Programación concurrente y paralela con objetos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navegación de lecciones -->
+                <div class="lesson-navigation">
+                    <a href="abstraccion.html" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left"></i> Anterior: Abstracción y Diseño
+                    </a>
+                    <a href="index.html" class="btn btn-primary">
+                        Volver al Inicio <i class="bi bi-house-door"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p class="mb-0">Guía Interactiva POO con Python &copy; 2025</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Highlight.js para código -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+    <!-- JS personalizado -->
+    <script src="js/scripts.js"></script>
+</body>
+</html>

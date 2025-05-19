@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abstracción y Diseño de Clases - Guía Interactiva Python</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Iconos de Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Highlight.js para resaltado de código -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/vs2015.min.css">
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-braces-asterisk"></i> Python POO
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">
+                            Temáticas
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="fundamentos.html">1. Fundamentos de POO</a></li>
+                            <li><a class="dropdown-item" href="principios.html">2. Principios Fundamentales</a></li>
+                            <li><a class="dropdown-item active" href="abstraccion.html">3. Abstracción y Diseño</a></li>
+                            <li><a class="dropdown-item" href="avanzado.html">4. Conceptos Avanzados</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="mb-4">Abstracción y Diseño de Clases</h1>
+                
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+                        <li class="breadcrumb-item active">Abstracción y Diseño</li>
+                    </ol>
+                </nav>
+
+                <!-- Introducción -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">¿Qué es la Abstracción?</h2>
+                        <p>La <strong>abstracción</strong> es uno de los principios fundamentales de la POO que consiste en identificar las características y comportamientos esenciales de un objeto, ignorando los detalles irrelevantes. Permite crear modelos simplificados que representan entidades complejas.</p>
+                        
+                        <div class="explanation-card">
+                            <h5><i class="bi bi-lightbulb"></i> Aplicación de la Abstracción</h5>
+                            <p>En la programación, aplicamos la abstracción para:</p>
+                            <ul>
+                                <li>Reducir la complejidad al centrarnos en lo importante</li>
+                                <li>Crear clases y métodos generalizados que pueden ser reutilizados</li>
+                                <li>Ocultar implementaciones complejas detrás de interfaces simples</li>
+                                <li>Modelar conceptos del mundo real de manera efectiva</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interfaces -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Interfaces en Python</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>Interfaces Formales y Virtuales</h4>
+                        <p>A diferencia de lenguajes como Java o C#, Python no tiene una palabra clave específica para declarar interfaces. Sin embargo, podemos implementar interfaces de dos formas:</p>
+                        
+                        <ul>
+                            <li><strong>Interfaces Informales (Duck Typing)</strong>: Siguiendo la filosofía de "si camina como un pato y hace cuac como un pato, entonces es un pato", Python permite crear interfaces implícitas.</li>
+                            <li><strong>Interfaces Formales</strong>: Desde Python 3.8, podemos usar el módulo <code class="code-inline">abc</code> (Abstract Base Classes) para definir interfaces más formales.</li>
+                        </ul>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>interfaces_informales.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-informal-interface">class DispositivoEntrada:
+    """
+    Esta es una interfaz informal (implícita) para dispositivos de entrada.
+    Cualquier clase que implemente estos métodos se considera un dispositivo de entrada.
+    """
+    def conectar(self):
+        pass
+    
+    def desconectar(self):
+        pass
+    
+    def enviar_entrada(self, datos):
+        pass
+    
+    def recibir_feedback(self):
+        pass
+
+
+class Teclado:
+    """Implementa la interfaz DispositivoEntrada"""
+    
+    def __init__(self, modelo):
+        self.modelo = modelo
+        self.conectado = False
+    
+    def conectar(self):
+        self.conectado = True
+        return f"Teclado {self.modelo} conectado correctamente."
+    
+    def desconectar(self):
+        self.conectado = False
+        return f"Teclado {self.modelo} desconectado."
+    
+    def enviar_entrada(self, texto):
+        if self.conectado:
+            return f"Enviando texto: '{texto}'"
+        return "Error: el teclado no está conectado."
+    
+    def recibir_feedback(self):
+        return "Luces del teclado activadas."
+
+
+class Raton:
+    """Implementa la interfaz DispositivoEntrada"""
+    
+    def __init__(self, modelo, dpi=1600):
+        self.modelo = modelo
+        self.dpi = dpi
+        self.conectado = False
+    
+    def conectar(self):
+        self.conectado = True
+        return f"Ratón {self.modelo} conectado correctamente."
+    
+    def desconectar(self):
+        self.conectado = False
+        return f"Ratón {self.modelo} desconectado."
+    
+    def enviar_entrada(self, coordenadas):
+        if self.conectado:
+            x, y = coordenadas
+            return f"Movimiento del ratón a las coordenadas: ({x}, {y})"
+        return "Error: el ratón no está conectado."
+    
+    def recibir_feedback(self):
+        return "LED del ratón encendido."
+
+
+# Función que trabaja con cualquier dispositivo que implementa la interfaz
+def probar_dispositivo(dispositivo):
+    """
+    Esta función acepta cualquier objeto que implemente la interfaz de DispositivoEntrada.
+    No necesita verificar el tipo específico gracias al duck typing.
+    """
+    print(dispositivo.conectar())
+    print(dispositivo.enviar_entrada("datos de prueba"))
+    print(dispositivo.recibir_feedback())
+    print(dispositivo.desconectar())
+
+
+# Crear instancias
+teclado = Teclado("Logitech K380")
+raton = Raton("Logitech MX Master", 4000)
+
+# Usar la función con diferentes dispositivos
+print("Probando teclado:")
+probar_dispositivo(teclado)
+
+print("\nProbando ratón:")
+probar_dispositivo(raton)</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-informal-interface">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-informal-interface" data-output="output-informal-interface">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <h4 class="mt-5">Interfaces Formales con ABC</h4>
+                        <p>Cuando necesitamos un enfoque más estricto, podemos usar el módulo <code class="code-inline">abc</code> para crear clases abstractas e interfaces formales:</p>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>interfaces_formales.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-formal-interface">from abc import ABC, abstractmethod
+
+class DispositivoEntrada(ABC):
+    """
+    Interfaz formal para dispositivos de entrada.
+    ABC = Abstract Base Class
+    """
+    
+    @abstractmethod
+    def conectar(self):
+        """Conecta el dispositivo"""
+        pass
+    
+    @abstractmethod
+    def desconectar(self):
+        """Desconecta el dispositivo"""
+        pass
+    
+    @abstractmethod
+    def enviar_entrada(self, datos):
+        """Envía datos desde el dispositivo"""
+        pass
+    
+    # Método concreto (no abstracto) que implementa comportamiento común
+    def comprobar_conectividad(self):
+        return "Comprobando estado de conexión..."
+
+
+class Teclado(DispositivoEntrada):
+    def __init__(self, modelo):
+        self.modelo = modelo
+        self.conectado = False
+    
+    # Implementación del método abstracto
+    def conectar(self):
+        self.conectado = True
+        return f"Teclado {self.modelo} conectado correctamente."
+    
+    # Implementación del método abstracto
+    def desconectar(self):
+        self.conectado = False
+        return f"Teclado {self.modelo} desconectado."
+    
+    # Implementación del método abstracto
+    def enviar_entrada(self, texto):
+        if self.conectado:
+            return f"Enviando texto: '{texto}'"
+        return "Error: el teclado no está conectado."
+
+
+class Raton(DispositivoEntrada):
+    def __init__(self, modelo, dpi=1600):
+        self.modelo = modelo
+        self.dpi = dpi
+        self.conectado = False
+    
+    def conectar(self):
+        self.conectado = True
+        return f"Ratón {self.modelo} conectado correctamente."
+    
+    def desconectar(self):
+        self.conectado = False
+        return f"Ratón {self.modelo} desconectado."
+    
+    def enviar_entrada(self, coordenadas):
+        if self.conectado:
+            x, y = coordenadas
+            return f"Movimiento del ratón a las coordenadas: ({x}, {y})"
+        return "Error: el ratón no está conectado."
+
+
+# Si intentamos instanciar DispositivoEntrada directamente, obtendremos un error
+try:
+    dispositivo_generico = DispositivoEntrada()
+    print("¡Instancia creada!")  # Esto no debería ejecutarse
+except TypeError as e:
+    print(f"Error al instanciar clase abstracta: {e}")
+
+# Crear instancias concretas
+teclado = Teclado("Razer BlackWidow")
+raton = Raton("Logitech G502", 16000)
+
+# Usar las instancias
+print("\nTeclado:")
+print(teclado.comprobar_conectividad())  # Método heredado
+print(teclado.conectar())  # Método implementado
+print(teclado.enviar_entrada("Hola mundo!"))
+
+print("\nRatón:")
+print(raton.comprobar_conectividad())  # Método heredado
+print(raton.conectar())  # Método implementado
+print(raton.enviar_entrada((150, 200)))  # Método implementado</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-formal-interface">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-formal-interface" data-output="output-formal-interface">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <div class="explanation-card mt-4">
+                            <h5><i class="bi bi-info-circle"></i> Decorador @abstractmethod</h5>
+                            <p>El decorador <code class="code-inline">@abstractmethod</code> indica que un método debe ser implementado por cualquier subclase concreta. Si una clase hereda de una clase abstracta pero no implementa todos los métodos abstractos, no podrá ser instanciada.</p>
+                            
+                            <p>Beneficios de usar clases abstractas:</p>
+                            <ul>
+                                <li>Garantiza que todas las subclases implementen métodos específicos</li>
+                                <li>Proporciona un contrato claro para las subclases</li>
+                                <li>Combina interfaces con implementaciones compartidas</li>
+                                <li>Mejora la documentación del código</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clases Abstractas -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Clases Abstractas</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Una <strong>clase abstracta</strong> es una clase que no puede ser instanciada directamente y que sirve como base para otras clases. Puede contener tanto métodos abstractos (que deben ser implementados por sus subclases) como métodos concretos (que proporcionan funcionalidad común).</p>
+
+                        <p>Las clases abstractas en Python se crean utilizando el módulo <code class="code-inline">abc</code> y presentan una combinación de:</p>
+                        <ul>
+                            <li>Métodos abstractos: definen lo que las subclases deben implementar</li>
+                            <li>Métodos concretos: proporcionan funcionalidad común para las subclases</li>
+                            <li>Atributos compartidos: pueden tener atributos que serán heredados</li>
+                        </ul>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>clases_abstractas.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-abstract-class">from abc import ABC, abstractmethod
+import math
+
+class Forma(ABC):
+    """
+    Clase abstracta para representar formas geométricas.
+    """
+    
+    def __init__(self, color="Negro"):
+        self.color = color
+    
+    @abstractmethod
+    def area(self):
+        """Calcula el área de la forma"""
+        pass
+    
+    @abstractmethod
+    def perimetro(self):
+        """Calcula el perímetro de la forma"""
+        pass
+    
+    # Método concreto compartido por todas las formas
+    def descripcion(self):
+        return f"Soy una forma de color {self.color}"
+    
+    # Método concreto con implementación por defecto que puede ser sobrescrito
+    def escalar(self, factor):
+        """
+        Método que las subclases pueden implementar para escalar la forma.
+        Esta es una implementación por defecto.
+        """
+        return f"Escalando la forma por un factor de {factor}"
+
+
+class Circulo(Forma):
+    def __init__(self, radio, color="Rojo"):
+        super().__init__(color)
+        self.radio = radio
+    
+    def area(self):
+        return math.pi * (self.radio ** 2)
+    
+    def perimetro(self):
+        return 2 * math.pi * self.radio
+    
+    # Sobrescribimos el método concreto para una implementación específica
+    def escalar(self, factor):
+        self.radio *= factor
+        return f"El círculo ha sido escalado. Nuevo radio: {self.radio}"
+
+
+class Rectangulo(Forma):
+    def __init__(self, ancho, alto, color="Azul"):
+        super().__init__(color)
+        self.ancho = ancho
+        self.alto = alto
+    
+    def area(self):
+        return self.ancho * self.alto
+    
+    def perimetro(self):
+        return 2 * (self.ancho + self.alto)
+
+
+# Crear instancias
+circulo = Circulo(5)
+rectangulo = Rectangulo(4, 6)
+
+# Usar métodos abstractos implementados
+print(f"Área del círculo: {circulo.area():.2f}")
+print(f"Perímetro del círculo: {circulo.perimetro():.2f}")
+print(f"Descripción: {circulo.descripcion()}")
+print(f"Escalar: {circulo.escalar(2)}")
+
+print("\nÁrea del rectángulo: {:.2f}".format(rectangulo.area()))
+print(f"Perímetro del rectángulo: {rectangulo.perimetro()}")
+print(f"Descripción: {rectangulo.descripcion()}")
+print(f"Escalar: {rectangulo.escalar(1.5)}")</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-abstract-class">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-abstract-class" data-output="output-abstract-class">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+
+                        <div class="explanation-card mt-4">
+                            <h5><i class="bi bi-info-circle"></i> Diferencia entre Interface y Clase Abstracta</h5>
+                            <p>Aunque en Python la distinción no es tan rígida como en otros lenguajes, conceptualmente:</p>
+                            <ul>
+                                <li><strong>Interfaces</strong>: Solo definen qué métodos debe implementar una clase, sin proporcionar implementación (todos los métodos son abstractos).</li>
+                                <li><strong>Clases abstractas</strong>: Pueden tener una mezcla de métodos abstractos y métodos con implementación, proporcionando funcionalidad compartida.</li>
+                            </ul>
+                            <p>En Python, gracias a la herencia múltiple, una clase puede implementar múltiples interfaces y heredar de múltiples clases abstractas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colecciones -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Colecciones como Estructuras Abstractas de Datos</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Las estructuras de datos abstractas (ADT, por sus siglas en inglés) son modelos matemáticos para tipos de datos definidos por su comportamiento desde el punto de vista del usuario. Python implementa varias colecciones que actúan como ADTs:</p>
+
+                        <ul>
+                            <li><strong>Listas</strong>: Secuencias ordenadas con acceso por índice</li>
+                            <li><strong>Diccionarios</strong>: Mapas clave-valor</li>
+                            <li><strong>Conjuntos</strong>: Colecciones no ordenadas de elementos únicos</li>
+                            <li><strong>Colas</strong>: Estructuras FIFO (First In, First Out)</li>
+                            <li><strong>Pilas</strong>: Estructuras LIFO (Last In, First Out)</li>
+                        </ul>
+
+                        <p>Python proporciona el módulo <code class="code-inline">collections</code> con implementaciones adicionales:</p>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>colecciones.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-collections">from collections import defaultdict, Counter, deque, namedtuple
+import queue
+
+# defaultdict: Un diccionario que proporciona un valor predeterminado para claves inexistentes
+print("=== defaultdict ===")
+palabras_por_longitud = defaultdict(list)
+
+palabras = ["python", "programación", "código", "desarrollo", "abstracción", "interfaz"]
+
+for palabra in palabras:
+    # No necesitamos verificar si la clave existe
+    palabras_por_longitud[len(palabra)].append(palabra)
+
+print(f"Palabras de 6 letras: {palabras_por_longitud[6]}")
+print(f"Palabras de 11 letras: {palabras_por_longitud[11]}")
+print(f"Palabras de 4 letras: {palabras_por_longitud[4]}")  # Clave que no existía previamente
+
+# Counter: Un diccionario para contar ocurrencias
+print("\n=== Counter ===")
+texto = "Programación orientada a objetos con Python"
+contador = Counter(texto.lower())
+
+print(f"Letras más comunes: {contador.most_common(3)}")  # 3 letras más comunes
+print(f"Ocurrencias de 'o': {contador['o']}")
+print(f"Ocurrencias de 'z': {contador['z']}")  # Automáticamente devuelve 0
+
+# deque: Una cola doblemente terminada
+print("\n=== deque (cola doble) ===")
+cola = deque(["tarea1", "tarea2", "tarea3"])
+print(f"Cola inicial: {cola}")
+
+# Añadir elementos
+cola.append("tarea4")          # Añadir al final
+cola.appendleft("tarea0")      # Añadir al inicio
+print(f"Cola después de añadir: {cola}")
+
+# Quitar elementos
+tarea_primera = cola.popleft() # Quitar del inicio
+tarea_ultima = cola.pop()      # Quitar del final
+print(f"Eliminadas: primera={tarea_primera}, última={tarea_ultima}")
+print(f"Cola final: {cola}")
+
+# namedtuple: Tuplas con campos nombrados
+print("\n=== namedtuple ===")
+Punto = namedtuple('Punto', ['x', 'y', 'z'])
+p = Punto(1, 2, 3)
+print(f"Punto: {p}")
+print(f"Coordenadas: x={p.x}, y={p.y}, z={p.z}")
+print(f"Acceso por índice: {p[0]}, {p[1]}, {p[2]}")
+
+# Cola de prioridad
+print("\n=== Queue de prioridad ===")
+pq = queue.PriorityQueue()
+pq.put((2, "Tarea de prioridad media"))
+pq.put((1, "Tarea de prioridad alta"))
+pq.put((3, "Tarea de prioridad baja"))
+
+print("Procesando tareas por prioridad:")
+while not pq.empty():
+    prioridad, tarea = pq.get()
+    print(f"  Prioridad {prioridad}: {tarea}")</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-collections">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-collections" data-output="output-collections">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Implementación de ADT -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Creando tu Propia Estructura de Datos Abstracta</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Podemos crear nuestras propias estructuras de datos abstractas implementando las interfaces adecuadas para que se comporten como colecciones nativas de Python.</p>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>queue_implementation.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-custom-adt">class Cola:
+    """
+    Implementación simple de una estructura de datos tipo Cola (FIFO).
+    Esta es nuestra propia implementación de una estructura de datos abstracta.
+    """
+    
+    def __init__(self):
+        self._elementos = []
+    
+    def encolar(self, item):
+        """Añade un elemento al final de la cola."""
+        self._elementos.append(item)
+    
+    def desencolar(self):
+        """Elimina y devuelve el primer elemento de la cola."""
+        if self.esta_vacia():
+            raise IndexError("No se puede desencolar de una cola vacía")
+        return self._elementos.pop(0)
+    
+    def frente(self):
+        """Devuelve el primer elemento sin eliminarlo."""
+        if self.esta_vacia():
+            raise IndexError("La cola está vacía")
+        return self._elementos[0]
+    
+    def esta_vacia(self):
+        """Comprueba si la cola está vacía."""
+        return len(self._elementos) == 0
+    
+    def tamaño(self):
+        """Devuelve el número de elementos en la cola."""
+        return len(self._elementos)
+    
+    def __str__(self):
+        """Representación en cadena de la cola."""
+        return str(self._elementos)
+    
+    def __iter__(self):
+        """Permite iterar sobre los elementos de la cola sin modificarla."""
+        for elemento in self._elementos:
+            yield elemento
+
+# Ejemplo de uso de nuestra implementación de Cola
+cola = Cola()
+
+print("=== Operaciones con nuestra Cola ===")
+print(f"¿La cola está vacía? {cola.esta_vacia()}")
+
+# Encolar elementos
+print("\nEncolando elementos...")
+for i in range(1, 6):
+    cola.encolar(f"Elemento {i}")
+    print(f"  Encolado: 'Elemento {i}'")
+
+print(f"\nContenido de la cola: {cola}")
+print(f"Tamaño de la cola: {cola.tamaño()}")
+print(f"Elemento en el frente: {cola.frente()}")
+
+# Iterar sobre la cola sin modificarla
+print("\nIterando sobre la cola:")
+for elemento in cola:
+    print(f"  {elemento}")
+
+# Desencolar elementos
+print("\nDesencolando elementos:")
+while not cola.esta_vacia():
+    print(f"  Desencolado: '{cola.desencolar()}'")
+
+print(f"\n¿La cola está vacía ahora? {cola.esta_vacia()}")
+
+# Demostrar el error al desencolar de una cola vacía
+try:
+    cola.desencolar()
+except IndexError as e:
+    print(f"\nError capturado: {e}")</code></pre>
+                                </div>
+                            </div>
+                            <div class="vscode-terminal">
+                                <div id="output-custom-adt">
+                                    <span class="vscode-terminal-prompt">>>> </span>
+                                    Ejecuta el código para ver la salida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-success btn-run" data-code-block="code-custom-adt" data-output="output-custom-adt">
+                                <i class="bi bi-play-fill"></i> Ejecutar código
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ejercicio Práctico -->
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="mb-0">Ejercicio Práctico</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>Figura Geométrica</h4>
+                        <p>Diseña un sistema de clases para modelar figuras geométricas:</p>
+                        <ul>
+                            <li>Define una clase abstracta <code class="code-inline">FiguraGeometrica</code> con métodos abstractos para calcular área y perímetro.</li>
+                            <li>Implementa al menos tres figuras concretas (por ejemplo, Círculo, Rectángulo, Triángulo).</li>
+                            <li>Crea una colección heterogénea de figuras y calcula la suma de sus áreas.</li>
+                        </ul>
+
+                        <div class="vscode-container mt-4">
+                            <div class="vscode-header">
+                                <div class="vscode-header-title">
+                                    <span>ejercicio_figuras.py</span>
+                                </div>
+                                <div class="vscode-header-actions">
+                                    <button class="vscode-header-button vscode-header-minimize"></button>
+                                    <button class="vscode-header-button vscode-header-maximize"></button>
+                                    <button class="vscode-header-button vscode-header-close"></button>
+                                </div>
+                            </div>
+                            <div class="vscode-content">
+                                <div class="vscode-editor">
+                                    <pre><code class="language-python" id="code-exercise-shapes">from abc import ABC, abstractmethod
+
+class FiguraGeometrica(ABC):
+    # Implementa la clase abstracta
+    pass
+
+class Circulo(FiguraGeometrica):
+    # Implementa esta figura
+    pass
+
+class Rectangulo(FiguraGeometrica):
+    # Implementa esta figura
+    pass
+
+class Triangulo(FiguraGeometrica):
+    # Implementa esta figura
+    pass
+
+# Crea figuras y calcula áreas
+</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary mt-3 toggle-solution" data-solution="solution-shapes">
+                            Mostrar Solución
+                        </button>
+
+                        <div id="solution-shapes" style="display: none">
+                            <div class="vscode-container mt-4">
+                                <div class="vscode-header">
+                                    <div class="vscode-header-title">
+                                        <span>solucion_figuras.py</span>
+                                    </div>
+                                    <div class="vscode-header-actions">
+                                        <button class="vscode-header-button vscode-header-minimize"></button>
+                                        <button class="vscode-header-button vscode-header-maximize"></button>
+                                        <button class="vscode-header-button vscode-header-close"></button>
+                                    </div>
+                                </div>
+                                <div class="vscode-content">
+                                    <div class="vscode-editor">
+                                        <pre><code class="language-python" id="code-solution-shapes">from abc import ABC, abstractmethod
+import math
+
+class FiguraGeometrica(ABC):
+    """Clase abstracta para representar figuras geométricas"""
+    
+    def __init__(self, nombre="Figura"):
+        self.nombre = nombre
+    
+    @abstractmethod
+    def area(self):
+        """Calcula el área de la figura"""
+        pass
+    
+    @abstractmethod
+    def perimetro(self):
+        """Calcula el perímetro de la figura"""
+        pass
+    
+    def __str__(self):
+        return f"{self.nombre}: Área = {self.area():.2f}, Perímetro = {self.perimetro():.2f}"
+
+
+class Circulo(FiguraGeometrica):
+    def __init__(self, radio):
+        super().__init__("Círculo")
+        self.radio = radio
+    
+    def area(self):
+        return math.pi * self.radio ** 2
+    
+    def perimetro(self):
+        return 2 * math.pi * self.radio
+
+
+class Rectangulo(FiguraGeometrica):
+    def __init__(self, ancho, alto):
+        super().__init__("Rectángulo")
+        self.ancho = ancho
+        self.alto = alto
+    
+    def area(self):
+        return self.ancho * self.alto
+    
+    def perimetro(self):
+        return 2 * (self.ancho + self.alto)
+
+
+class Triangulo(FiguraGeometrica):
+    def __init__(self, a, b, c):
+        """
+        Inicializa un triángulo con longitudes de lados a, b, c.
+        """
+        super().__init__("Triángulo")
+        # Comprobar si los lados forman un triángulo válido
+        if a + b <= c or a + c <= b or b + c <= a:
+            raise ValueError("Los lados no forman un triángulo válido")
+        self.a = a
+        self.b = b
+        self.c = c
+    
+    def area(self):
+        # Fórmula de Herón
+        s = (self.a + self.b + self.c) / 2
+        return math.sqrt(s * (s - self.a) * (s - self.b) * (s - self.c))
+    
+    def perimetro(self):
+        return self.a + self.b + self.c
+
+
+# Crear figuras
+circulo = Circulo(5)
+rectangulo = Rectangulo(4, 6)
+triangulo = Triangulo(5, 7, 10)
+
+# Crear una colección heterogénea de figuras
+figuras = [circulo, rectangulo, triangulo]
+
+# Mostrar información de cada figura
+print("Información de las figuras:")
+for figura in figuras:
+    print(figura)
+
+# Calcular y mostrar la suma de las áreas
+total_area = sum(figura.area() for figura in figuras)
+print(f"\nÁrea total de todas las figuras: {total_area:.2f}")
+
+# Demostrar el uso del polimorfismo
+def imprimir_area(figura):
+    print(f"El área de este {figura.nombre.lower()} es: {figura.area():.2f}")
+
+print("\nDemostración de polimorfismo:")
+for figura in figuras:
+    imprimir_area(figura)</code></pre>
+                                    </div>
+                                </div>
+                                <div class="vscode-terminal">
+                                    <div id="output-solution-shapes">
+                                        <span class="vscode-terminal-prompt">>>> </span>
+                                        Información de las figuras:
+Círculo: Área = 78.54, Perímetro = 31.42
+Rectángulo: Área = 24.00, Perímetro = 20.00
+Triángulo: Área = 16.25, Perímetro = 22.00
+
+Área total de todas las figuras: 118.79
+
+Demostración de polimorfismo:
+El área de este círculo es: 78.54
+El área de este rectángulo es: 24.00
+El área de este triángulo es: 16.25</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navegación de lecciones -->
+                <div class="lesson-navigation">
+                    <a href="principios.html" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left"></i> Anterior: Principios Fundamentales
+                    </a>
+                    <a href="avanzado.html" class="btn btn-primary">
+                        Siguiente: Conceptos Avanzados <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p class="mb-0">Guía Interactiva POO con Python &copy; 2025</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Highlight.js para código -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+    <!-- JS personalizado -->
+    <script src="js/scripts.js"></script>
+</body>
+</html>
