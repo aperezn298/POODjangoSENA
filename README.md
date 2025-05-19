@@ -20,4 +20,4 @@ Contenido de la Competencia de Python (POO + Django)
 
 
 # Guia Interactiva Online:
-[Comienza de forma Autonoma](https://classroom.google.com/c/Nzc3NzY0NzU2MzQ4?cjc=hkji6dmy)
+[Comienza de forma Autonoma](https://aperezn298.github.io/POODjangoSENA/GuiaPythonPOO/)
