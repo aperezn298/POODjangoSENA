@@ -1,0 +1,116 @@
+/* Estilos adicionales para resaltado de sintaxis Django */
+
+/* Estilo para bloques de código Django y otros lenguajes */
+.language-django,
+.language-python,
+.language-bash,
+.language-css {
+    font-family: 'Consolas', 'Monaco', monospace;
+    background-color: #272822 !important;
+    color: #f8f8f2 !important;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+/* Clases personalizadas para etiquetas Django */
+.django-tag {
+    color: #ff0077 !important;
+    font-weight: bold !important;
+}
+
+.django-var {
+    color: #00c3ff !important;
+    font-weight: bold !important;
+}
+
+.django-comment {
+    color: #75715e !important;
+    font-style: italic !important;
+}
+
+/* Estilo para las llaves y símbolos */
+.django-symbol {
+    color: #f8f8f2 !important;
+    font-weight: normal !important;
+}
+
+/* Estilos para tokens creados por Prism */
+code.language-django .token.tag,
+code.language-django .token.keyword {
+    color: #ff0077 !important;
+}
+
+code.language-django .token.punctuation {
+    color: #f8f8f2 !important;
+}
+
+code.language-django .token.string {
+    color: #e6db74 !important;
+}
+
+code.language-django .token.operator {
+    color: #f8f8f2 !important;
+}
+
+code.language-django .token.comment {
+    color: #75715e !important;
+}
+
+/* Desactivar Prism para bloques específicos */
+code.language-django.no-prism .token {
+    color: inherit !important;
+}
+
+/* Colores específicos para las partes internas de tags Django */
+.django-tag code,
+.django-tag span {
+    color: #ff0077 !important;
+}
+
+.django-var code,
+.django-var span {
+    color: #00c3ff !important;
+}
+
+/* Colores para los filtros */
+.django-var .filter {
+    color: #a6e22e !important;
+}
+
+/* Mejorar contenedores de código */
+.code-editor {
+    background-color: #272822 !important;
+    border-radius: 5px;
+    padding: 0;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.code-editor pre {
+    margin: 0;
+    padding: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #272822;
+    background-color: #272822 !important;
+}
+
+.code-editor pre code {
+    background-color: #272822 !important;
+    color: #f8f8f2 !important;
+}
+
+.code-editor pre::-webkit-scrollbar {
+    height: 8px;
+}
+
+.code-editor pre::-webkit-scrollbar-track {
+    background: #2d2d2d;
+    border-radius: 0 0 5px 5px;
+}
+
+.code-editor pre::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 4px;
+}

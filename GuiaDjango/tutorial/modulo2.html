@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 2: Modelos y Base de Datos | Guía Interactiva Django 5</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/tutorial/styles.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-okaidia.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fab fa-python me-2"></i>Django 5 - Guía Interactiva
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#modulos">Módulos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#recursos">Recursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="theme-toggle" title="Cambiar tema">
+                            <i class="fas fa-moon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido del Módulo -->
+    <div class="container mt-5 pt-5 module-content">
+        <div class="row">
+            <!-- Barra lateral de navegación -->
+            <div class="col-lg-3 mb-4">
+                <div class="sticky-top pt-4">
+                    <div class="list-group mb-4">
+                        <a href="#introduccion" class="list-group-item list-group-item-action active">Introducción a Modelos</a>
+                        <a href="#definicion" class="list-group-item list-group-item-action">Definición de Modelos</a>
+                        <a href="#campos" class="list-group-item list-group-item-action">Campos y Tipos de Datos</a>
+                        <a href="#relaciones" class="list-group-item list-group-item-action">Relaciones entre Modelos</a>
+                        <a href="#migraciones" class="list-group-item list-group-item-action">Migraciones</a>
+                        <a href="#orm" class="list-group-item list-group-item-action">Consultas con ORM</a>
+                        <a href="#ejercicio" class="list-group-item list-group-item-action">Ejercicio práctico</a>
+                        <a href="#quiz" class="list-group-item list-group-item-action">Quiz</a>                
+                    </div>
+                    <div class="progress-section">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-map-signs me-2 text-primary"></i>Progreso del Módulo</h5>
+                                <div class="progress mb-3">
+                                    <div class="progress-bar module-progress" role="progressbar" style="width: 0%"></div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="modulo1.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Módulo anterior</a>
+                                    <a href="modulo3.html" class="btn btn-primary">Siguiente módulo<i class="fas fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contenido principal -->
+            <div class="col-lg-9">
+                <div id="introduccion" class="mb-5 fade-in">
+                    <h2>Introducción a Modelos en Django</h2>
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-graduation-cap me-2"></i> <strong>Objetivo de aprendizaje:</strong> Al finalizar este módulo, entenderás cómo diseñar y trabajar con modelos en Django, establecer relaciones entre ellos y realizar operaciones básicas en la base de datos.
+                    </div>
+                    
+                    <p class="lead">Los modelos son el corazón de Django y definen la estructura de tus datos. Son clases de Python que representan tablas en tu base de datos y proporcionan métodos para interactuar con ellas de forma segura y eficiente.</p>
+                    
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-question-circle text-success me-2"></i>¿Qué son los modelos en Django?</h5>
+                            <p>Un modelo en Django es una clase de Python que hereda de <code>django.db.models.Model</code>. Cada atributo de la clase representa un campo en la tabla de la base de datos.</p>
+                            <p>Django proporciona un sistema de mapeo objeto-relacional (ORM) que te permite interactuar con tu base de datos usando código Python en lugar de SQL directo.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h4>Ventajas de usar modelos</h4>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-shield-alt text-warning me-2"></i>Seguridad</h5>
+                                        <p class="card-text">El ORM de Django te protege contra ataques comunes como inyección SQL, ya que escapa automáticamente los parámetros de consulta.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-sync-alt text-info me-2"></i>Portabilidad</h5>
+                                        <p class="card-text">Puedes cambiar de sistema de base de datos (MySQL, PostgreSQL, SQLite, etc.) sin cambiar tu código Python.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-check-circle text-success me-2"></i>Validación</h5>
+                                        <p class="card-text">Los modelos incluyen un sistema de validación que verifica los datos antes de guardarlos en la base de datos.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-code text-primary me-2"></i>API Intuitiva</h5>
+                                        <p class="card-text">El ORM proporciona una API Python clara y consistente para realizar consultas complejas sin escribir SQL.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="definicion" class="mb-5 fade-in">
+                    <h2>Definición de Modelos</h2>
+                    <p>Para crear un modelo en Django, defines una clase que hereda de <code>django.db.models.Model</code> en el archivo <code>models.py</code> de tu aplicación.</p>
+                    
+                    <h4 class="mt-4">Estructura básica de un modelo</h4>
+                    <div class="code-editor">
+                        <pre><code class="language-python"># En models.py
+from django.db import models
+
+class Producto(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.IntegerField(default=0)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.nombre</code></pre>
+                    </div>
+                    
+                    <h4 class="mt-4">Convenciones de nomenclatura</h4>
+                    <p>Django sigue ciertas convenciones para traducir tus modelos a tablas en la base de datos:</p>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Elemento</th>
+                                    <th>Convención</th>
+                                    <th>Ejemplo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Nombre de tabla</td>
+                                    <td><code>[app_name]_[model_name]</code></td>
+                                    <td><code>tienda_producto</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Clave primaria</td>
+                                    <td>Campo <code>id</code> automático</td>
+                                    <td><code>id</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Relación ForeignKey</td>
+                                    <td><code>[campo]_id</code></td>
+                                    <td><code>categoria_id</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-info-circle me-2"></i> <strong>Nota:</strong> Puedes personalizar el nombre de la tabla usando la clase <code>Meta</code> dentro de tu modelo:
+                        <div class="code-editor mt-2">
+                            <pre><code class="language-python">class Producto(models.Model):
+    # campos del modelo...
+    
+    class Meta:
+        db_table = 'productos'
+        verbose_name = 'Producto'
+        verbose_name_plural = 'Productos'</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="campos" class="mb-5 fade-in">
+                    <h2>Campos y Tipos de Datos</h2>
+                    <p>Django proporciona muchos tipos de campos para representar diferentes tipos de datos en tus modelos.</p>
+                    
+                    <h4 class="mt-4">Campos comunes</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Tipo de Campo</th>
+                                    <th>Descripción</th>
+                                    <th>Ejemplo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>CharField</code></td>
+                                    <td>Campo de texto de longitud limitada</td>
+                                    <td><code>nombre = models.CharField(max_length=100)</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>TextField</code></td>
+                                    <td>Campo de texto largo sin límite</td>
+                                    <td><code>descripcion = models.TextField()</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>IntegerField</code></td>
+                                    <td>Número entero</td>
+                                    <td><code>edad = models.IntegerField()</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>FloatField</code></td>
+                                    <td>Número decimal de precisión variable</td>
+                                    <td><code>altura = models.FloatField()</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>DecimalField</code></td>
+                                    <td>Número decimal de precisión fija</td>
+                                    <td><code>precio = models.DecimalField(max_digits=10, decimal_places=2)</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>BooleanField</code></td>
+                                    <td>Valor booleano (verdadero/falso)</td>
+                                    <td><code>activo = models.BooleanField(default=True)</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>DateField</code></td>
+                                    <td>Fecha (año, mes, día)</td>
+                                    <td><code>fecha_nacimiento = models.DateField()</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>DateTimeField</code></td>
+                                    <td>Fecha y hora</td>
+                                    <td><code>creado = models.DateTimeField(auto_now_add=True)</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>EmailField</code></td>
+                                    <td>Campo para direcciones de correo</td>
+                                    <td><code>email = models.EmailField()</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>FileField</code></td>
+                                    <td>Campo para archivos</td>
+                                    <td><code>archivo = models.FileField(upload_to='archivos/')</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>ImageField</code></td>
+                                    <td>Campo para imágenes</td>
+                                    <td><code>imagen = models.ImageField(upload_to='imagenes/')</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>URLField</code></td>
+                                    <td>Campo para URLs</td>
+                                    <td><code>sitio_web = models.URLField()</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h4 class="mt-4">Opciones comunes para campos</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Opción</th>
+                                    <th>Descripción</th>
+                                    <th>Ejemplo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>null</code></td>
+                                    <td>Si se permite NULL en la base de datos</td>
+                                    <td><code>fecha = models.DateField(null=True)</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>blank</code></td>
+                                    <td>Si se permite valor vacío en formularios</td>
+                                    <td><code>descripcion = models.TextField(blank=True)</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>default</code></td>
+                                    <td>Valor predeterminado</td>
+                                    <td><code>activo = models.BooleanField(default=True)</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>choices</code></td>
+                                    <td>Lista de opciones para el campo</td>
+                                    <td><code>status = models.CharField(choices=[('A', 'Activo'), ('I', 'Inactivo')], max_length=1)</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>primary_key</code></td>
+                                    <td>Define el campo como clave primaria</td>
+                                    <td><code>codigo = models.CharField(max_length=10, primary_key=True)</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>unique</code></td>
+                                    <td>El valor debe ser único</td>
+                                    <td><code>email = models.EmailField(unique=True)</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>help_text</code></td>
+                                    <td>Texto de ayuda para formularios</td>
+                                    <td><code>nombre = models.CharField(help_text="Ingrese el nombre del producto")</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>verbose_name</code></td>
+                                    <td>Nombre amigable para el campo</td>
+                                    <td><code>fecha_creacion = models.DateField(verbose_name="Fecha de creación")</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="alert alert-warning mt-4">
+                        <i class="fas fa-exclamation-triangle me-2"></i> <strong>Importante:</strong> La diferencia entre <code>null=True</code> y <code>blank=True</code> es que <code>null</code> afecta a la base de datos, mientras que <code>blank</code> afecta a la validación en formularios. Para campos de texto, se recomienda usar <code>blank=True, default=""</code> en lugar de <code>null=True</code>.
+                    </div>
+                </div>
+                
+                <div id="relaciones" class="mb-5 fade-in">
+                    <h2>Relaciones entre Modelos</h2>
+                    <p>Django permite establecer relaciones entre modelos para representar estructuras de datos complejas.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">One-to-Many (1:N)</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>Una categoría puede tener muchos productos, pero un producto pertenece a una sola categoría.</p>
+                                    <div class="code-editor">
+                                        <pre><code class="language-python">class Categoria(models.Model):
+    nombre = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.nombre
+
+class Producto(models.Model):
+    # otros campos...
+    categoria = models.ForeignKey(
+        Categoria, 
+        on_delete=models.CASCADE,
+        related_name='productos'
+    )</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0">Many-to-Many (N:M)</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>Un producto puede tener varias etiquetas, y una etiqueta puede aplicarse a varios productos.</p>
+                                    <div class="code-editor">
+                                        <pre><code class="language-python">class Etiqueta(models.Model):
+    nombre = models.CharField(max_length=30)
+    
+    def __str__(self):
+        return self.nombre
+
+class Producto(models.Model):
+    # otros campos...
+    etiquetas = models.ManyToManyField(
+        Etiqueta, 
+        related_name='productos'
+    )</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-header bg-warning text-dark">
+                                    <h5 class="mb-0">One-to-One (1:1)</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>Un producto tiene exactamente un detalle técnico y viceversa.</p>
+                                    <div class="code-editor">
+                                        <pre><code class="language-python">class DetalleTecnico(models.Model):
+    especificaciones = models.TextField()
+    garantia = models.IntegerField()
+    
+    def __str__(self):
+        return f"Detalle del producto {self.producto}"
+
+class Producto(models.Model):
+    # otros campos...
+    detalle = models.OneToOneField(
+        DetalleTecnico,
+        on_delete=models.CASCADE,
+        related_name='producto'
+    )</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="mt-4">Opciones de on_delete</h4>
+                    <p>Al definir una relación ForeignKey o OneToOneField, es obligatorio especificar qué ocurre cuando se elimina el objeto relacionado:</p>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Opción</th>
+                                    <th>Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>models.CASCADE</code></td>
+                                    <td>Elimina en cascada los objetos relacionados</td>
+                                </tr>
+                                <tr>
+                                    <td><code>models.PROTECT</code></td>
+                                    <td>Impide la eliminación si existen objetos relacionados</td>
+                                </tr>
+                                <tr>
+                                    <td><code>models.SET_NULL</code></td>
+                                    <td>Establece el campo en NULL (requiere null=True)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>models.SET_DEFAULT</code></td>
+                                    <td>Establece el campo en su valor predeterminado</td>
+                                </tr>
+                                <tr>
+                                    <td><code>models.DO_NOTHING</code></td>
+                                    <td>No hace nada (puede causar inconsistencias)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-lightbulb me-2"></i> <strong>Consejo:</strong> El parámetro <code>related_name</code> define el nombre con el que se accederá a los objetos relacionados desde el objeto relacionado. Si no se especifica, Django usa <code>[model_name]_set</code>.
+                    </div>
+                </div>
+                
+                <div id="migraciones" class="mb-5 fade-in">
+                    <h2>Migraciones</h2>
+                    <p>Las migraciones son la forma en que Django propaga los cambios en los modelos a la base de datos. Son como un sistema de control de versiones para tu esquema de base de datos.</p>
+                    
+                    <h4 class="mt-4">Flujo de trabajo con migraciones</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <ol>
+                                <li class="mb-3">
+                                    <strong>Crear o modificar modelos</strong> en el archivo <code>models.py</code>
+                                </li>
+                                <li class="mb-3">
+                                    <strong>Generar las migraciones</strong> basadas en los cambios detectados:
+                                    <div class="code-editor mt-2">
+                                        <pre><code class="language-bash">python manage.py makemigrations</code></pre>
+                                    </div>
+                                </li>
+                                <li class="mb-3">
+                                    <strong>Aplicar las migraciones</strong> a la base de datos:
+                                    <div class="code-editor mt-2">
+                                        <pre><code class="language-bash">python manage.py migrate</code></pre>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <h4 class="mt-4">Comandos útiles para migraciones</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Comando</th>
+                                    <th>Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>python manage.py showmigrations</code></td>
+                                    <td>Muestra el estado de las migraciones (aplicadas o pendientes)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>python manage.py sqlmigrate app_name 0001</code></td>
+                                    <td>Muestra el SQL que generará la migración</td>
+                                </tr>
+                                <tr>
+                                    <td><code>python manage.py migrate app_name 0002</code></td>
+                                    <td>Migra a una versión específica</td>
+                                </tr>
+                                <tr>
+                                    <td><code>python manage.py migrate app_name zero</code></td>
+                                    <td>Revierte todas las migraciones de una aplicación</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="alert alert-warning mt-4">
+                        <i class="fas fa-exclamation-triangle me-2"></i> <strong>Precaución:</strong> Las migraciones pueden ser complejas cuando:
+                        <ul class="mb-0 mt-2">
+                            <li>Cambias de un tipo de campo a otro incompatible</li>
+                            <li>Eliminas campos que tienen datos</li>
+                            <li>Tienes dependencias circulares entre modelos</li>
+                        </ul>
+                        <p class="mt-2 mb-0">En estos casos, puede ser necesario crear migraciones manuales o utilizar estrategias específicas.</p>
+                    </div>
+                </div>
+                
+                <div id="orm" class="mb-5 fade-in">
+                    <h2>Consultas con ORM</h2>
+                    <p>El ORM (Object-Relational Mapping) de Django te permite realizar consultas a la base de datos utilizando código Python en lugar de SQL directo.</p>
+                    
+                    <h4 class="mt-4">Operaciones básicas de CRUD</h4>
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Create (Crear)</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="code-editor">
+                                <pre><code class="language-python"># Método 1: Crear y guardar
+producto = Producto()
+producto.nombre = "Laptop Dell XPS 13"
+producto.precio = 1299.99
+producto.stock = 10
+producto.save()
+
+# Método 2: Crear con argumentos nombrados
+producto = Producto(
+    nombre="MacBook Pro", 
+    precio=1999.99, 
+    stock=5
+)
+producto.save()
+
+# Método 3: Crear directamente con create()
+Producto.objects.create(
+    nombre="Surface Pro", 
+    precio=1499.99, 
+    stock=8
+)</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">Read (Leer)</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="code-editor">
+                                <pre><code class="language-python"># Obtener todos los productos
+productos = Producto.objects.all()
+
+# Obtener un producto específico por ID
+try:
+    producto = Producto.objects.get(id=1)
+except Producto.DoesNotExist:
+    print("El producto no existe")
+
+# Filtrar productos
+productos_caros = Producto.objects.filter(precio__gt=1000)
+laptops = Producto.objects.filter(nombre__contains="Laptop")
+
+# Ordenar productos
+productos_ordenados = Producto.objects.order_by('-precio')  # Descendente
+productos_baratos_primero = Producto.objects.order_by('precio')  # Ascendente
+
+# Limitar resultados
+cinco_productos = Producto.objects.all()[:5]
+
+# Contar
+total_productos = Producto.objects.count()
+
+# Consultas complejas con Q
+from django.db.models import Q
+productos_query = Producto.objects.filter(
+    Q(nombre__contains="Laptop") | Q(nombre__contains="Surface")
+)</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">Update (Actualizar)</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="code-editor">
+                                <pre><code class="language-python"># Método 1: Actualizar un objeto individual
+producto = Producto.objects.get(id=1)
+producto.precio = 1399.99
+producto.save()
+
+# Método 2: Actualizar varios objetos a la vez
+Producto.objects.filter(stock=0).update(disponible=False)
+
+# Método 3: Actualización F() para operaciones atómicas
+from django.db.models import F
+Producto.objects.update(stock=F('stock') - 1)  # Reduce el stock de todos los productos</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="mb-0">Delete (Eliminar)</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="code-editor">
+                                <pre><code class="language-python"># Método 1: Eliminar un objeto individual
+producto = Producto.objects.get(id=1)
+producto.delete()
+
+# Método 2: Eliminar varios objetos a la vez
+Producto.objects.filter(stock=0).delete()
+
+# Método 3: Eliminar todos los objetos
+Producto.objects.all().delete()</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="mt-4">Consultas avanzadas</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="code-editor">
+                                <pre><code class="language-python"># Agregaciones
+from django.db.models import Avg, Sum, Min, Max, Count
+promedio_precio = Producto.objects.aggregate(Avg('precio'))
+total_stock = Producto.objects.aggregate(Sum('stock'))
+
+# Anotaciones
+from django.db.models import F, ExpressionWrapper, DecimalField
+productos_con_valor = Producto.objects.annotate(
+    valor_inventario=ExpressionWrapper(
+        F('precio') * F('stock'),
+        output_field=DecimalField()
+    )
+)
+
+# Relaciones
+# Productos de una categoría específica
+productos_electronica = Categoria.objects.get(nombre='Electrónica').productos.all()
+
+# Categorías con más de 5 productos
+categorias_populares = Categoria.objects.annotate(
+    num_productos=Count('productos')
+).filter(num_productos__gt=5)
+
+# Seleccionar campos específicos
+nombres_productos = Producto.objects.values_list('nombre', flat=True)
+info_productos = Producto.objects.values('nombre', 'precio')</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-lightbulb me-2"></i> <strong>Consejo:</strong> Para depurar consultas SQL generadas por el ORM, puedes usar:
+                        <div class="code-editor mt-2">
+                            <pre><code class="language-python">print(Producto.objects.filter(precio__gt=1000).query)</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="ejercicio" class="mb-5 fade-in">
+                    <h2>Ejercicio práctico</h2>
+                    <div class="alert alert-primary">
+                        <i class="fas fa-tasks me-2"></i> <strong>Tarea:</strong> Crear un conjunto de modelos relacionados para un blog y realizar operaciones básicas.
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Paso 1: Crear una aplicación blog</h5>
+                            <p>Asumiendo que ya tienes un proyecto Django, crea una aplicación para el blog:</p>
+                            <div class="code-editor">
+                                <pre><code class="language-bash">python manage.py startapp blog</code></pre>
+                            </div>
+                            
+                            <h5 class="card-title mt-4">Paso 2: Definir los modelos del blog</h5>
+                            <p>Edita el archivo <code>blog/models.py</code>:</p>
+                            <div class="code-editor">
+                                <pre><code class="language-python">from django.db import models
+from django.contrib.auth.models import User
+
+class Categoria(models.Model):
+    nombre = models.CharField(max_length=50, unique=True)
+    descripcion = models.TextField(blank=True)
+    
+    def __str__(self):
+        return self.nombre
+    
+    class Meta:
+        verbose_name_plural = "Categorías"
+
+class Articulo(models.Model):
+    titulo = models.CharField(max_length=200)
+    contenido = models.TextField()
+    fecha_publicacion = models.DateTimeField(auto_now_add=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
+    autor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='articulos')
+    categorias = models.ManyToManyField(Categoria, related_name='articulos')
+    publicado = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.titulo
+    
+    class Meta:
+        ordering = ['-fecha_publicacion']
+
+class Comentario(models.Model):
+    articulo = models.ForeignKey(Articulo, on_delete=models.CASCADE, related_name='comentarios')
+    autor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comentarios')
+    contenido = models.TextField()
+    fecha = models.DateTimeField(auto_now_add=True)
+    aprobado = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return f"Comentario de {self.autor.username} en {self.articulo.titulo}"
+    
+    class Meta:
+        ordering = ['fecha']</code></pre>
+                            </div>
+                            
+                            <h5 class="card-title mt-4">Paso 3: Registrar la aplicación en settings.py</h5>
+                            <p>Agrega 'blog' a la lista INSTALLED_APPS en settings.py:</p>
+                            <div class="code-editor">
+                                <pre><code class="language-python">INSTALLED_APPS = [
+    # Otras aplicaciones...
+    'blog',
+]</code></pre>
+                            </div>
+                            
+                            <h5 class="card-title mt-4">Paso 4: Crear y aplicar las migraciones</h5>
+                            <div class="code-editor">
+                                <pre><code class="language-bash">python manage.py makemigrations
+python manage.py migrate</code></pre>
+                            </div>
+                            
+                            <h5 class="card-title mt-4">Paso 5: Usar el shell de Django para probar el ORM</h5>
+                            <p>Abre el shell de Django y realiza algunas operaciones:</p>
+                            <div class="code-editor">
+                                <pre><code class="language-bash">python manage.py shell</code></pre>
+                            </div>
+                            
+                            <div class="code-editor">
+                                <pre><code class="language-python"># Importar los modelos
+from blog.models import Categoria, Articulo, Comentario
+from django.contrib.auth.models import User
+
+# Crear categorías
+tecnologia = Categoria.objects.create(nombre="Tecnología", descripcion="Artículos sobre tecnología")
+programacion = Categoria.objects.create(nombre="Programación", descripcion="Tutoriales de programación")
+
+# Crear un usuario (o usar uno existente)
+usuario, created = User.objects.get_or_create(username="admin", email="admin@example.com")
+if created:
+    usuario.set_password("password")
+    usuario.save()
+
+# Crear artículos
+articulo1 = Articulo.objects.create(
+    titulo="Introducción a Django",
+    contenido="Django es un framework web de alto nivel...",
+    autor=usuario,
+    publicado=True
+)
+
+# Agregar categorías al artículo
+articulo1.categorias.add(tecnologia, programacion)
+
+# Crear un comentario
+comentario = Comentario.objects.create(
+    articulo=articulo1,
+    autor=usuario,
+    contenido="¡Gran artículo!",
+    aprobado=True
+)
+
+# Realizar consultas
+print("\nArtículos publicados:")
+for articulo in Articulo.objects.filter(publicado=True):
+    print(f"- {articulo.titulo} por {articulo.autor.username}")
+    print(f"  Categorías: {', '.join([c.nombre for c in articulo.categorias.all()])}")
+    print(f"  Comentarios: {articulo.comentarios.count()}")</code></pre>
+                            </div>
+                            
+                            <div class="alert alert-success mt-4">
+                                <p class="mb-0"><i class="fas fa-check-circle me-2"></i> Has creado un conjunto completo de modelos relacionados para un blog y has realizado operaciones básicas con el ORM de Django. Esto te da una base sólida para trabajar con modelos en tus proyectos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="quiz" class="mb-5 fade-in">
+                    <h2>Quiz: Modelos y Base de Datos</h2>
+                    <p>Comprueba tus conocimientos sobre este módulo respondiendo las siguientes preguntas:</p>
+                    
+                    <div class="quiz-container" data-quiz-id="quiz-modulo-2">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="quiz-question">
+                                    <p><strong>1. ¿Qué clase base deben heredar todos los modelos en Django?</strong></p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1a" value="a">
+                                        <label class="form-check-label" for="q1a">django.db.models.Entity</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1b" value="b">
+                                        <label class="form-check-label" for="q1b">django.models.Base</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1c" value="c" data-correct="true">
+                                        <label class="form-check-label" for="q1c">django.db.models.Model</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1d" value="d">
+                                        <label class="form-check-label" for="q1d">django.db.models.Table</label>
+                                    </div>
+                                    <div class="question-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="quiz-question">
+                                    <p><strong>2. ¿Qué tipo de campo usarías para almacenar una cantidad monetaria con precisión fija?</strong></p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2a" value="a">
+                                        <label class="form-check-label" for="q2a">IntegerField</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2b" value="b">
+                                        <label class="form-check-label" for="q2b">FloatField</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2c" value="c" data-correct="true">
+                                        <label class="form-check-label" for="q2c">DecimalField</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2d" value="d">
+                                        <label class="form-check-label" for="q2d">MoneyField</label>
+                                    </div>
+                                    <div class="question-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="quiz-question">
+                                    <p><strong>3. ¿Qué opción de on_delete impide que se elimine un objeto si existen objetos relacionados?</strong></p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3a" value="a">
+                                        <label class="form-check-label" for="q3a">models.CASCADE</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3b" value="b" data-correct="true">
+                                        <label class="form-check-label" for="q3b">models.PROTECT</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3c" value="c">
+                                        <label class="form-check-label" for="q3c">models.SET_NULL</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3d" value="d">
+                                        <label class="form-check-label" for="q3d">models.DO_NOTHING</label>
+                                    </div>
+                                    <div class="question-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="quiz-question">
+                                    <p><strong>4. ¿Qué comando se utiliza para generar archivos de migración basados en los cambios en los modelos?</strong></p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4a" value="a" data-correct="true">
+                                        <label class="form-check-label" for="q4a">python manage.py makemigrations</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4b" value="b">
+                                        <label class="form-check-label" for="q4b">python manage.py migrate</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4c" value="c">
+                                        <label class="form-check-label" for="q4c">python manage.py createmigrations</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4d" value="d">
+                                        <label class="form-check-label" for="q4d">python manage.py dbmigrate</label>
+                                    </div>
+                                    <div class="question-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="quiz-question">
+                                    <p><strong>5. ¿Qué método se utiliza para obtener un objeto único de la base de datos, generando una excepción si no existe?</strong></p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q5" id="q5a" value="a" data-correct="true">
+                                        <label class="form-check-label" for="q5a">Model.objects.get()</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q5" id="q5b" value="b">
+                                        <label class="form-check-label" for="q5b">Model.objects.filter()</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q5" id="q5c" value="c">
+                                        <label class="form-check-label" for="q5c">Model.objects.find()</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q5" id="q5d" value="d">
+                                        <label class="form-check-label" for="q5d">Model.objects.query()</label>
+                                    </div>
+                                    <div class="question-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary submit-quiz">Comprobar respuestas</button>
+                        <div class="quiz-result mt-3"></div>
+                    </div>
+                </div>
+                
+                <!-- Botones de navegación -->
+                <div class="d-flex justify-content-between mt-5">
+                    <a href="modulo1.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Módulo anterior</a>
+                    <a href="modulo3.html" class="btn btn-primary" id="next-module-btn-bottom">Siguiente módulo<i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container text-center">
+            <p class="mb-0">© 2025 Guía Interactiva Django 5 | Creado con <i class="fas fa-heart text-danger"></i> para los aprendices SENA</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap & Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Prism.js para resaltado de sintaxis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/tutorial/main.js"></script>
+    
+    <script>
+        // Código específico para este módulo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Actualizar progreso mientras se desplaza
+            window.addEventListener('scroll', updateProgress);
+            
+            // Comprobar si se ha completado el quiz previamente
+            checkQuizCompletion();
+        });
+        
+        function updateProgress() {
+            const sections = ['introduccion', 'definicion', 'campos', 'relaciones', 'migraciones', 'orm', 'ejercicio', 'quiz'];
+            let completedSections = 0;
+            
+            sections.forEach(section => {
+                const el = document.getElementById(section);
+                const rect = el.getBoundingClientRect();
+                // Si la sección está visible o ya se ha desplazado más allá
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    completedSections++;
+                }
+            });
+            
+            const progressPercentage = Math.min(Math.round((completedSections / sections.length) * 100), 100);
+            document.querySelector('.module-progress').style.width = `${progressPercentage}%`;
+            
+            // Actualizar el botón de siguiente módulo si se ha visto todo el contenido
+            if (progressPercentage >= 70) {
+                document.querySelectorAll('#next-module-btn, #next-module-btn-bottom').forEach(btn => {
+                    btn.classList.remove('disabled');
+                });
+            }
+        }
+        
+        function checkQuizCompletion() {
+            const progress = JSON.parse(localStorage.getItem('djangoTutorialProgress')) || {};
+            if (progress['2'] && progress['2'].completed) {
+                document.querySelectorAll('#next-module-btn, #next-module-btn-bottom').forEach(btn => {
+                    btn.classList.remove('disabled');
+                });
+                document.querySelector('.module-progress').style.width = '100%';
+            }
+        }
+    </script>
+</body>
+</html>

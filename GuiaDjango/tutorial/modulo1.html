@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 1: Introducción a Django | Guía Interactiva Django 5</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/tutorial/styles.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-okaidia.min.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fab fa-python me-2"></i>Django 5 - Guía Interactiva
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#modulos">Módulos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#recursos">Recursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="theme-toggle" title="Cambiar tema">
+                            <i class="fas fa-moon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido del Módulo -->
+    <div class="container mt-5 pt-5 module-content">
+        <div class="row">
+            <!-- Barra lateral de navegación -->
+            <div class="col-lg-3 mb-4">
+                <div class="sticky-top pt-4">
+                    <div class="list-group mb-4" style="top: 80px; z-index: 1020;">
+                        <a href="#introduccion" class="list-group-item list-group-item-action active">Introducción a
+                            Django</a>
+                        <a href="#instalacion" class="list-group-item list-group-item-action">Instalación y
+                            configuración</a>
+                        <a href="#estructura" class="list-group-item list-group-item-action">Estructura de un proyecto</a>
+                        <a href="#mvc-mvt" class="list-group-item list-group-item-action">Patrón MVC vs MVT</a>
+                        <a href="#ejercicio" class="list-group-item list-group-item-action">Ejercicio práctico</a>
+                        <a href="#quiz" class="list-group-item list-group-item-action">Quiz</a>
+                    </div>
+                    <div class="progress-section">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-map-signs me-2 text-primary"></i>Progreso del Módulo
+                                </h5>
+                                <div class="progress mb-3">
+                                    <div class="progress-bar module-progress" role="progressbar" style="width: 0%"></div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="../index.html" class="btn btn-outline-secondary"><i
+                                            class="fas fa-arrow-left me-2"></i>Volver al inicio</a>
+                                    <a href="modulo2.html" class="btn btn-primary">Siguiente módulo<i
+                                            class="fas fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido principal -->
+            <div class="col-lg-9">
+                <div id="introduccion" class="mb-5 fade-in">
+                    <h2>Introducción a Django</h2>
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-graduation-cap me-2"></i> <strong>Objetivo de aprendizaje:</strong> Al
+                        finalizar este módulo, entenderás qué es Django, sus características principales y por qué es
+                        tan popular en el desarrollo web.
+                    </div>
+
+                    <p class="lead">Django es un framework web de alto nivel que fomenta el desarrollo rápido y limpio,
+                        con un diseño pragmático. Desarrollado por programadores experimentados, Django se encarga de
+                        gran parte de las complicaciones del desarrollo web, para que puedas enfocarte en escribir tu
+                        aplicación sin necesidad de reinventar la rueda.</p>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-bolt text-warning me-2"></i>Características
+                                        principales</h5>
+                                    <ul class="ps-3">
+                                        <li>Rapidez: Django fue diseñado para ayudar a los desarrolladores a llevar
+                                            aplicaciones de la idea a la finalización lo más rápido posible.</li>
+                                        <li>Seguridad: Django ayuda a los desarrolladores a evitar errores comunes de
+                                            seguridad.</li>
+                                        <li>Escalabilidad: Django puede manejar sitios con alto tráfico.</li>
+                                        <li>Versatilidad: Compañías, organizaciones y gobiernos han usado Django para
+                                            construir todo tipo de aplicaciones.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-history text-primary me-2"></i>Historia de
+                                        Django</h5>
+                                    <p>Django fue creado entre 2003 y 2005 por la web team del periódico Lawrence
+                                        Journal-World en Kansas, USA. Inicialmente, el framework se llamó "Django" en
+                                        honor al guitarrista de jazz Django Reinhardt.</p>
+                                    <p>En 2005 fue liberado bajo licencia BSD, y para 2008 se formó la Django Software
+                                        Foundation para mantener el proyecto.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-question-circle text-success me-2"></i>¿Por qué
+                                elegir Django?</h5>
+                            <p>Django ofrece ventajas significativas cuando necesitas:</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li>Desarrollar aplicaciones web rápidamente</li>
+                                        <li>Trabajar con bases de datos relacionales</li>
+                                        <li>Manejar autenticación y autorización</li>
+                                        <li>Implementar un panel de administración</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li>Implementar formularios y validación</li>
+                                        <li>Manejar archivos estáticos (CSS, JS, imágenes)</li>
+                                        <li>Integrar sistemas de caché</li>
+                                        <li>Construir APIs RESTful</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-lightbulb me-2"></i> <strong>Dato interesante:</strong> Instagram, Pinterest,
+                        Dropbox, NASA, Mozilla, y The Washington Post son algunos proyectos que utilizan Django como
+                        parte de su infraestructura.
+                    </div>
+                </div>
+
+                <div id="instalacion" class="mb-5 fade-in">
+                    <h2>Instalación y configuración</h2>
+                    <p>Antes de instalar Django 5, es importante contar con los requisitos previos:</p>
+
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i> <strong>Requisitos previos:</strong>
+                        <ul class="mb-0">
+                            <li>Python 3.10 o superior</li>
+                            <li>pip (gestor de paquetes de Python)</li>
+                            <li>Entorno virtual (recomendado)</li>
+                        </ul>
+                    </div>
+
+                    <h4 class="mt-4">Paso 1: Verificar Python</h4>
+                    <p>Primero, asegúrate de tener instalada la versión correcta de Python:</p>
+
+                    <div class="code-editor">
+                        <pre><code class="language-bash">python --version
+# o en algunos sistemas:
+python3 --version</code></pre>
+                    </div>
+
+                    <h4 class="mt-4">Paso 2: Crear un entorno virtual</h4>
+                    <p>Es recomendable aislar tus proyectos en entornos virtuales:</p>
+
+                    <div class="code-editor">
+                        <pre><code class="language-bash"># En Windows
+python -m venv myenv
+
+# En macOS/Linux
+python3 -m venv myenv</code></pre>
+                    </div>
+
+                    <h4 class="mt-4">Paso 3: Activar el entorno virtual</h4>
+
+                    <div class="code-editor">
+                        <pre><code class="language-bash"># En Windows
+myenv\Scripts\activate
+
+# En macOS/Linux
+source myenv/bin/activate</code></pre>
+                    </div>
+
+                    <h4 class="mt-4">Paso 4: Instalar Django 5</h4>
+                    <p>Con el entorno virtual activo, instala Django 5:</p>
+
+                    <div class="code-editor">
+                        <pre><code class="language-bash">pip install django</code></pre>
+                    </div>
+
+                    <h4 class="mt-4">Paso 5: Verificar la instalación</h4>
+                    <p>Confirma que Django se ha instalado correctamente:</p>
+
+                    <div class="code-editor">
+                        <pre><code class="language-bash">python -c "import django; print(django.get_version())"</code></pre>
+                    </div>
+
+                    <div class="alert alert-success mt-4">
+                        <p class="mb-0"><i class="fas fa-check-circle me-2"></i> Si aparece la versión 5.x.x,
+                            ¡felicidades! Has instalado Django 5 correctamente.</p>
+                    </div>
+
+                    <div class="interactive-exercise mt-4">
+                        <h5><i class="fas fa-laptop-code me-2"></i>Ejercicio Interactivo: Configura tu entorno Django
+                        </h5>
+                        <p>Intenta completar estos comandos para configurar tu entorno de desarrollo Django:</p>
+
+                        <div class="interactive-code-editor">
+                            <p>Crea un entorno virtual llamado "django_env":</p>
+                            <textarea class="form-control mb-2" rows="1" placeholder="python -m venv ..."></textarea>
+
+                            <p>Activa el entorno virtual (en Windows):</p>
+                            <textarea class="form-control mb-2" rows="1" placeholder="... \Scripts\activate"></textarea>
+
+                            <p>Instala Django:</p>
+                            <textarea class="form-control mb-2" rows="1" placeholder="pip install ..."></textarea>
+
+                            <div class="btn-group">
+                                <button class="btn btn-primary run-code-btn">Verificar</button>
+                                <button class="btn btn-secondary reset-code-btn">Reiniciar</button>
+                            </div>
+
+                            <div class="output-area mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="estructura" class="mb-5 fade-in">
+                    <h2>Estructura de un proyecto Django</h2>
+                    <p>Cuando creas un proyecto Django, se genera una estructura de archivos específica. Vamos a ver
+                        cómo se crea un proyecto y qué significa cada parte.</p>
+
+                    <h4 class="mt-4">Crear un nuevo proyecto</h4>
+                    <p>Para crear un nuevo proyecto Django, usa el siguiente comando:</p>
+
+                    <div class="code-editor">
+                        <pre><code class="language-bash">django-admin startproject mi_proyecto</code></pre>
+                    </div>
+
+                    <p>Esto generará la siguiente estructura de archivos:</p>
+
+                    <div class="code-editor">
+                        <pre><code class="language-bash">mi_proyecto/
+    manage.py
+    mi_proyecto/
+        __init__.py
+        settings.py
+        urls.py
+        asgi.py
+        wsgi.py</code></pre>
+                    </div>
+
+                    <h4 class="mt-4">Descripción de los archivos</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Archivo</th>
+                                    <th>Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>manage.py</code></td>
+                                    <td>Una utilidad de línea de comandos que te permite interactuar con tu proyecto
+                                        Django de varias formas.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>__init__.py</code></td>
+                                    <td>Un archivo vacío que le dice a Python que este directorio debe ser considerado
+                                        un paquete.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>settings.py</code></td>
+                                    <td>Configuraciones para el proyecto Django. Aquí es donde registras las
+                                        aplicaciones, configuras la base de datos, etc.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>urls.py</code></td>
+                                    <td>Las declaraciones de URLs para el proyecto; una "tabla de contenidos" de tu
+                                        sitio Django.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>asgi.py</code></td>
+                                    <td>Un punto de entrada para servidores web compatibles con ASGI para servir tu
+                                        proyecto.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>wsgi.py</code></td>
+                                    <td>Un punto de entrada para servidores web compatibles con WSGI para servir tu
+                                        proyecto.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="mt-4">Crear una aplicación</h4>
+                    <p>En Django, un proyecto puede contener múltiples aplicaciones. Cada aplicación es un módulo de
+                        Python que sigue una convención y proporciona un conjunto específico de características.</p>
+
+                    <div class="code-editor">
+                        <pre><code class="language-bash">python manage.py startapp mi_aplicacion</code></pre>
+                    </div>
+
+                    <p>Esto generará la siguiente estructura:</p>
+
+                    <div class="code-editor">
+                        <pre><code class="language-bash">mi_aplicacion/
+    __init__.py
+    admin.py
+    apps.py
+    migrations/
+        __init__.py
+    models.py
+    tests.py
+    views.py</code></pre>
+                    </div>
+
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-info-circle me-2"></i> <strong>Buena práctica:</strong> Es recomendable dividir
+                        tu proyecto en aplicaciones según la funcionalidad. Por ejemplo, en un blog podrías tener
+                        aplicaciones separadas para posts, comentarios, usuarios, etc.
+                    </div>
+                </div>
+
+                <div id="mvc-mvt" class="mb-5 fade-in">
+                    <h2>Patrón MVC vs MVT</h2>
+                    <p>Django sigue un patrón arquitectónico similar al MVC (Modelo-Vista-Controlador), pero con una
+                        terminología ligeramente diferente, conocida como MVT (Modelo-Vista-Template).</p>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">Patrón MVC</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <strong>Modelo:</strong> Gestiona los datos y la lógica de negocio
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Vista:</strong> Renderiza la interfaz de usuario
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Controlador:</strong> Maneja las solicitudes del usuario y orquesta
+                                            la interacción entre el modelo y la vista
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0">Patrón MVT en Django</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <strong>Modelo:</strong> Similar al modelo en MVC, define la estructura de
+                                            datos
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Vista:</strong> Similar al controlador en MVC, procesa las
+                                            solicitudes y devuelve respuestas
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Template:</strong> Similar a la vista en MVC, define cómo se
+                                            muestran los datos al usuario
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <h4>Flujo de una solicitud en Django</h4>
+                        <p>Cuando un usuario hace una solicitud a una aplicación Django, ocurre el siguiente proceso:
+                        </p>
+
+                        <ol>
+                            <li><strong>URLs (urls.py):</strong> Django determina qué vista debe procesar la solicitud
+                                basándose en la URL.</li>
+                            <li><strong>Vista (views.py):</strong> La vista procesa la solicitud, interactúa con el
+                                modelo si es necesario, y prepara los datos para la template.</li>
+                            <li><strong>Modelo (models.py):</strong> Define la estructura de los datos y proporciona
+                                métodos para acceder y manipular esos datos.</li>
+                            <li><strong>Template (archivos .html):</strong> Recibe los datos de la vista y los presenta
+                                de forma visualmente agradable para el usuario.</li>
+                        </ol>
+
+                        <div class="text-center mt-4">
+                            <img src="https://static.djangoproject.com/img/explanation/django-mvt.png"
+                                alt="Flujo MVT en Django" class="img-fluid border rounded">
+                            <p class="text-muted mt-2 small">Imagen: Flujo del patrón MVT en Django</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ejercicio" class="mb-5 fade-in">
+                    <h2>Ejercicio práctico</h2>
+                    <div class="alert alert-primary">
+                        <i class="fas fa-tasks me-2"></i> <strong>Tarea:</strong> Crear tu primer proyecto Django y
+                        ejecutar el servidor de desarrollo.
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Paso 1: Crear un entorno virtual</h5>
+                            <div class="code-editor">
+                                <pre><code class="language-bash"># Crear un entorno virtual
+python -m venv django_tutorial
+
+# Activar el entorno virtual
+# En Windows:
+django_tutorial\Scripts\activate
+# En macOS/Linux:
+source django_tutorial/bin/activate</code></pre>
+                            </div>
+
+                            <h5 class="card-title mt-4">Paso 2: Instalar Django</h5>
+                            <div class="code-editor">
+                                <pre><code class="language-bash">pip install django</code></pre>
+                            </div>
+
+                            <h5 class="card-title mt-4">Paso 3: Crear un proyecto</h5>
+                            <div class="code-editor">
+                                <pre><code class="language-bash">django-admin startproject mi_primer_proyecto</code></pre>
+                            </div>
+
+                            <h5 class="card-title mt-4">Paso 4: Navegar al directorio del proyecto</h5>
+                            <div class="code-editor">
+                                <pre><code class="language-bash">cd mi_primer_proyecto</code></pre>
+                            </div>
+
+                            <h5 class="card-title mt-4">Paso 5: Ejecutar el servidor de desarrollo</h5>
+                            <div class="code-editor">
+                                <pre><code class="language-bash">python manage.py runserver</code></pre>
+                            </div>
+
+                            <div class="alert alert-success mt-4">
+                                <p class="mb-0"><i class="fas fa-check-circle me-2"></i> Si todo ha ido bien, podrás
+                                    acceder a tu proyecto Django en <a href="http://127.0.0.1:8000/" target="_blank"
+                                        class="alert-link">http://127.0.0.1:8000/</a> y ver la página de bienvenida de
+                                    Django.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <h5>¿Qué estamos viendo?</h5>
+                        <p>La página de bienvenida confirma que tu instalación de Django funciona correctamente. Es una
+                            página que Django muestra automáticamente cuando no has definido ninguna vista para la URL
+                            raíz de tu proyecto.</p>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-lightbulb me-2"></i> <strong>Consejo:</strong> No detengas el servidor con
+                            Ctrl+C todavía. Django tiene recarga automática, lo que significa que mientras el servidor
+                            está en ejecución, cualquier cambio que hagas en el código se reflejará automáticamente sin
+                            tener que reiniciar el servidor.
+                        </div>
+                    </div>
+                </div>
+
+                <div id="quiz" class="mb-5 fade-in">
+                    <h2>Quiz: Introducción a Django</h2>
+                    <p>Comprueba tus conocimientos sobre este módulo respondiendo las siguientes preguntas:</p>
+
+                    <div class="quiz-container" data-quiz-id="quiz-modulo-1">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="quiz-question">
+                                    <p><strong>1. ¿En qué lenguaje de programación está escrito Django?</strong></p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1a" value="a">
+                                        <label class="form-check-label" for="q1a">JavaScript</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1b" value="b">
+                                        <label class="form-check-label" for="q1b">PHP</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1c" value="c"
+                                            data-correct="true">
+                                        <label class="form-check-label" for="q1c">Python</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1d" value="d">
+                                        <label class="form-check-label" for="q1d">Java</label>
+                                    </div>
+                                    <div class="question-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="quiz-question">
+                                    <p><strong>2. ¿Qué comando se utiliza para crear un nuevo proyecto Django?</strong>
+                                    </p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2a" value="a">
+                                        <label class="form-check-label" for="q2a">python create-project</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2b" value="b"
+                                            data-correct="true">
+                                        <label class="form-check-label" for="q2b">django-admin startproject</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2c" value="c">
+                                        <label class="form-check-label" for="q2c">python manage.py createproject</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2d" value="d">
+                                        <label class="form-check-label" for="q2d">django new-project</label>
+                                    </div>
+                                    <div class="question-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="quiz-question">
+                                    <p><strong>3. ¿Qué patrón arquitectónico utiliza Django?</strong></p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3a" value="a">
+                                        <label class="form-check-label" for="q3a">MVC (Modelo-Vista-Controlador)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3b" value="b"
+                                            data-correct="true">
+                                        <label class="form-check-label" for="q3b">MVT (Modelo-Vista-Template)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3c" value="c">
+                                        <label class="form-check-label" for="q3c">MVVM
+                                            (Modelo-Vista-VistaModelo)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3d" value="d">
+                                        <label class="form-check-label" for="q3d">MVP (Modelo-Vista-Presentador)</label>
+                                    </div>
+                                    <div class="question-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="quiz-question">
+                                    <p><strong>4. ¿Cuál es la versión mínima de Python requerida para Django 5?</strong>
+                                    </p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4a" value="a">
+                                        <label class="form-check-label" for="q4a">Python 3.6</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4b" value="b">
+                                        <label class="form-check-label" for="q4b">Python 3.8</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4c" value="c"
+                                            data-correct="true">
+                                        <label class="form-check-label" for="q4c">Python 3.10</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4d" value="d">
+                                        <label class="form-check-label" for="q4d">Python 2.7</label>
+                                    </div>
+                                    <div class="question-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="quiz-question">
+                                    <p><strong>5. ¿Qué archivo se utiliza para definir la configuración de un proyecto
+                                            Django?</strong></p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q5" id="q5a" value="a"
+                                            data-correct="true">
+                                        <label class="form-check-label" for="q5a">settings.py</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q5" id="q5b" value="b">
+                                        <label class="form-check-label" for="q5b">config.py</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q5" id="q5c" value="c">
+                                        <label class="form-check-label" for="q5c">main.py</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q5" id="q5d" value="d">
+                                        <label class="form-check-label" for="q5d">django.ini</label>
+                                    </div>
+                                    <div class="question-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary submit-quiz">Comprobar respuestas</button>
+                        <div class="quiz-result mt-3"></div>
+                    </div>
+                </div>
+
+                <!-- Botones de navegación -->
+                <div class="d-flex justify-content-between mt-5">
+                    <a href="../index.html" class="btn btn-outline-secondary"><i
+                            class="fas fa-arrow-left me-2"></i>Volver al inicio</a>
+                    <a href="modulo2.html" class="btn btn-primary" id="next-module-btn-bottom">Siguiente
+                        módulo<i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container text-center">
+            <p class="mb-0">© 2025 Guía Interactiva Django 5 | Creado con <i class="fas fa-heart text-danger"></i> para los aprendices SENA</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap & Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Prism.js para resaltado de sintaxis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/tutorial/main.js"></script>
+
+    <script>
+        // Código específico para este módulo
+        document.addEventListener('DOMContentLoaded', function () {
+            // Actualizar progreso mientras se desplaza
+            window.addEventListener('scroll', updateProgress);
+
+            // Comprobar si se ha completado el quiz previamente
+            checkQuizCompletion();
+
+            // Inicializar editores de código interactivos específicos de este módulo
+            initModuleCodeEditors();
+        });
+
+        function updateProgress() {
+            const sections = ['introduccion', 'instalacion', 'estructura', 'mvc-mvt', 'ejercicio', 'quiz'];
+            let completedSections = 0;
+
+            sections.forEach(section => {
+                const el = document.getElementById(section);
+                const rect = el.getBoundingClientRect();
+                // Si la sección está visible o ya se ha desplazado más allá
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    completedSections++;
+                }
+            });
+
+            const progressPercentage = Math.min(Math.round((completedSections / sections.length) * 100), 100);
+            document.querySelector('.module-progress').style.width = `${progressPercentage}%`;
+
+            // Actualizar el botón de siguiente módulo si se ha visto todo el contenido
+            if (progressPercentage >= 70) {
+                document.querySelectorAll('#next-module-btn, #next-module-btn-bottom').forEach(btn => {
+                    btn.classList.remove('disabled');
+                });
+            }
+        }
+
+        function checkQuizCompletion() {
+            const progress = JSON.parse(localStorage.getItem('djangoTutorialProgress')) || {};
+            if (progress['1'] && progress['1'].completed) {
+                document.querySelectorAll('#next-module-btn, #next-module-btn-bottom').forEach(btn => {
+                    btn.classList.remove('disabled');
+                });
+                document.querySelector('.module-progress').style.width = '100%';
+            }
+        }
+
+        function initModuleCodeEditors() {
+            const interactiveExercise = document.querySelector('.interactive-exercise');
+            if (interactiveExercise) {
+                const textareas = interactiveExercise.querySelectorAll('textarea');
+                const verifyBtn = interactiveExercise.querySelector('.run-code-btn');
+                const resetBtn = interactiveExercise.querySelector('.reset-code-btn');
+                const outputArea = interactiveExercise.querySelector('.output-area');
+
+                const correctAnswers = [
+                    'python -m venv django_env',
+                    'django_env\\Scripts\\activate',
+                    'pip install django'
+                ];
+
+                if (verifyBtn) {
+                    verifyBtn.addEventListener('click', function () {
+                        let correctCount = 0;
+
+                        textareas.forEach((textarea, index) => {
+                            if (textarea.value.trim() === correctAnswers[index]) {
+                                correctCount++;
+                                textarea.classList.add('is-valid');
+                                textarea.classList.remove('is-invalid');
+                            } else {
+                                textarea.classList.add('is-invalid');
+                                textarea.classList.remove('is-valid');
+                            }
+                        });
+
+                        if (correctCount === correctAnswers.length) {
+                            outputArea.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle me-2"></i>¡Correcto! Has configurado correctamente el entorno Django.</div>';
+                        } else {
+                            outputArea.innerHTML = '<div class="alert alert-danger"><i class="fas fa-times-circle me-2"></i>Hay algunos errores. Revisa tus respuestas e intenta de nuevo.</div>';
+                        }
+                    });
+                }
+
+                if (resetBtn) {
+                    resetBtn.addEventListener('click', function () {
+                        textareas.forEach(textarea => {
+                            textarea.value = '';
+                            textarea.classList.remove('is-valid', 'is-invalid');
+                        });
+                        outputArea.innerHTML = '';
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

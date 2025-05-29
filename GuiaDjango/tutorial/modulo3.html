@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 3: Vistas y Plantillas | Guía Interactiva Django 5</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/tutorial/styles.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-okaidia.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fab fa-python me-2"></i>Django 5 - Guía Interactiva
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#modulos">Módulos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#recursos">Recursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="theme-toggle" title="Cambiar tema">
+                            <i class="fas fa-moon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido del Módulo -->
+    <div class="container mt-5 pt-5 module-content">
+        <div class="row">
+            <!-- Barra lateral de navegación -->
+            <div class="col-lg-3 mb-4">
+                <div class="sticky-top pt-4">
+                    <div class="list-group mb-4">
+                        <a href="#introduccion" class="list-group-item list-group-item-action active">Introducción a Vistas</a>
+                        <a href="#vistas-funcion" class="list-group-item list-group-item-action">Vistas basadas en Función</a>
+                        <a href="#vistas-clase" class="list-group-item list-group-item-action">Vistas basadas en Clase</a>
+                        <a href="#plantillas" class="list-group-item list-group-item-action">Sistema de Plantillas</a>
+                        <a href="#contexto" class="list-group-item list-group-item-action">Contexto y Variables</a>
+                        <a href="#herencia" class="list-group-item list-group-item-action">Herencia de Plantillas</a>
+                        <a href="#url-patterns" class="list-group-item list-group-item-action">Patrones de URL</a>
+                        <a href="#ejercicio" class="list-group-item list-group-item-action">Ejercicio práctico</a>
+                        <a href="#quiz" class="list-group-item list-group-item-action">Quiz</a>                
+                    </div>
+                    <div class="progress-section">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-map-signs me-2 text-primary"></i>Progreso del Módulo</h5>
+                                <div class="progress mb-3">
+                                    <div class="progress-bar module-progress" role="progressbar" style="width: 0%"></div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="modulo2.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Módulo anterior</a>
+                                    <a href="modulo4.html" class="btn btn-primary">Siguiente módulo<i class="fas fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contenido principal -->
+            <div class="col-lg-9">
+                <div id="introduccion" class="mb-5 fade-in">
+                    <h2>Vistas y Plantillas en Django</h2>
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-graduation-cap me-2"></i> <strong>Objetivo de aprendizaje:</strong> Al finalizar este módulo, sabrás crear vistas que manejen la lógica de negocio y plantillas que presenten la información al usuario de manera atractiva y funcional.
+                    </div>
+                    
+                    <p class="lead">Las vistas son funciones o clases que procesan las peticiones HTTP y devuelven respuestas. Las plantillas son archivos HTML que definen cómo se presenta la información al usuario.</p>
+                    
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-eye text-info me-2"></i>¿Qué son las Vistas?</h5>
+                            <p>Una vista en Django es una función de Python que toma una petición web y devuelve una respuesta web. Esta respuesta puede ser el contenido HTML de una página web, una redirección, un error 404, un documento XML, una imagen, o cualquier otra cosa.</p>
+                            <p>Las vistas contienen la lógica necesaria para procesar una petición y devolver una respuesta.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h4>Flujo de Petición-Respuesta</h4>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3 text-center">
+                                        <i class="fas fa-globe fa-3x text-primary mb-2"></i>
+                                        <h6>1. Petición</h6>
+                                        <small>Usuario hace petición</small>
+                                    </div>
+                                    <div class="col-md-3 text-center">
+                                        <i class="fas fa-route fa-3x text-success mb-2"></i>
+                                        <h6>2. URL</h6>
+                                        <small>URLconf determina vista</small>
+                                    </div>
+                                    <div class="col-md-3 text-center">
+                                        <i class="fas fa-cogs fa-3x text-warning mb-2"></i>
+                                        <h6>3. Vista</h6>
+                                        <small>Procesa lógica de negocio</small>
+                                    </div>
+                                    <div class="col-md-3 text-center">
+                                        <i class="fas fa-file-code fa-3x text-info mb-2"></i>
+                                        <h6>4. Plantilla</h6>
+                                        <small>Renderiza respuesta</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="vistas-funcion" class="mb-5 fade-in">
+                    <h3>Vistas basadas en Función</h3>
+                    <p>Las vistas basadas en función son la forma más simple y directa de crear vistas en Django.</p>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-code me-2"></i>Estructura básica de una vista</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># views.py
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def mi_vista(request):
+    """
+    Vista básica que devuelve una respuesta simple
+    """
+    return HttpResponse("¡Hola, mundo!")
+
+def vista_con_plantilla(request):
+    """
+    Vista que renderiza una plantilla
+    """
+    contexto = {
+        'titulo': 'Mi Página',
+        'mensaje': 'Bienvenido a Django'
+    }
+    return render(request, 'mi_plantilla.html', contexto)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Parámetro request:</strong> Todas las vistas deben recibir el objeto <code>request</code> como primer parámetro. Este objeto contiene información sobre la petición HTTP.
+                    </div>
+
+                    <h4>Ejemplo práctico: Vista de lista de productos</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <pre><code class="language-python"># views.py
+from django.shortcuts import render
+from .models import Producto
+
+def lista_productos(request):
+    """
+    Vista que muestra todos los productos
+    """
+    productos = Producto.objects.all()
+    contexto = {
+        'productos': productos,
+        'titulo': 'Lista de Productos'
+    }
+    return render(request, 'productos/lista.html', contexto)
+
+def detalle_producto(request, producto_id):
+    """
+    Vista que muestra el detalle de un producto específico
+    """
+    try:
+        producto = Producto.objects.get(id=producto_id)
+    except Producto.DoesNotExist:
+        return HttpResponse("Producto no encontrado", status=404)
+    
+    contexto = {
+        'producto': producto
+    }
+    return render(request, 'productos/detalle.html', contexto)</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="vistas-clase" class="mb-5 fade-in">
+                    <h3>Vistas basadas en Clase</h3>
+                    <p>Las vistas basadas en clase (CBV) proporcionan una forma más reutilizable y organizada de crear vistas complejas.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-plus-circle text-success me-2"></i>Ventajas</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li>Reutilización de código</li>
+                                        <li>Herencia y mixins</li>
+                                        <li>Separación clara de métodos HTTP</li>
+                                        <li>Menos código repetitivo</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-minus-circle text-warning me-2"></i>Consideraciones</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li>Curva de aprendizaje mayor</li>
+                                        <li>Menos explícitas</li>
+                                        <li>Debugging más complejo</li>
+                                        <li>Overhead de herencia</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="mt-4">Vistas genéricas más comunes</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <pre><code class="language-python"># views.py
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .models import Producto
+
+class ProductoListView(ListView):
+    """
+    Vista de lista usando CBV
+    """
+    model = Producto
+    template_name = 'productos/lista.html'
+    context_object_name = 'productos'
+    paginate_by = 10
+
+class ProductoDetailView(DetailView):
+    """
+    Vista de detalle usando CBV
+    """
+    model = Producto
+    template_name = 'productos/detalle.html'
+    context_object_name = 'producto'
+
+class ProductoCreateView(CreateView):
+    """
+    Vista para crear productos
+    """
+    model = Producto
+    template_name = 'productos/crear.html'
+    fields = ['nombre', 'descripcion', 'precio']
+    success_url = reverse_lazy('productos:lista')
+
+class ProductoUpdateView(UpdateView):
+    """
+    Vista para actualizar productos
+    """
+    model = Producto
+    template_name = 'productos/editar.html'
+    fields = ['nombre', 'descripcion', 'precio']
+    success_url = reverse_lazy('productos:lista')</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-tip mt-3">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Tip:</strong> Usa vistas basadas en función para lógica simple y vistas basadas en clase para operaciones CRUD complejas.
+                    </div>
+                </div>
+
+                <div id="plantillas" class="mb-5 fade-in">
+                    <h3>Sistema de Plantillas de Django</h3>
+                    <p>Las plantillas son archivos que definen la estructura y el diseño de tus páginas web. Django tiene su propio sistema de plantillas potente y flexible.</p>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-file-code me-2"></i>Sintaxis básica de plantillas</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-html">&lt;!-- templates/productos/lista.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;{{ titulo }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;{{ titulo }}&lt;/h1&gt;
+    
+    {% if productos %}
+        &lt;div class="productos-grid"&gt;
+            {% for producto in productos %}
+                &lt;div class="producto-card"&gt;
+                    &lt;h3&gt;{{ producto.nombre }}&lt;/h3&gt;
+                    &lt;p&gt;{{ producto.descripcion|truncatewords:20 }}&lt;/p&gt;
+                    &lt;p class="precio"&gt;${{ producto.precio }}&lt;/p&gt;
+                    &lt;a href="{% url 'productos:detalle' producto.id %}"&gt;Ver detalle&lt;/a&gt;
+                &lt;/div&gt;
+            {% endfor %}
+        &lt;/div&gt;
+    {% else %}
+        &lt;p&gt;No hay productos disponibles.&lt;/p&gt;
+    {% endif %}
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <h4>Elementos principales del sistema de plantillas</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <h6><i class="fas fa-brackets-curly me-2"></i>Variables</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p><code>{{ variable }}</code></p>
+                                    <p>Muestran el valor de una variable del contexto.</p>
+                                    <small class="text-muted">Ejemplo: <code>{{ usuario.nombre }}</code></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-header bg-success text-white">
+                                    <h6><i class="fas fa-code-branch me-2"></i>Tags</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p><code>{% tag %}</code></p>
+                                    <p>Proporcionan lógica en las plantillas.</p>
+                                    <small class="text-muted">Ejemplo: <code>{% if %}, {% for %}, {% url %}</code></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-header bg-warning text-white">
+                                    <h6><i class="fas fa-filter me-2"></i>Filtros</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p><code>{{ variable|filtro }}</code></p>
+                                    <p>Modifican el valor de las variables.</p>
+                                    <small class="text-muted">Ejemplo: <code>{{ fecha|date:"d/m/Y" }}</code></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="contexto" class="mb-5 fade-in">
+                    <h3>Contexto y Variables</h3>
+                    <p>El contexto es un diccionario que contiene los datos que se pasan desde la vista a la plantilla.</p>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-exchange-alt me-2"></i>Pasando datos a plantillas</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Vista (views.py)</h6>
+                                    <pre><code class="language-python">def mi_vista(request):
+    contexto = {
+        'titulo': 'Mi Página',
+        'usuario': request.user,
+        'productos': Producto.objects.all(),
+        'fecha_actual': timezone.now(),
+        'configuracion': {
+            'mostrar_precios': True,
+            'moneda': 'EUR'
+        }
+    }
+    return render(request, 'mi_plantilla.html', contexto)</code></pre>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Plantilla (mi_plantilla.html)</h6>
+                                    <pre><code class="language-html">&lt;h1&gt;{{ titulo }}&lt;/h1&gt;
+&lt;p&gt;Bienvenido, {{ usuario.first_name }}&lt;/p&gt;
+&lt;p&gt;Fecha: {{ fecha_actual|date:"d/m/Y" }}&lt;/p&gt;
+
+{% if configuracion.mostrar_precios %}
+    {% for producto in productos %}
+        &lt;div&gt;
+            &lt;h3&gt;{{ producto.nombre }}&lt;/h3&gt;
+            &lt;p&gt;{{ producto.precio }} {{ configuracion.moneda }}&lt;/p&gt;
+        &lt;/div&gt;
+    {% endfor %}
+{% endif %}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Filtros útiles</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Filtro</th>
+                                    <th>Descripción</th>
+                                    <th>Ejemplo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>date</code></td>
+                                    <td>Formatea fechas</td>
+                                    <td><code>{{ fecha|date:"d/m/Y" }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>truncatewords</code></td>
+                                    <td>Trunca texto por palabras</td>
+                                    <td><code>{{ texto|truncatewords:10 }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>length</code></td>
+                                    <td>Longitud de cadena o lista</td>
+                                    <td><code>{{ lista|length }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>default</code></td>
+                                    <td>Valor por defecto</td>
+                                    <td><code>{{ valor|default:"Sin valor" }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>safe</code></td>
+                                    <td>Marca HTML como seguro</td>
+                                    <td><code>{{ html_content|safe }}</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="herencia" class="mb-5 fade-in">
+                    <h3>Herencia de Plantillas</h3>
+                    <p>La herencia de plantillas permite crear una plantilla base y extenderla en otras plantillas, evitando la duplicación de código.</p>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-sitemap me-2"></i>Plantilla base</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-html">&lt;!-- templates/base.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;{% block title %}Mi Sitio Web{% endblock %}&lt;/title&gt;
+    &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+    {% block extra_css %}{% endblock %}
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class="navbar navbar-expand-lg navbar-dark bg-primary"&gt;
+        &lt;div class="container"&gt;
+            &lt;a class="navbar-brand" href="/"&gt;Mi Sitio&lt;/a&gt;
+            &lt;div class="navbar-nav"&gt;
+                &lt;a class="nav-link" href="{% url 'productos:lista' %}"&gt;Productos&lt;/a&gt;
+                &lt;a class="nav-link" href="{% url 'contacto' %}"&gt;Contacto&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+
+    &lt;main class="container mt-4"&gt;
+        {% block content %}
+        &lt;!-- Contenido específico de cada página --&gt;
+        {% endblock %}
+    &lt;/main&gt;
+
+    &lt;footer class="bg-dark text-white text-center py-3 mt-5"&gt;
+        &lt;p&gt;&copy; 2024 Mi Sitio Web. Todos los derechos reservados.&lt;/p&gt;
+    &lt;/footer&gt;
+
+    &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
+    {% block extra_js %}{% endblock %}
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-puzzle-piece me-2"></i>Plantilla que extiende</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-html">&lt;!-- templates/productos/lista.html --&gt;
+{% extends 'base.html' %}
+
+{% block title %}Lista de Productos - {{ block.super }}{% endblock %}
+
+{% block extra_css %}
+&lt;style&gt;
+    .producto-card {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 0.5rem;
+    }
+&lt;/style&gt;
+{% endblock %}
+
+{% block content %}
+&lt;h1&gt;{{ titulo }}&lt;/h1&gt;
+
+{% if productos %}
+    &lt;div class="row"&gt;
+        {% for producto in productos %}
+            &lt;div class="col-md-4 mb-3"&gt;
+                &lt;div class="producto-card"&gt;
+                    &lt;h5&gt;{{ producto.nombre }}&lt;/h5&gt;
+                    &lt;p&gt;{{ producto.descripcion|truncatewords:15 }}&lt;/p&gt;
+                    &lt;p class="text-success fw-bold"&gt;${{ producto.precio }}&lt;/p&gt;
+                    &lt;a href="{% url 'productos:detalle' producto.id %}" class="btn btn-primary"&gt;Ver detalle&lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        {% endfor %}
+    &lt;/div&gt;
+{% else %}
+    &lt;div class="alert alert-info"&gt;
+        &lt;p&gt;No hay productos disponibles en este momento.&lt;/p&gt;
+    &lt;/div&gt;
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+&lt;script&gt;
+    // JavaScript específico para la lista de productos
+    console.log('Lista de productos cargada');
+&lt;/script&gt;
+{% endblock %}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>{{ block.super }}:</strong> Incluye el contenido del bloque padre antes del contenido actual.
+                    </div>
+                </div>
+
+                <div id="url-patterns" class="mb-5 fade-in">
+                    <h3>Patrones de URL</h3>
+                    <p>Los patrones de URL conectan las URLs con las vistas correspondientes.</p>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-route me-2"></i>Configuración de URLs</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>URLs principales (myproject/urls.py)</h6>
+                                    <pre><code class="language-python">from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('productos.urls')),
+    path('productos/', include('productos.urls')),
+]</code></pre>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>URLs de la app (productos/urls.py)</h6>
+                                    <pre><code class="language-python">from django.urls import path
+from . import views
+
+app_name = 'productos'
+
+urlpatterns = [
+    path('', views.lista_productos, name='lista'),
+    path('&lt;int:producto_id&gt;/', views.detalle_producto, name='detalle'),
+    path('crear/', views.ProductoCreateView.as_view(), name='crear'),
+    path('&lt;int:pk&gt;/editar/', views.ProductoUpdateView.as_view(), name='editar'),
+    path('&lt;int:pk&gt;/eliminar/', views.ProductoDeleteView.as_view(), name='eliminar'),
+]</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Parámetros en URLs</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Patrón</th>
+                                    <th>Descripción</th>
+                                    <th>Ejemplo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>&lt;int:id&gt;</code></td>
+                                    <td>Captura un entero</td>
+                                    <td><code>productos/123/</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>&lt;str:slug&gt;</code></td>
+                                    <td>Captura una cadena</td>
+                                    <td><code>productos/mi-producto/</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>&lt;slug:slug&gt;</code></td>
+                                    <td>Slug válido</td>
+                                    <td><code>productos/mi-producto-123/</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>&lt;uuid:id&gt;</code></td>
+                                    <td>UUID válido</td>
+                                    <td><code>productos/550e8400-e29b-41d4-a716-446655440000/</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>Tag {% url %} en plantillas</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <pre><code class="language-html">&lt;!-- Enlace simple --&gt;
+&lt;a href="{% url 'productos:lista' %}"&gt;Ver productos&lt;/a&gt;
+
+&lt;!-- Enlace con parámetros --&gt;
+&lt;a href="{% url 'productos:detalle' producto.id %}"&gt;Ver detalle&lt;/a&gt;
+
+&lt;!-- Enlace con múltiples parámetros --&gt;
+&lt;a href="{% url 'productos:editar' categoria=producto.categoria.slug id=producto.id %}"&gt;Editar&lt;/a&gt;
+
+&lt;!-- Formulario con acción dinámica --&gt;
+&lt;form method="post" action="{% url 'productos:crear' %}"&gt;
+    {% csrf_token %}
+    &lt;!-- campos del formulario --&gt;
+&lt;/form&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ejercicio" class="mb-5 fade-in">
+                    <h3><i class="fas fa-laptop-code me-2"></i>Ejercicio Práctico</h3>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Reto:</strong> Crear un sistema completo de gestión de una biblioteca con vistas y plantillas.
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Especificaciones del ejercicio</h5>
+                        </div>
+                        <div class="card-body">
+                            <h6>1. Crear el modelo Libro (si no lo has hecho)</h6>
+                            <pre><code class="language-python"># models.py
+class Libro(models.Model):
+    titulo = models.CharField(max_length=200)
+    autor = models.CharField(max_length=100)
+    isbn = models.CharField(max_length=13, unique=True)
+    fecha_publicacion = models.DateField()
+    disponible = models.BooleanField(default=True)
+    descripcion = models.TextField()
+    
+    def __str__(self):
+        return self.titulo</code></pre>
+
+                            <h6 class="mt-4">2. Crear las vistas</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li>Vista de lista de libros</li>
+                                        <li>Vista de detalle de libro</li>
+                                        <li>Vista para crear libro</li>
+                                        <li>Vista para editar libro</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li>Vista de búsqueda</li>
+                                        <li>Vista de libros disponibles</li>
+                                        <li>Vista de estadísticas</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h6 class="mt-4">3. Crear las plantillas</h6>
+                            <ul>
+                                <li>Plantilla base con navegación</li>
+                                <li>Lista de libros con paginación</li>
+                                <li>Detalle de libro con información completa</li>
+                                <li>Formulario para crear/editar libros</li>
+                            </ul>
+
+                            <h6 class="mt-4">4. Configurar URLs</h6>
+                            <ul>
+                                <li>URLs con nombres apropiados</li>
+                                <li>Agrupación por namespace</li>
+                                <li>Parámetros para vistas de detalle</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4">
+                        <div class="card-header bg-success text-white">
+                            <h5><i class="fas fa-check-circle me-2"></i>Solución paso a paso</h5>
+                        </div>
+                        <div class="card-body">
+                            <button class="btn btn-outline-success" type="button" data-bs-toggle="collapse" data-bs-target="#solucion" aria-expanded="false">
+                                Ver solución completa
+                            </button>
+                            <div class="collapse mt-3" id="solucion">
+                                <div class="accordion" id="solucionAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#paso1">
+                                                Paso 1: Vistas (views.py)
+                                            </button>
+                                        </h2>
+                                        <div id="paso1" class="accordion-collapse collapse" data-bs-parent="#solucionAccordion">
+                                            <div class="accordion-body">
+                                                <pre><code class="language-python"># biblioteca/views.py
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.urls import reverse_lazy
+from django.db.models import Q
+from .models import Libro
+
+class LibroListView(ListView):
+    model = Libro
+    template_name = 'biblioteca/lista.html'
+    context_object_name = 'libros'
+    paginate_by = 12
+
+def buscar_libros(request):
+    query = request.GET.get('q')
+    libros = []
+    if query:
+        libros = Libro.objects.filter(
+            Q(titulo__icontains=query) | 
+            Q(autor__icontains=query)
+        )
+    
+    contexto = {
+        'libros': libros,
+        'query': query
+    }
+    return render(request, 'biblioteca/buscar.html', contexto)
+
+class LibroDetailView(DetailView):
+    model = Libro
+    template_name = 'biblioteca/detalle.html'
+    context_object_name = 'libro'
+
+class LibroCreateView(CreateView):
+    model = Libro
+    template_name = 'biblioteca/crear.html'
+    fields = ['titulo', 'autor', 'isbn', 'fecha_publicacion', 'descripcion']
+    success_url = reverse_lazy('biblioteca:lista')</code></pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#paso2">
+                                                Paso 2: URLs (urls.py)
+                                            </button>
+                                        </h2>
+                                        <div id="paso2" class="accordion-collapse collapse" data-bs-parent="#solucionAccordion">
+                                            <div class="accordion-body">
+                                                <pre><code class="language-python"># biblioteca/urls.py
+from django.urls import path
+from . import views
+
+app_name = 'biblioteca'
+
+urlpatterns = [
+    path('', views.LibroListView.as_view(), name='lista'),
+    path('libro/&lt;int:pk&gt;/', views.LibroDetailView.as_view(), name='detalle'),
+    path('crear/', views.LibroCreateView.as_view(), name='crear'),
+    path('buscar/', views.buscar_libros, name='buscar'),
+]</code></pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#paso3">
+                                                Paso 3: Plantilla base
+                                            </button>
+                                        </h2>
+                                        <div id="paso3" class="accordion-collapse collapse" data-bs-parent="#solucionAccordion">
+                                            <div class="accordion-body">
+                                                <pre><code class="language-html">&lt;!-- templates/biblioteca/base.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;{% block title %}Biblioteca{% endblock %}&lt;/title&gt;
+    &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav class="navbar navbar-expand-lg navbar-dark bg-primary"&gt;
+        &lt;div class="container"&gt;
+            &lt;a class="navbar-brand" href="{% url 'biblioteca:lista' %}"&gt;📚 Biblioteca&lt;/a&gt;
+            &lt;div class="navbar-nav"&gt;
+                &lt;a class="nav-link" href="{% url 'biblioteca:lista' %}"&gt;Libros&lt;/a&gt;
+                &lt;a class="nav-link" href="{% url 'biblioteca:crear' %}"&gt;Agregar&lt;/a&gt;
+                &lt;a class="nav-link" href="{% url 'biblioteca:buscar' %}"&gt;Buscar&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+
+    &lt;main class="container mt-4"&gt;
+        {% block content %}{% endblock %}
+    &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="quiz" class="mb-5 fade-in">
+                    <h3><i class="fas fa-question-circle me-2"></i>Quiz de Conocimientos</h3>
+                    <div class="quiz-container">
+                        <div class="card quiz-card" data-question="1">
+                            <div class="card-header">
+                                <h5>Pregunta 1 de 5</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>¿Cuál es la diferencia principal entre una vista basada en función y una vista basada en clase?</p>
+                                <div class="quiz-options">
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q1" value="a" class="form-check-input me-2">
+                                        Las vistas basadas en función son más rápidas
+                                    </label>
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q1" value="b" class="form-check-input me-2">
+                                        Las vistas basadas en clase proporcionan más reutilización de código
+                                    </label>
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q1" value="c" class="form-check-input me-2">
+                                        No hay diferencia, son equivalentes
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card quiz-card d-none" data-question="2">
+                            <div class="card-header">
+                                <h5>Pregunta 2 de 5</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>¿Qué tag de plantilla se usa para incluir el contenido de un bloque padre?</p>
+                                <div class="quiz-options">
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q2" value="a" class="form-check-input me-2">
+                                        {{ block.parent }}
+                                    </label>
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q2" value="b" class="form-check-input me-2">
+                                        {{ block.super }}
+                                    </label>
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q2" value="c" class="form-check-input me-2">
+                                        {{ super.block }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card quiz-card d-none" data-question="3">
+                            <div class="card-header">
+                                <h5>Pregunta 3 de 5</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>¿Cuál es la sintaxis correcta para crear un enlace con parámetros en una plantilla?</p>
+                                <div class="quiz-options">
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q3" value="a" class="form-check-input me-2">
+                                        &lt;a href="{% url 'app:vista' id=objeto.id %}"&gt;
+                                    </label>
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q3" value="b" class="form-check-input me-2">
+                                        &lt;a href="{% url 'app:vista' objeto.id %}"&gt;
+                                    </label>
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q3" value="c" class="form-check-input me-2">
+                                        &lt;a href="{{ url('app:vista', objeto.id) }}"&gt;
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card quiz-card d-none" data-question="4">
+                            <div class="card-header">
+                                <h5>Pregunta 4 de 5</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>¿Qué método de vista basada en clase se ejecuta automáticamente para peticiones GET?</p>
+                                <div class="quiz-options">
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q4" value="a" class="form-check-input me-2">
+                                        get()
+                                    </label>
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q4" value="b" class="form-check-input me-2">
+                                        get_context_data()
+                                    </label>
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q4" value="c" class="form-check-input me-2">
+                                        dispatch()
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card quiz-card d-none" data-question="5">
+                            <div class="card-header">
+                                <h5>Pregunta 5 de 5</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>¿Cuál es la función del contexto en Django?</p>
+                                <div class="quiz-options">
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q5" value="a" class="form-check-input me-2">
+                                        Almacenar configuraciones de la aplicación
+                                    </label>
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q5" value="b" class="form-check-input me-2">
+                                        Pasar datos desde la vista a la plantilla
+                                    </label>
+                                    <label class="form-check-label d-block mb-2">
+                                        <input type="radio" name="q5" value="c" class="form-check-input me-2">
+                                        Manejar las sesiones de usuario
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card quiz-result d-none">
+                            <div class="card-header bg-success text-white">
+                                <h5><i class="fas fa-trophy me-2"></i>¡Quiz Completado!</h5>
+                            </div>
+                            <div class="card-body text-center">
+                                <h3 class="quiz-score">Tu puntuación: <span class="text-success">0/5</span></h3>
+                                <p class="quiz-message">¡Excelente trabajo!</p>
+                                <button class="btn btn-primary" onclick="reiniciarQuiz()">Repetir Quiz</button>
+                            </div>
+                        </div>
+
+                        <div class="quiz-navigation mt-3">
+                            <button class="btn btn-secondary me-2" id="prev-question" onclick="anteriorPregunta()" disabled>Anterior</button>
+                            <button class="btn btn-primary me-2" id="next-question" onclick="siguientePregunta()">Siguiente</button>
+                            <button class="btn btn-success d-none" id="finish-quiz" onclick="finalizarQuiz()">Finalizar Quiz</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificado de finalización -->
+                <div class="card border-success d-none" id="certificate">
+                    <div class="card-header bg-success text-white text-center">
+                        <h4><i class="fas fa-certificate me-2"></i>¡Felicitaciones!</h4>
+                    </div>
+                    <div class="card-body text-center">
+                        <h5>Has completado exitosamente el</h5>
+                        <h3 class="text-success">Módulo 3: Vistas y Plantillas</h3>
+                        <p class="mt-3">Ya puedes continuar con el siguiente módulo</p>
+                        <a href="modulo4.html" class="btn btn-success btn-lg mt-3">
+                            <i class="fas fa-arrow-right me-2"></i>Continuar al Módulo 4
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Botones de navegación -->
+                <div class="d-flex justify-content-between mt-5">
+                    <a href="modulo2.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Módulo anterior</a>
+                    <a href="modulo4.html" class="btn btn-primary" id="next-module-btn-bottom">Siguiente módulo<i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+        <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container text-center">
+            <p class="mb-0">© 2025 Guía Interactiva Django 5 | Creado con <i class="fas fa-heart text-danger"></i> para los aprendices SENA</p>
+        </div>
+    </footer>
+
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="../js/tutorial/main.js"></script>
+
+    <script>
+        // Variables del quiz
+        let preguntaActual = 1;
+        let respuestas = {};
+        let totalPreguntas = 5;
+
+        // Respuestas correctas
+        const respuestasCorrectas = {
+            q1: 'b', // Las CBV proporcionan más reutilización
+            q2: 'b', // {{ block.super }}
+            q3: 'b', // {% url 'app:vista' objeto.id %}
+            q4: 'a', // get()
+            q5: 'b'  // Pasar datos desde vista a plantilla
+        };
+
+        function siguientePregunta() {
+            const preguntaActualElement = document.querySelector(`[data-question="${preguntaActual}"]`);
+            const respuestaSeleccionada = preguntaActualElement.querySelector('input[type="radio"]:checked');
+            
+            if (respuestaSeleccionada) {
+                respuestas[respuestaSeleccionada.name] = respuestaSeleccionada.value;
+                
+                preguntaActualElement.classList.add('d-none');
+                preguntaActual++;
+                
+                if (preguntaActual <= totalPreguntas) {
+                    document.querySelector(`[data-question="${preguntaActual}"]`).classList.remove('d-none');
+                    
+                    // Actualizar botones
+                    document.getElementById('prev-question').disabled = false;
+                    
+                    if (preguntaActual === totalPreguntas) {
+                        document.getElementById('next-question').classList.add('d-none');
+                        document.getElementById('finish-quiz').classList.remove('d-none');
+                    }
+                }
+                
+                actualizarProgreso();
+            } else {
+                alert('Por favor selecciona una respuesta antes de continuar.');
+            }
+        }
+
+        function anteriorPregunta() {
+            const preguntaActualElement = document.querySelector(`[data-question="${preguntaActual}"]`);
+            preguntaActualElement.classList.add('d-none');
+            preguntaActual--;
+            
+            document.querySelector(`[data-question="${preguntaActual}"]`).classList.remove('d-none');
+            
+            if (preguntaActual === 1) {
+                document.getElementById('prev-question').disabled = true;
+            }
+            
+            document.getElementById('next-question').classList.remove('d-none');
+            document.getElementById('finish-quiz').classList.add('d-none');
+            
+            actualizarProgreso();
+        }
+
+        function finalizarQuiz() {
+            const preguntaActualElement = document.querySelector(`[data-question="${preguntaActual}"]`);
+            const respuestaSeleccionada = preguntaActualElement.querySelector('input[type="radio"]:checked');
+            
+            if (respuestaSeleccionada) {
+                respuestas[respuestaSeleccionada.name] = respuestaSeleccionada.value;
+                
+                // Calcular puntuación
+                let puntuacion = 0;
+                for (let pregunta in respuestasCorrectas) {
+                    if (respuestas[pregunta] === respuestasCorrectas[pregunta]) {
+                        puntuacion++;
+                    }
+                }
+                
+                // Mostrar resultado
+                preguntaActualElement.classList.add('d-none');
+                document.querySelector('.quiz-navigation').classList.add('d-none');
+                
+                const resultElement = document.querySelector('.quiz-result');
+                resultElement.classList.remove('d-none');
+                
+                const scoreElement = resultElement.querySelector('.quiz-score span');
+                scoreElement.textContent = `${puntuacion}/5`;
+                
+                const messageElement = resultElement.querySelector('.quiz-message');
+                if (puntuacion === 5) {
+                    messageElement.textContent = '¡Perfecto! Dominas las vistas y plantillas.';
+                    mostrarCertificado();
+                } else if (puntuacion >= 3) {
+                    messageElement.textContent = '¡Bien hecho! Tienes un buen entendimiento.';
+                    mostrarCertificado();
+                } else {
+                    messageElement.textContent = 'Necesitas repasar algunos conceptos.';
+                }
+                
+                actualizarProgreso();
+            } else {
+                alert('Por favor selecciona una respuesta antes de finalizar.');
+            }
+        }
+
+        function reiniciarQuiz() {
+            preguntaActual = 1;
+            respuestas = {};
+            
+            // Ocultar resultado
+            document.querySelector('.quiz-result').classList.add('d-none');
+            document.querySelector('.quiz-navigation').classList.remove('d-none');
+            
+            // Mostrar primera pregunta
+            document.querySelectorAll('.quiz-card').forEach(card => card.classList.add('d-none'));
+            document.querySelector('[data-question="1"]').classList.remove('d-none');
+            
+            // Limpiar selecciones
+            document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+            
+            // Resetear botones
+            document.getElementById('prev-question').disabled = true;
+            document.getElementById('next-question').classList.remove('d-none');
+            document.getElementById('finish-quiz').classList.add('d-none');
+            
+            actualizarProgreso();
+        }
+
+        function mostrarCertificado() {
+            setTimeout(() => {
+                document.getElementById('certificate').classList.remove('d-none');
+                document.getElementById('next-module-btn').classList.remove('disabled');
+                
+                // Guardar progreso en localStorage
+                localStorage.setItem('modulo3_completado', 'true');
+            }, 1000);
+        }
+
+        function actualizarProgreso() {
+            const progreso = Math.min((Object.keys(respuestas).length / totalPreguntas) * 100, 100);
+            document.querySelector('.module-progress').style.width = progreso + '%';
+        }
+
+        // Navegación automática en la sidebar
+        function actualizarNavegacionActiva() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.list-group-item');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    currentSection = section.id;
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Animaciones de entrada
+        function animarElementos() {
+            const elements = document.querySelectorAll('.fade-in');
+            
+            elements.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // Event listeners
+        window.addEventListener('scroll', () => {
+            actualizarNavegacionActiva();
+            animarElementos();
+        });
+
+        window.addEventListener('load', () => {
+            animarElementos();
+            actualizarNavegacionActiva();
+        });
+
+        // Smooth scrolling para los enlaces de navegación
+        document.querySelectorAll('.list-group-item').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });        // Inicializar progreso del módulo
+        function initModule() {
+            document.addEventListener('DOMContentLoaded', function() {
+                // Inicializar progreso del módulo
+                initModuleProgress(3);
+            });
+        }
+
+        // Llamar a la inicialización
+        initModule();
+    </script>
+    <!-- Custom JS -->
+    <script src="../js/tutorial/module-progress.js"></script>
+</body>
+</html>

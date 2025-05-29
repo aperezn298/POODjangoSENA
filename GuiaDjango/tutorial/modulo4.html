@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 4: Formularios | Guía Interactiva Django 5</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/tutorial/styles.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-okaidia.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fab fa-python me-2"></i>Django 5 - Guía Interactiva
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#modulos">Módulos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#recursos">Recursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="theme-toggle" title="Cambiar tema">
+                            <i class="fas fa-moon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido del Módulo -->
+    <div class="container mt-5 pt-5 module-content">
+        <div class="row">            <!-- Barra lateral de navegación -->
+            <div class="col-lg-3 mb-4">
+                <div class="sticky-top pt-4" style="z-index: 1020;">
+                    <div class="list-group mb-4">
+                        <a href="#introduccion" class="list-group-item list-group-item-action active">Introducción a Formularios</a>
+                        <a href="#formularios-django" class="list-group-item list-group-item-action">Formularios en Django</a>
+                        <a href="#creacion-forms" class="list-group-item list-group-item-action">Creación de Forms</a>
+                        <a href="#validacion" class="list-group-item list-group-item-action">Validación de datos</a>
+                        <a href="#modelforms" class="list-group-item list-group-item-action">ModelForms</a>
+                        <a href="#rendering" class="list-group-item list-group-item-action">Renderizado en templates</a>
+                        <a href="#ejercicio" class="list-group-item list-group-item-action">Ejercicio práctico</a>
+                        <a href="#quiz" class="list-group-item list-group-item-action">Quiz</a>
+                    </div>
+                    
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-map-signs me-2 text-primary"></i>Progreso del Módulo</h5>                            <div class="progress mb-3">
+                                <div class="progress-bar module-progress" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <a href="modulo3.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Módulo anterior</a>
+                                <a href="modulo5.html" class="btn btn-primary" id="next-module-btn">Siguiente módulo<i class="fas fa-arrow-right ms-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contenido principal -->
+            <div class="col-lg-9">
+                <div id="introduccion" class="mb-5 fade-in">
+                    <h2>Introducción a Formularios en Django</h2>
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-graduation-cap me-2"></i> <strong>Objetivo de aprendizaje:</strong> Al finalizar este módulo, serás capaz de crear y manejar formularios en Django, validar datos de entrada y trabajar con ModelForms para una integración perfecta con tus modelos.
+                    </div>
+                    
+                    <p class="lead">Los formularios son una parte fundamental de cualquier aplicación web interactiva. Django proporciona un sistema robusto y flexible para manejar formularios HTML, validar datos de entrada y procesar información del usuario de manera segura y eficiente.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-shield-alt text-success me-2"></i>¿Por qué usar Django Forms?</h5>
+                                    <ul class="ps-3">
+                                        <li><strong>Seguridad automática:</strong> Protección contra CSRF y validación de datos</li>
+                                        <li><strong>Validación integrada:</strong> Validación tanto del lado del cliente como del servidor</li>
+                                        <li><strong>Renderizado automático:</strong> Generación de HTML con estilos CSS</li>
+                                        <li><strong>Manejo de errores:</strong> Gestión automática de errores de validación</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-cogs text-primary me-2"></i>Componentes principales</h5>
+                                    <ul class="ps-3">
+                                        <li><strong>Form:</strong> Clase base para crear formularios personalizados</li>
+                                        <li><strong>ModelForm:</strong> Formularios automáticos basados en modelos</li>
+                                        <li><strong>Fields:</strong> Tipos de campos (CharField, EmailField, etc.)</li>
+                                        <li><strong>Widgets:</strong> Controles HTML para renderizar campos</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-lightbulb me-2"></i> <strong>Flujo típico:</strong> 
+                        Usuario llena formulario → Django valida datos → Si es válido procesa, si no muestra errores → Redirige o muestra confirmación.
+                    </div>
+                </div>
+                
+                <div id="formularios-django" class="mb-5 fade-in">
+                    <h2>Formularios en Django vs HTML</h2>
+                    <p>Mientras que HTML permite crear formularios básicos, Django Forms añade potentes características que simplifican el desarrollo y mejoran la seguridad.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4><i class="fab fa-html5 text-warning me-2"></i>Formulario HTML tradicional</h4>
+                            <pre><code class="language-html">&lt;form method="post"&gt;
+    &lt;div&gt;
+        &lt;label for="nombre"&gt;Nombre:&lt;/label&gt;
+        &lt;input type="text" id="nombre" name="nombre" required&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for="email"&gt;Email:&lt;/label&gt;
+        &lt;input type="email" id="email" name="email" required&gt;
+    &lt;/div&gt;
+    &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+                            <div class="alert alert-warning mt-3">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <strong>Problemas:</strong> Sin protección CSRF, validación manual, manejo de errores complejo
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h4><i class="fab fa-python text-success me-2"></i>Django Form</h4>
+                            <pre><code class="language-python"># forms.py
+from django import forms
+
+class ContactoForm(forms.Form):
+    nombre = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    
+# views.py
+def contacto(request):
+    if request.method == 'POST':
+        form = ContactoForm(request.POST)
+        if form.is_valid():
+            # Procesar datos válidos
+            return redirect('success')
+    else:
+        form = ContactoForm()
+    return render(request, 'contacto.html', {'form': form})</code></pre>
+                            <div class="alert alert-success mt-3">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <strong>Ventajas:</strong> CSRF automático, validación integrada, manejo de errores incluido
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="creacion-forms" class="mb-5 fade-in">
+                    <h2>Creación de Formularios Personalizados</h2>
+                    <p>Django ofrece una amplia variedad de campos de formulario para diferentes tipos de datos. Veamos cómo crear formularios desde cero.</p>
+                    
+                    <h3><i class="fas fa-plus-circle me-2 text-primary"></i>Tipos de Campos</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Campos de texto</h5>
+                            <pre><code class="language-python">from django import forms
+
+class RegistroForm(forms.Form):
+    # Campo de texto simple
+    nombre = forms.CharField(
+        max_length=50,
+        label="Nombre completo"
+    )
+    
+    # Campo de texto largo
+    biografia = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 4}),
+        required=False
+    )
+    
+    # Campo de email con validación
+    email = forms.EmailField(
+        help_text="Introduce un email válido"
+    )</code></pre>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5>Campos especializados</h5>
+                            <pre><code class="language-python"># Continuación del formulario
+    
+    # Campo numérico
+    edad = forms.IntegerField(
+        min_value=18,
+        max_value=120
+    )
+    
+    # Campo de selección
+    pais = forms.ChoiceField(
+        choices=[
+            ('es', 'España'),
+            ('mx', 'México'),
+            ('ar', 'Argentina'),
+        ]
+    )
+    
+    # Campo de fecha
+    fecha_nacimiento = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'})
+    )
+    
+    # Campo booleano
+    acepta_terminos = forms.BooleanField()</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-tip mt-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Tip:</strong> Usa el parámetro <code>widget</code> para personalizar cómo se renderiza un campo, y <code>attrs</code> para añadir atributos HTML específicos.
+                    </div>
+                    
+                    <h3><i class="fas fa-paint-brush me-2 text-warning"></i>Personalización con Widgets</h3>
+                    <pre><code class="language-python">class FormularioAvanzado(forms.Form):
+    # Widget personalizado con CSS
+    nombre = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Escribe tu nombre...'
+        })
+    )
+    
+    # Select múltiple
+    idiomas = forms.MultipleChoiceField(
+        choices=[
+            ('es', 'Español'),
+            ('en', 'Inglés'),
+            ('fr', 'Francés'),
+        ],
+        widget=forms.CheckboxSelectMultiple
+    )
+    
+    # Campo de contraseña
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'minlength': '8'
+        })
+    )</code></pre>
+                </div>
+                
+                <div id="validacion" class="mb-5 fade-in">
+                    <h2>Validación de Datos</h2>
+                    <p>Django proporciona múltiples niveles de validación para garantizar la integridad de los datos recibidos.</p>
+                    
+                    <h3><i class="fas fa-check-double me-2 text-success"></i>Validación a Nivel de Campo</h3>
+                    <pre><code class="language-python">import re
+from django import forms
+from django.core.exceptions import ValidationError
+
+class RegistroUsuarioForm(forms.Form):
+    nombre_usuario = forms.CharField(max_length=30)
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
+    confirmar_password = forms.CharField(widget=forms.PasswordInput)
+    
+    def clean_nombre_usuario(self):
+        """Validación personalizada para nombre de usuario"""
+        nombre = self.cleaned_data['nombre_usuario']
+        
+        # Solo letras, números y guiones bajos
+        if not re.match(r'^[a-zA-Z0-9_]+$', nombre):
+            raise ValidationError(
+                'El nombre de usuario solo puede contener letras, números y guiones bajos.'
+            )
+        
+        # No puede empezar con número
+        if nombre[0].isdigit():
+            raise ValidationError(
+                'El nombre de usuario no puede empezar con un número.'
+            )
+            
+        return nombre
+    
+    def clean_email(self):
+        """Validación de email único"""
+        email = self.cleaned_data['email']
+        
+        # Verificar que el dominio no esté en lista negra
+        dominios_prohibidos = ['tempmail.com', '10minutemail.com']
+        dominio = email.split('@')[1]
+        
+        if dominio in dominios_prohibidos:
+            raise ValidationError(
+                'No se permiten emails temporales.'
+            )
+            
+        return email</code></pre>
+                    
+                    <h3><i class="fas fa-shield-alt me-2 text-primary"></i>Validación a Nivel de Formulario</h3>
+                    <pre><code class="language-python">    def clean(self):
+        """Validación que involucra múltiples campos"""
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        confirmar_password = cleaned_data.get('confirmar_password')
+        
+        # Verificar que las contraseñas coincidan
+        if password and confirmar_password:
+            if password != confirmar_password:
+                raise ValidationError(
+                    'Las contraseñas no coinciden.'
+                )
+        
+        # Validar complejidad de contraseña
+        if password:
+            if len(password) < 8:
+                self.add_error('password', 'La contraseña debe tener al menos 8 caracteres.')
+            
+            if not any(c.isupper() for c in password):
+                self.add_error('password', 'La contraseña debe contener al menos una mayúscula.')
+            
+            if not any(c.isdigit() for c in password):
+                self.add_error('password', 'La contraseña debe contener al menos un número.')
+        
+        return cleaned_data</code></pre>
+                    
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-exclamation-circle text-warning me-2"></i>Manejo de Errores de Validación</h5>
+                            <pre><code class="language-python"># En la vista
+def procesar_registro(request):
+    if request.method == 'POST':
+        form = RegistroUsuarioForm(request.POST)
+        if form.is_valid():
+            # Datos válidos - procesar
+            nombre = form.cleaned_data['nombre_usuario']
+            email = form.cleaned_data['email']
+            # ... procesar registro
+            messages.success(request, '¡Registro exitoso!')
+            return redirect('login')
+        else:
+            # Hay errores - el template los mostrará automáticamente
+            messages.error(request, 'Por favor corrige los errores del formulario.')
+    else:
+        form = RegistroUsuarioForm()
+    
+    return render(request, 'registro.html', {'form': form})</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="modelforms" class="mb-5 fade-in">
+                    <h2>ModelForms: Integración con Modelos</h2>
+                    <p>Los ModelForms simplifican dramáticamente la creación de formularios basados en modelos de Django, generando automáticamente campos apropiados.</p>
+                    
+                    <h3><i class="fas fa-magic me-2 text-purple"></i>Creación Básica de ModelForm</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Modelo de ejemplo</h5>
+                            <pre><code class="language-python"># models.py
+from django.db import models
+
+class Producto(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    categoria = models.CharField(
+        max_length=50,
+        choices=[
+            ('electronica', 'Electrónica'),
+            ('ropa', 'Ropa'),
+            ('hogar', 'Hogar'),
+        ]
+    )
+    disponible = models.BooleanField(default=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    imagen = models.ImageField(upload_to='productos/', blank=True)
+    
+    def __str__(self):
+        return self.nombre</code></pre>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5>ModelForm correspondiente</h5>
+                            <pre><code class="language-python"># forms.py
+from django import forms
+from .models import Producto
+
+class ProductoForm(forms.ModelForm):
+    class Meta:
+        model = Producto
+        fields = ['nombre', 'descripcion', 'precio', 
+                 'categoria', 'disponible', 'imagen']
+        
+        # Personalizar widgets
+        widgets = {
+            'descripcion': forms.Textarea(attrs={'rows': 4}),
+            'precio': forms.NumberInput(attrs={'step': '0.01'}),
+        }
+        
+        # Personalizar labels
+        labels = {
+            'nombre': 'Nombre del producto',
+            'descripcion': 'Descripción detallada',
+            'disponible': '¿Está disponible?'
+        }
+        
+        # Textos de ayuda
+        help_texts = {
+            'precio': 'Precio en euros (€)',
+            'imagen': 'Imagen del producto (opcional)'
+        }</code></pre>
+                        </div>
+                    </div>
+                    
+                    <h3><i class="fas fa-edit me-2 text-success"></i>Personalización Avanzada de ModelForms</h3>
+                    <pre><code class="language-python">class ProductoForm(forms.ModelForm):
+    # Campos adicionales no del modelo
+    aceptar_terminos = forms.BooleanField(
+        label="Acepto los términos y condiciones"
+    )
+    
+    class Meta:
+        model = Producto
+        fields = '__all__'  # Incluir todos los campos
+        exclude = ['fecha_creacion']  # Excluir campos específicos
+        
+    def __init__(self, *args, **kwargs):
+        """Personalización durante la inicialización"""
+        super().__init__(*args, **kwargs)
+        
+        # Añadir clases CSS a todos los campos
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
+        
+        # Personalización específica
+        self.fields['categoria'].widget.attrs.update({
+            'class': 'form-select'
+        })
+        
+        # Hacer campos obligatorios
+        self.fields['descripcion'].required = True
+    
+    def clean_precio(self):
+        """Validación personalizada del precio"""
+        precio = self.cleaned_data['precio']
+        if precio <= 0:
+            raise forms.ValidationError('El precio debe ser mayor que cero.')
+        if precio > 10000:
+            raise forms.ValidationError('El precio no puede superar los 10,000€.')
+        return precio
+    
+    def save(self, commit=True):
+        """Personalizar el guardado"""
+        instance = super().save(commit=False)
+        
+        # Lógica adicional antes de guardar
+        instance.nombre = instance.nombre.title()  # Capitalizar nombre
+        
+        if commit:
+            instance.save()
+        return instance</code></pre>
+                    
+                    <div class="alert alert-success mt-4">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Ventaja de ModelForms:</strong> Django genera automáticamente la validación basada en las restricciones del modelo (max_length, choices, etc.).
+                    </div>
+                </div>
+                
+                <div id="rendering" class="mb-5 fade-in">
+                    <h2>Renderizado en Templates</h2>
+                    <p>Django ofrece múltiples formas de renderizar formularios en templates, desde renderizado automático hasta control total sobre cada campo.</p>
+                    
+                    <h3><i class="fas fa-code me-2 text-primary"></i>Métodos de Renderizado</h3>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>1. Renderizado automático</h5>
+                            <pre><code class="language-html">&lt;!-- template.html --&gt;
+&lt;form method="post" enctype="multipart/form-data"&gt;
+    {% csrf_token %}
+    
+    &lt;!-- Renderizar todo el formulario --&gt;
+    {{ form.as_p }}
+    
+    &lt;button type="submit" class="btn btn-primary"&gt;
+        Guardar
+    &lt;/button&gt;
+&lt;/form&gt;
+
+&lt;!-- Alternativas de renderizado --&gt;
+{{ form.as_table }}  &lt;!-- Como tabla --&gt;
+{{ form.as_ul }}     &lt;!-- Como lista --&gt;</code></pre>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5>2. Control por campo</h5>
+                            <pre><code class="language-html">&lt;form method="post" enctype="multipart/form-data"&gt;
+    {% csrf_token %}
+    
+    &lt;div class="mb-3"&gt;
+        {{ form.nombre.label_tag }}
+        {{ form.nombre }}
+        {% if form.nombre.errors %}
+            &lt;div class="text-danger"&gt;
+                {{ form.nombre.errors }}
+            &lt;/div&gt;
+        {% endif %}
+    &lt;/div&gt;
+    
+    &lt;div class="mb-3"&gt;
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        &lt;small class="form-text text-muted"&gt;
+            {{ form.email.help_text }}
+        &lt;/small&gt;
+    &lt;/div&gt;
+&lt;/form&gt;</code></pre>
+                        </div>
+                    </div>
+                    
+                    <h3><i class="fas fa-palette me-2 text-warning"></i>Template con Bootstrap</h3>
+                    <pre><code class="language-html">&lt;!-- formulario_producto.html --&gt;
+{% load static %}
+
+&lt;div class="container mt-4"&gt;
+    &lt;div class="row justify-content-center"&gt;
+        &lt;div class="col-md-8"&gt;
+            &lt;div class="card"&gt;
+                &lt;div class="card-header"&gt;
+                    &lt;h3&gt;&lt;i class="fas fa-plus me-2"&gt;&lt;/i&gt;Nuevo Producto&lt;/h3&gt;
+                &lt;/div&gt;
+                &lt;div class="card-body"&gt;
+                    &lt;form method="post" enctype="multipart/form-data" novalidate&gt;
+                        {% csrf_token %}
+                        
+                        &lt;!-- Mostrar errores generales --&gt;
+                        {% if form.non_field_errors %}
+                            &lt;div class="alert alert-danger"&gt;
+                                {{ form.non_field_errors }}
+                            &lt;/div&gt;
+                        {% endif %}
+                        
+                        &lt;div class="row"&gt;
+                            &lt;div class="col-md-6"&gt;
+                                &lt;div class="mb-3"&gt;
+                                    &lt;label for="{{ form.nombre.id_for_label }}" class="form-label"&gt;
+                                        {{ form.nombre.label }}
+                                        {% if form.nombre.field.required %}
+                                            &lt;span class="text-danger"&gt;*&lt;/span&gt;
+                                        {% endif %}
+                                    &lt;/label&gt;
+                                    {{ form.nombre }}
+                                    {% if form.nombre.errors %}
+                                        &lt;div class="invalid-feedback d-block"&gt;
+                                            {{ form.nombre.errors.0 }}
+                                        &lt;/div&gt;
+                                    {% endif %}
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                            
+                            &lt;div class="col-md-6"&gt;
+                                &lt;div class="mb-3"&gt;
+                                    &lt;label for="{{ form.categoria.id_for_label }}" class="form-label"&gt;
+                                        {{ form.categoria.label }}
+                                    &lt;/label&gt;
+                                    {{ form.categoria }}
+                                    {% if form.categoria.errors %}
+                                        &lt;div class="invalid-feedback d-block"&gt;
+                                            {{ form.categoria.errors.0 }}
+                                        &lt;/div&gt;
+                                    {% endif %}
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        
+                        &lt;div class="mb-3"&gt;
+                            &lt;label for="{{ form.descripcion.id_for_label }}" class="form-label"&gt;
+                                {{ form.descripcion.label }}
+                            &lt;/label&gt;
+                            {{ form.descripcion }}
+                            {% if form.descripcion.help_text %}
+                                &lt;small class="form-text text-muted"&gt;
+                                    {{ form.descripcion.help_text }}
+                                &lt;/small&gt;
+                            {% endif %}
+                        &lt;/div&gt;
+                        
+                        &lt;div class="d-grid gap-2 d-md-flex justify-content-md-end"&gt;
+                            &lt;a href="{% url 'productos:lista' %}" class="btn btn-secondary me-md-2"&gt;
+                                Cancelar
+                            &lt;/a&gt;
+                            &lt;button type="submit" class="btn btn-primary"&gt;
+                                &lt;i class="fas fa-save me-2"&gt;&lt;/i&gt;Guardar
+                            &lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Importante:</strong> Siempre incluye <code>{% csrf_token %}</code> en formularios POST y usa <code>enctype="multipart/form-data"</code> para formularios con archivos.
+                    </div>
+                </div>
+                
+                <div id="ejercicio" class="mb-5 fade-in">
+                    <h2>Ejercicio Práctico: Sistema de Contacto</h2>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-laptop-code me-2"></i>
+                        <strong>Objetivo:</strong> Crear un sistema completo de formulario de contacto con validación personalizada y envío de email.
+                    </div>
+                    
+                    <h3><i class="fas fa-tasks me-2 text-success"></i>Paso 1: Crear el modelo</h3>
+                    <pre><code class="language-python"># models.py
+from django.db import models
+from django.core.validators import RegexValidator
+
+class Contacto(models.Model):
+    TIPOS_CONSULTA = [
+        ('general', 'Consulta General'),
+        ('soporte', 'Soporte Técnico'),
+        ('ventas', 'Ventas'),
+        ('reclamo', 'Reclamo'),
+    ]
+    
+    nombre = models.CharField(max_length=100)
+    email = models.EmailField()
+    telefono = models.CharField(
+        max_length=15,
+        validators=[RegexValidator(
+            regex=r'^\+?1?\d{9,15}$',
+            message="Formato de teléfono inválido."
+        )],
+        blank=True
+    )
+    tipo_consulta = models.CharField(
+        max_length=20,
+        choices=TIPOS_CONSULTA,
+        default='general'
+    )
+    asunto = models.CharField(max_length=200)
+    mensaje = models.TextField()
+    fecha_envio = models.DateTimeField(auto_now_add=True)
+    respondido = models.BooleanField(default=False)
+    
+    class Meta:
+        ordering = ['-fecha_envio']
+        verbose_name_plural = "Contactos"
+    
+    def __str__(self):
+        return f"{self.nombre} - {self.asunto}"</code></pre>
+                    
+                    <h3><i class="fas fa-edit me-2 text-primary"></i>Paso 2: Crear el formulario</h3>
+                    <pre><code class="language-python"># forms.py
+from django import forms
+from django.core.mail import send_mail
+from django.conf import settings
+from .models import Contacto
+
+class ContactoForm(forms.ModelForm):
+    acepta_privacidad = forms.BooleanField(
+        label="Acepto la política de privacidad",
+        help_text="Debes aceptar para continuar"
+    )
+    
+    class Meta:
+        model = Contacto
+        fields = ['nombre', 'email', 'telefono', 'tipo_consulta', 
+                 'asunto', 'mensaje']
+        widgets = {
+            'nombre': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Tu nombre completo'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'tu@email.com'
+            }),
+            'telefono': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '+34 123 456 789'
+            }),
+            'tipo_consulta': forms.Select(attrs={
+                'class': 'form-select'
+            }),
+            'asunto': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Breve descripción del tema'
+            }),
+            'mensaje': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 5,
+                'placeholder': 'Describe tu consulta en detalle...'
+            }),
+        }
+    
+    def clean_mensaje(self):
+        mensaje = self.cleaned_data['mensaje']
+        if len(mensaje) < 10:
+            raise forms.ValidationError(
+                'El mensaje debe tener al menos 10 caracteres.'
+            )
+        return mensaje
+    
+    def save(self, commit=True):
+        instance = super().save(commit)
+        
+        # Enviar email de notificación
+        if commit:
+            self.enviar_notificacion(instance)
+        
+        return instance
+    
+    def enviar_notificacion(self, contacto):
+        """Enviar email al administrador"""
+        asunto = f"Nueva consulta: {contacto.asunto}"
+        mensaje = f"""
+        Nueva consulta recibida:
+        
+        Nombre: {contacto.nombre}
+        Email: {contacto.email}
+        Tipo: {contacto.get_tipo_consulta_display()}
+        Asunto: {contacto.asunto}
+        
+        Mensaje:
+        {contacto.mensaje}
+        """
+        
+        send_mail(
+            asunto,
+            mensaje,
+            settings.DEFAULT_FROM_EMAIL,
+            ['admin@tudominio.com'],
+            fail_silently=True,
+        )</code></pre>
+                    
+                    <h3><i class="fas fa-eye me-2 text-info"></i>Paso 3: Crear la vista</h3>
+                    <pre><code class="language-python"># views.py
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.core.mail import send_mail
+from .forms import ContactoForm
+
+def contacto_view(request):
+    if request.method == 'POST':
+        form = ContactoForm(request.POST)
+        if form.is_valid():
+            contacto = form.save()
+            
+            # Enviar email de confirmación al usuario
+            send_mail(
+                'Confirmación de contacto recibido',
+                f'Hola {contacto.nombre},\n\n'
+                f'Hemos recibido tu consulta: "{contacto.asunto}"\n'
+                f'Te responderemos pronto.\n\n'
+                f'Gracias por contactarnos.',
+                'noreply@tudominio.com',
+                [contacto.email],
+                fail_silently=True,
+            )
+            
+            messages.success(
+                request, 
+                '¡Mensaje enviado correctamente! Te responderemos pronto.'
+            )
+            return redirect('contacto_exito')
+        else:
+            messages.error(
+                request,
+                'Por favor corrige los errores del formulario.'
+            )
+    else:
+        form = ContactoForm()
+    
+    return render(request, 'contacto.html', {'form': form})
+
+def contacto_exito(request):
+    return render(request, 'contacto_exito.html')</code></pre>
+                    
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-rocket text-success me-2"></i>¡Implementa tu propio sistema!</h5>
+                            <p>Ahora es tu turno. Crear el template HTML correspondiente y configurar las URLs para que el sistema funcione completamente.</p>
+                            <ol>
+                                <li>Crea el template <code>contacto.html</code> con Bootstrap</li>
+                                <li>Añade validación JavaScript opcional</li>
+                                <li>Configura las URLs en <code>urls.py</code></li>
+                                <li>Prueba el formulario con datos válidos e inválidos</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="quiz" class="mb-5 fade-in">
+                    <h2>Quiz: Formularios en Django</h2>
+                    <div class="alert alert-info mb-4">
+                        <i class="fas fa-question-circle me-2"></i>
+                        Pon a prueba tus conocimientos sobre formularios en Django.
+                    </div>
+                    
+                    <div class="quiz-container" data-quiz-id="quiz-modulo-4">
+                        <div class="quiz-question">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pregunta 1 de 5</h5>
+                                    <p class="card-text">¿Cuál es la principal ventaja de usar Django Forms sobre formularios HTML tradicionales?</p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1a" value="a">
+                                        <label class="form-check-label" for="q1a">Mayor velocidad de renderizado</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1b" value="b">
+                                        <label class="form-check-label" for="q1b">Protección automática contra CSRF y validación integrada</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1c" value="c">
+                                        <label class="form-check-label" for="q1c">Mejor compatibilidad con navegadores antiguos</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q1" id="q1d" value="d">
+                                        <label class="form-check-label" for="q1d">Soporte automático para JavaScript</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question d-none">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pregunta 2 de 5</h5>
+                                    <p class="card-text">¿Qué método se usa para validar un campo específico en un formulario Django?</p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2a" value="a">
+                                        <label class="form-check-label" for="q2a">validate_&lt;nombre_campo&gt;()</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2b" value="b">
+                                        <label class="form-check-label" for="q2b">clean_&lt;nombre_campo&gt;()</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2c" value="c">
+                                        <label class="form-check-label" for="q2c">check_&lt;nombre_campo&gt;()</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q2" id="q2d" value="d">
+                                        <label class="form-check-label" for="q2d">is_valid_&lt;nombre_campo&gt;()</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question d-none">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pregunta 3 de 5</h5>
+                                    <p class="card-text">¿Cuál es la diferencia principal entre Form y ModelForm?</p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3a" value="a">
+                                        <label class="form-check-label" for="q3a">Form es para datos simples, ModelForm para datos complejos</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3b" value="b">
+                                        <label class="form-check-label" for="q3b">ModelForm se genera automáticamente desde un modelo de Django</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3c" value="c">
+                                        <label class="form-check-label" for="q3c">Form requiere más código pero es más flexible</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q3" id="q3d" value="d">
+                                        <label class="form-check-label" for="q3d">No hay diferencias significativas</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question d-none">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pregunta 4 de 5</h5>
+                                    <p class="card-text">¿Qué atributo de enctype se debe usar en formularios que incluyen archivos?</p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4a" value="a">
+                                        <label class="form-check-label" for="q4a">application/x-www-form-urlencoded</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4b" value="b">
+                                        <label class="form-check-label" for="q4b">multipart/form-data</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4c" value="c">
+                                        <label class="form-check-label" for="q4c">text/plain</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q4" id="q4d" value="d">
+                                        <label class="form-check-label" for="q4d">application/json</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question d-none">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pregunta 5 de 5</h5>
+                                    <p class="card-text">¿Qué template tag es obligatorio incluir en todos los formularios POST en Django?</p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q5" id="q5a" value="a">
+                                        <label class="form-check-label" for="q5a">{% load static %}</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q5" id="q5b" value="b">
+                                        <label class="form-check-label" for="q5b">{% csrf_token %}</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q5" id="q5c" value="c">
+                                        <label class="form-check-label" for="q5c">{% form_token %}</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="q5" id="q5d" value="d">
+                                        <label class="form-check-label" for="q5d">{% security_token %}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary submit-quiz">Comprobar respuestas</button>
+                        <div class="quiz-result mt-3"></div>
+                    </div>
+                </div>
+                
+                <!-- Certificado de finalización -->
+                <div id="certificate" class="card border-success d-none mt-5">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0"><i class="fas fa-certificate me-2"></i>¡Felicitaciones!</h4>
+                    </div>
+                    <div class="card-body text-center">
+                        <h5>Has completado exitosamente el Módulo 4: Formularios</h5>
+                        <p class="text-muted">Ahora puedes continuar con el siguiente módulo</p>
+                        <div class="mt-3">
+                            <i class="fas fa-award text-warning" style="font-size: 3rem;"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de navegación -->
+                <div class="d-flex justify-content-between mt-5">
+                    <a href="modulo3.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Módulo anterior</a>
+                    <a href="modulo5.html" class="btn btn-primary" id="next-module-btn-bottom">Siguiente módulo<i class="fas fa-arrow-right ms-2"></i></a>
+                </div>            </div>
+        </div>
+    </div>        
+
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container text-center">
+            <p class="mb-0">© 2025 Guía Interactiva Django 5 | Creado con <i class="fas fa-heart text-danger"></i> para los aprendices SENA</p>
+        </div>
+    </footer>    <!-- Bootstrap & Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Prism.js para resaltado de sintaxis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/tutorial/main.js"></script>
+    <script src="../js/tutorial/module-progress.js"></script>
+    <script>
+        // Variables del quiz
+        const correctAnswers = {
+            q1: 'b', // Protección automática contra CSRF y validación integrada
+            q2: 'b', // clean_<nombre_campo>()
+            q3: 'b', // ModelForm se genera automáticamente desde un modelo
+            q4: 'b', // multipart/form-data
+            q5: 'b'  // {% csrf_token %}
+        };
+
+        let currentQuestion = 0;
+        const totalQuestions = 5;
+
+        // Manejar envío del quiz
+        document.querySelector('.submit-quiz').addEventListener('click', function() {
+            const formData = new FormData();
+            let score = 0;
+            let answered = 0;
+
+            // Recopilar respuestas
+            for (let i = 1; i <= totalQuestions; i++) {
+                const answer = document.querySelector(`input[name="q${i}"]:checked`);
+                if (answer) {
+                    answered++;
+                    if (answer.value === correctAnswers[`q${i}`]) {
+                        score++;
+                    }
+                }
+            }
+
+            // Verificar que se respondieron todas las preguntas
+            if (answered < totalQuestions) {
+                alert('Por favor responde todas las preguntas antes de enviar.');
+                return;
+            }
+
+            // Mostrar resultado
+            const resultDiv = document.querySelector('.quiz-result');
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            let resultClass = 'alert-danger';
+            let resultText = 'Necesitas estudiar más los conceptos.';
+            
+            if (percentage >= 80) {
+                resultClass = 'alert-success';
+                resultText = '¡Excelente! Dominas los formularios en Django.';
+                showCertificate();
+            } else if (percentage >= 60) {
+                resultClass = 'alert-warning';
+                resultText = '¡Bien! Tienes una buena comprensión básica.';
+                showCertificate();
+            }
+
+            resultDiv.innerHTML = `
+                <div class="alert ${resultClass}">
+                    <h5><i class="fas fa-chart-bar me-2"></i>Resultado del Quiz</h5>
+                    <p><strong>Puntuación: ${score}/${totalQuestions} (${percentage}%)</strong></p>
+                    <p>${resultText}</p>
+                </div>
+            `;
+
+            // Guardar progreso
+            localStorage.setItem('modulo4_quiz_score', score);
+            localStorage.setItem('modulo4_quiz_completed', 'true');
+            updateProgress();
+        });
+
+        // Mostrar certificado si se pasa el quiz
+        function showCertificate() {
+            setTimeout(() => {
+                document.getElementById('certificate').classList.remove('d-none');
+                document.getElementById('next-module-btn').classList.remove('disabled');
+                localStorage.setItem('modulo4_completado', 'true');
+            }, 1000);
+        }
+
+        // Actualizar barra de progreso
+        function updateProgress() {
+            const progress = document.querySelector('.module-progress');
+            let percentage = 0;
+            
+            // Calcular progreso basado en secciones visitadas
+            const sections = ['introduccion', 'formularios-django', 'creacion-forms', 'validacion', 'modelforms', 'rendering', 'ejercicio'];
+            const visitedSections = sections.filter(section => {
+                return localStorage.getItem(`modulo4_${section}_visited`) === 'true';
+            });
+            
+            percentage = (visitedSections.length / sections.length) * 70; // 70% por contenido
+            
+            // 30% adicional por completar el quiz
+            if (localStorage.getItem('modulo4_quiz_completed') === 'true') {
+                percentage += 30;
+            }
+            
+            const progressValue = Math.min(percentage, 100);
+            progress.style.width = progressValue + '%';
+            progress.setAttribute('aria-valuenow', Math.round(progressValue));
+        }
+
+        // Marcar secciones como visitadas al hacer scroll
+        function markSectionAsVisited() {
+            const sections = document.querySelectorAll('[id]');
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                    localStorage.setItem(`modulo4_${section.id}_visited`, 'true');
+                    updateProgress();
+                }
+            });
+        }
+
+        // Event listeners
+        window.addEventListener('scroll', markSectionAsVisited);
+        window.addEventListener('load', updateProgress);
+
+        // Navegación suave
+        document.querySelectorAll('.list-group-item').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        block: 'start'
+                    });
+                    
+                    // Actualizar navegación activa
+                    document.querySelectorAll('.list-group-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // Actualizar navegación activa automáticamente
+        function updateActiveNavigation() {
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.list-group-item');
+            
+            let currentSection = '';
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    currentSection = section.id;
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Animaciones de entrada
+        function animateElements() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // Event listeners para scroll
+        window.addEventListener('scroll', () => {
+            updateActiveNavigation();
+            animateElements();
+        });
+
+        // Inicializar animaciones al cargar
+        window.addEventListener('load', () => {
+            animateElements();
+            updateActiveNavigation();
+        });
+
+        // Inicializar progreso del módulo
+        function initModule() {
+            document.addEventListener('DOMContentLoaded', function() {
+                // Inicializar progreso del módulo
+                initModuleProgress(4);
+            });
+        }
+
+        // Llamar a la inicialización
+        initModule();
+    </script>
+</body>
+</html>

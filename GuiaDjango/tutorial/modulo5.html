@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 5: Autenticación y Autorización | Guía Interactiva Django 5</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/tutorial/styles.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-okaidia.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fab fa-python me-2"></i>Django 5 - Guía Interactiva
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#modulos">Módulos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#recursos">Recursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="theme-toggle" title="Cambiar tema">
+                            <i class="fas fa-moon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido del Módulo -->
+    <div class="container mt-5 pt-5 module-content">
+        <div class="row">
+            <!-- Barra lateral de navegación -->
+            <div class="col-lg-3 mb-4">
+                <div class="sticky-top pt-4">
+                    <div class="list-group mb-4">
+                        <a href="#introduccion" class="list-group-item list-group-item-action active">Sistema de Autenticación</a>
+                        <a href="#usuarios" class="list-group-item list-group-item-action">Gestión de Usuarios</a>
+                        <a href="#login-logout" class="list-group-item list-group-item-action">Login y Logout</a>
+                        <a href="#registro" class="list-group-item list-group-item-action">Registro de Usuarios</a>
+                        <a href="#permisos" class="list-group-item list-group-item-action">Permisos y Grupos</a>
+                        <a href="#decoradores" class="list-group-item list-group-item-action">Decoradores de Seguridad</a>
+                        <a href="#ejercicio" class="list-group-item list-group-item-action">Ejercicio práctico</a>
+                        <a href="#quiz" class="list-group-item list-group-item-action">Quiz</a>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-map-signs me-2 text-primary"></i>Progreso del Módulo</h5>
+                            <div class="progress mb-3">
+                                <div class="progress-bar module-progress" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <a href="modulo4.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Módulo anterior</a>
+                                <a href="modulo6.html" class="btn btn-primary" id="next-module-btn">Siguiente módulo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contenido principal -->
+            <div class="col-lg-9">
+                <div id="introduccion" class="mb-5 fade-in">
+                    <h2>Sistema de Autenticación de Django</h2>
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-graduation-cap me-2"></i> <strong>Objetivo de aprendizaje:</strong> Al finalizar este módulo, implementarás sistemas completos de autenticación y autorización en Django, incluyendo registro, login, logout y control de permisos.
+                    </div>
+                    
+                    <p class="lead">Django incluye un sistema de autenticación robusto y completo que maneja cuentas de usuario, grupos, permisos y sesiones basadas en cookies. Es uno de los puntos fuertes del framework y te permite implementar funcionalidades de seguridad sin escribir código desde cero.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-shield-alt text-primary me-2"></i>Componentes principales</h5>
+                                    <ul class="ps-3">
+                                        <li><strong>Users:</strong> Cuentas de usuario con información básica</li>
+                                        <li><strong>Permissions:</strong> Permisos para realizar acciones específicas</li>
+                                        <li><strong>Groups:</strong> Agrupación de usuarios con permisos comunes</li>
+                                        <li><strong>Sessions:</strong> Gestión de sesiones de usuario</li>
+                                        <li><strong>Password management:</strong> Hasheado y validación segura</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-cogs text-success me-2"></i>Configuración inicial</h5>
+                                    <p>El sistema de autenticación se incluye automáticamente en <code>INSTALLED_APPS</code>:</p>
+                                    <pre class="small bg-light p-2 rounded"><code>'django.contrib.auth'
+'django.contrib.contenttypes'</code></pre>
+                                    <p class="small mb-0">También necesitas el middleware de autenticación en <code>MIDDLEWARE</code>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-user-circle text-warning me-2"></i>Modelo User por defecto</h5>
+                            <p>Django proporciona un modelo User con los siguientes campos principales:</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="small">
+                                        <li><code>username</code> - Nombre de usuario único</li>
+                                        <li><code>email</code> - Dirección de correo electrónico</li>
+                                        <li><code>first_name</code> - Nombre</li>
+                                        <li><code>last_name</code> - Apellido</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="small">
+                                        <li><code>is_active</code> - Usuario activo</li>
+                                        <li><code>is_staff</code> - Acceso al admin</li>
+                                        <li><code>is_superuser</code> - Todos los permisos</li>
+                                        <li><code>date_joined</code> - Fecha de registro</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="usuarios" class="mb-5 fade-in">
+                    <h2>Gestión de Usuarios</h2>
+                    <p>Django proporciona varias formas de trabajar con usuarios. Veamos las operaciones más comunes:</p>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Crear usuarios</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># En una vista o shell de Django
+from django.contrib.auth.models import User
+
+# Crear un usuario normal
+user = User.objects.create_user(
+    username='nuevo_usuario',
+    email='usuario@email.com',
+    password='mi_password_seguro'
+)
+
+# Crear un superusuario
+superuser = User.objects.create_superuser(
+    username='admin',
+    email='admin@email.com',
+    password='password_admin'
+)
+
+# Desde la línea de comandos
+# python manage.py createsuperuser</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-search me-2"></i>Consultar usuarios</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># Obtener usuario por username
+user = User.objects.get(username='nombre_usuario')
+
+# Verificar si existe un usuario
+if User.objects.filter(username='nombre_usuario').exists():
+    print("El usuario existe")
+
+# Obtener todos los usuarios activos
+usuarios_activos = User.objects.filter(is_active=True)
+
+# Obtener usuarios staff
+staff_users = User.objects.filter(is_staff=True)</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Modificar usuarios</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># Cambiar información del usuario
+user = User.objects.get(username='nombre_usuario')
+user.email = 'nuevo_email@email.com'
+user.first_name = 'Nuevo Nombre'
+user.save()
+
+# Cambiar contraseña
+user.set_password('nueva_password')
+user.save()
+
+# Activar/desactivar usuario
+user.is_active = False
+user.save()</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i> <strong>Importante:</strong> Nunca guardes contraseñas en texto plano. Siempre usa <code>set_password()</code> para hashear automáticamente las contraseñas.
+                    </div>
+                </div>
+                
+                <div id="login-logout" class="mb-5 fade-in">
+                    <h2>Implementar Login y Logout</h2>
+                    <p>Django proporciona vistas genéricas para login y logout, pero también puedes crear las tuyas propias.</p>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-sign-in-alt me-2"></i>URLs para autenticación</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># urls.py
+from django.urls import path, include
+from django.contrib.auth import views as auth_views
+from . import views
+
+urlpatterns = [
+    # Usar vistas genéricas de Django
+    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    
+    # O usar vistas personalizadas
+    path('mi-login/', views.mi_login, name='mi_login'),
+    path('mi-logout/', views.mi_logout, name='mi_logout'),
+]</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-code me-2"></i>Vista de login personalizada</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+
+def mi_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, f'¡Bienvenido {user.first_name}!')
+            return redirect('dashboard')  # Redirigir a página principal
+        else:
+            messages.error(request, 'Credenciales inválidas')
+    
+    return render(request, 'registration/login.html')
+
+def mi_logout(request):
+    logout(request)
+    messages.info(request, 'Sesión cerrada exitosamente')
+    return redirect('home')</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-file-code me-2"></i>Template de login</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-html">&lt;!-- templates/registration/login.html --&gt;
+&lt;div class="container mt-5"&gt;
+    &lt;div class="row justify-content-center"&gt;
+        &lt;div class="col-md-6"&gt;
+            &lt;div class="card"&gt;
+                &lt;div class="card-header"&gt;
+                    &lt;h3 class="text-center"&gt;Iniciar Sesión&lt;/h3&gt;
+                &lt;/div&gt;
+                &lt;div class="card-body"&gt;
+                    &lt;form method="post"&gt;
+                        {% csrf_token %}
+                        &lt;div class="mb-3"&gt;
+                            &lt;label for="username" class="form-label"&gt;Usuario&lt;/label&gt;
+                            &lt;input type="text" class="form-control" name="username" required&gt;
+                        &lt;/div&gt;
+                        &lt;div class="mb-3"&gt;
+                            &lt;label for="password" class="form-label"&gt;Contraseña&lt;/label&gt;
+                            &lt;input type="password" class="form-control" name="password" required&gt;
+                        &lt;/div&gt;
+                        &lt;button type="submit" class="btn btn-primary w-100"&gt;Ingresar&lt;/button&gt;
+                    &lt;/form&gt;
+                    &lt;div class="text-center mt-3"&gt;
+                        &lt;a href="{% url 'registro' %}"&gt;¿No tienes cuenta? Regístrate&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-cog me-2"></i>Configuración en settings.py</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># settings.py
+# Redirección después del login exitoso
+LOGIN_REDIRECT_URL = '/'  # o 'dashboard'
+
+# Redirección después del logout
+LOGOUT_REDIRECT_URL = '/'
+
+# URL de login para decoradores @login_required
+LOGIN_URL = '/login/'</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="registro" class="mb-5 fade-in">
+                    <h2>Registro de Usuarios</h2>
+                    <p>Implementar un sistema de registro para que nuevos usuarios puedan crear sus cuentas.</p>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-user-plus me-2"></i>Formulario de registro</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># forms.py
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+class RegistroForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
+    
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        if commit:
+            user.save()
+        return user</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-code me-2"></i>Vista de registro</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib import messages
+from .forms import RegistroForm
+
+def registro(request):
+    if request.method == 'POST':
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Login automático después del registro
+            messages.success(request, f'¡Bienvenido {user.first_name}! Tu cuenta ha sido creada.')
+            return redirect('dashboard')
+    else:
+        form = RegistroForm()
+    
+    return render(request, 'registration/registro.html', {'form': form})</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-file-code me-2"></i>Template de registro</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-html">&lt;!-- templates/registration/registro.html --&gt;
+&lt;div class="container mt-5"&gt;
+    &lt;div class="row justify-content-center"&gt;
+        &lt;div class="col-md-8"&gt;
+            &lt;div class="card"&gt;
+                &lt;div class="card-header"&gt;
+                    &lt;h3 class="text-center"&gt;Crear Cuenta&lt;/h3&gt;
+                &lt;/div&gt;
+                &lt;div class="card-body"&gt;
+                    &lt;form method="post"&gt;
+                        {% csrf_token %}
+                        &lt;div class="row"&gt;
+                            &lt;div class="col-md-6 mb-3"&gt;
+                                &lt;label class="form-label"&gt;Nombre&lt;/label&gt;
+                                {{ form.first_name }}
+                            &lt;/div&gt;
+                            &lt;div class="col-md-6 mb-3"&gt;
+                                &lt;label class="form-label"&gt;Apellido&lt;/label&gt;
+                                {{ form.last_name }}
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class="mb-3"&gt;
+                            &lt;label class="form-label"&gt;Usuario&lt;/label&gt;
+                            {{ form.username }}
+                        &lt;/div&gt;
+                        &lt;div class="mb-3"&gt;
+                            &lt;label class="form-label"&gt;Email&lt;/label&gt;
+                            {{ form.email }}
+                        &lt;/div&gt;
+                        &lt;div class="mb-3"&gt;
+                            &lt;label class="form-label"&gt;Contraseña&lt;/label&gt;
+                            {{ form.password1 }}
+                        &lt;/div&gt;
+                        &lt;div class="mb-3"&gt;
+                            &lt;label class="form-label"&gt;Confirmar Contraseña&lt;/label&gt;
+                            {{ form.password2 }}
+                        &lt;/div&gt;
+                        &lt;button type="submit" class="btn btn-success w-100"&gt;Registrarse&lt;/button&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="permisos" class="mb-5 fade-in">
+                    <h2>Permisos y Grupos</h2>
+                    <p>Django tiene un sistema de permisos granular que te permite controlar exactamente qué puede hacer cada usuario.</p>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="mb-0"><i class="fas fa-key text-primary me-2"></i>Tipos de Permisos</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="small">
+                                        <li><code>add_modelname</code> - Agregar objetos</li>
+                                        <li><code>change_modelname</code> - Modificar objetos</li>
+                                        <li><code>delete_modelname</code> - Eliminar objetos</li>
+                                        <li><code>view_modelname</code> - Ver objetos</li>
+                                    </ul>
+                                    <p class="small mb-0">Los permisos se crean automáticamente para cada modelo.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="mb-0"><i class="fas fa-users text-success me-2"></i>Grupos</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="small">Los grupos permiten:</p>
+                                    <ul class="small">
+                                        <li>Agrupar usuarios con permisos similares</li>
+                                        <li>Asignar permisos en bloque</li>
+                                        <li>Facilitar la gestión de roles</li>
+                                        <li>Implementar jerarquías de acceso</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-cogs me-2"></i>Trabajar con permisos</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># Verificar permisos
+user = request.user
+
+# Verificar un permiso específico
+if user.has_perm('myapp.add_post'):
+    # El usuario puede agregar posts
+    pass
+
+# Verificar múltiples permisos
+if user.has_perms(['myapp.add_post', 'myapp.change_post']):
+    # El usuario tiene ambos permisos
+    pass
+
+# Asignar permisos a un usuario
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
+
+content_type = ContentType.objects.get_for_model(Post)
+permission = Permission.objects.get(
+    codename='add_post',
+    content_type=content_type,
+)
+user.user_permissions.add(permission)
+
+# Remover permisos
+user.user_permissions.remove(permission)</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-users-cog me-2"></i>Gestión de grupos</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># Crear un grupo
+from django.contrib.auth.models import Group, Permission
+
+# Crear grupo
+editores = Group.objects.create(name='Editores')
+
+# Asignar permisos al grupo
+permisos = Permission.objects.filter(
+    codename__in=['add_post', 'change_post', 'view_post']
+)
+editores.permissions.set(permisos)
+
+# Agregar usuario al grupo
+user.groups.add(editores)
+
+# Verificar si usuario pertenece a un grupo
+if user.groups.filter(name='Editores').exists():
+    # Usuario es editor
+    pass
+
+# Obtener todos los grupos de un usuario
+grupos_usuario = user.groups.all()</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-plus me-2"></i>Permisos personalizados</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># models.py
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    class Meta:
+        permissions = [
+            ("can_publish", "Can publish posts"),
+            ("can_feature", "Can feature posts on homepage"),
+        ]
+
+# Usar permisos personalizados
+if user.has_perm('myapp.can_publish'):
+    # El usuario puede publicar posts
+    pass</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="decoradores" class="mb-5 fade-in">
+                    <h2>Decoradores de Seguridad</h2>
+                    <p>Django proporciona decoradores que facilitan la implementación de control de acceso en tus vistas.</p>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-lock me-2"></i>@login_required</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python">from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+@login_required
+def dashboard(request):
+    """Vista que requiere que el usuario esté autenticado"""
+    return render(request, 'dashboard.html')
+
+@login_required(login_url='/mi-login/')
+def vista_especial(request):
+    """Especifica una URL de login personalizada"""
+    return render(request, 'vista_especial.html')</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-user-shield me-2"></i>@permission_required</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python">from django.contrib.auth.decorators import permission_required
+
+@permission_required('myapp.add_post')
+def crear_post(request):
+    """Solo usuarios con permiso 'add_post' pueden acceder"""
+    return render(request, 'crear_post.html')
+
+@permission_required(['myapp.add_post', 'myapp.change_post'])
+def gestionar_posts(request):
+    """Requiere múltiples permisos"""
+    return render(request, 'gestionar_posts.html')
+
+@permission_required('myapp.delete_post', raise_exception=True)
+def eliminar_post(request, post_id):
+    """Lanza excepción 403 en lugar de redirigir al login"""
+    # Lógica para eliminar post
+    pass</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-user-check me-2"></i>@user_passes_test</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python">from django.contrib.auth.decorators import user_passes_test
+
+def is_staff_user(user):
+    return user.is_staff
+
+def is_owner_or_staff(user):
+    return user.is_staff or user.groups.filter(name='Propietarios').exists()
+
+@user_passes_test(is_staff_user)
+def admin_panel(request):
+    """Solo usuarios staff pueden acceder"""
+    return render(request, 'admin_panel.html')
+
+@user_passes_test(is_owner_or_staff, login_url='/acceso-denegado/')
+def panel_propietarios(request):
+    """Con URL de redirección personalizada"""
+    return render(request, 'panel_propietarios.html')</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-eye me-2"></i>Verificaciones en templates</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-html">&lt;!-- Verificar si usuario está autenticado --&gt;
+{% if user.is_authenticated %}
+    &lt;p&gt;Bienvenido, {{ user.first_name }}!&lt;/p&gt;
+    &lt;a href="{% url 'logout' %}"&gt;Cerrar sesión&lt;/a&gt;
+{% else %}
+    &lt;a href="{% url 'login' %}"&gt;Iniciar sesión&lt;/a&gt;
+{% endif %}
+
+&lt;!-- Verificar permisos específicos --&gt;
+{% if perms.myapp.add_post %}
+    &lt;a href="{% url 'crear_post' %}" class="btn btn-primary"&gt;
+        Crear nuevo post
+    &lt;/a&gt;
+{% endif %}
+
+&lt;!-- Verificar si usuario es staff --&gt;
+{% if user.is_staff %}
+    &lt;a href="{% url 'admin_panel' %}"&gt;Panel de administración&lt;/a&gt;
+{% endif %}
+
+&lt;!-- Verificar grupos --&gt;
+{% if 'Editores' in user.groups.all|join:',' %}
+    &lt;div class="alert alert-info"&gt;Tienes permisos de editor&lt;/div&gt;
+{% endif %}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-lightbulb me-2"></i> <strong>Tip:</strong> Combina decoradores para múltiples niveles de seguridad. Por ejemplo, <code>@login_required</code> + <code>@permission_required</code> asegura que el usuario esté autenticado Y tenga los permisos necesarios.
+                    </div>
+                </div>
+                
+                <div id="ejercicio" class="mb-5 fade-in">
+                    <h2>Ejercicio Práctico: Sistema de Blog con Autenticación</h2>
+                    <div class="alert alert-primary">
+                        <i class="fas fa-tasks me-2"></i> <strong>Objetivo:</strong> Crear un sistema de blog completo con registro, login, y diferentes niveles de permisos para autores y administradores.
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Paso 1: Configurar el proyecto</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-bash"># Crear proyecto
+django-admin startproject blog_seguro
+cd blog_seguro
+python manage.py startapp blog
+
+# Aplicar migraciones iniciales
+python manage.py migrate
+python manage.py createsuperuser</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Paso 2: Crear modelos</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># blog/models.py
+from django.db import models
+from django.contrib.auth.models import User
+from django.urls import reverse
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_published = models.BooleanField(default=False)
+    
+    class Meta:
+        permissions = [
+            ("can_publish", "Can publish posts"),
+            ("can_feature", "Can feature posts"),
+        ]
+    
+    def __str__(self):
+        return self.title
+    
+    def get_absolute_url(self):
+        return reverse('post_detail', kwargs={'pk': self.pk})</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Paso 3: Crear formularios</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># blog/forms.py
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from .models import Post
+
+class RegistroForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
+    
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
+        }</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Paso 4: Crear vistas</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># blog/views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
+from django.core.paginator import Paginator
+from .models import Post
+from .forms import RegistroForm, PostForm
+
+def home(request):
+    posts = Post.objects.filter(is_published=True).order_by('-created_at')
+    paginator = Paginator(posts, 5)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
+    return render(request, 'blog/home.html', {'posts': posts})
+
+def registro(request):
+    if request.method == 'POST':
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, '¡Cuenta creada exitosamente!')
+            return redirect('home')
+    else:
+        form = RegistroForm()
+    return render(request, 'registration/registro.html', {'form': form})
+
+@login_required
+def crear_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            messages.success(request, 'Post creado exitosamente!')
+            return redirect('mis_posts')
+    else:
+        form = PostForm()
+    return render(request, 'blog/crear_post.html', {'form': form})
+
+@login_required
+def mis_posts(request):
+    posts = Post.objects.filter(author=request.user).order_by('-created_at')
+    return render(request, 'blog/mis_posts.html', {'posts': posts})
+
+@permission_required('blog.can_publish')
+def publicar_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    post.is_published = True
+    post.save()
+    messages.success(request, f'Post "{post.title}" publicado exitosamente!')
+    return redirect('admin_posts')</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Paso 5: Configurar URLs</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># blog/urls.py
+from django.urls import path
+from django.contrib.auth import views as auth_views
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('registro/', views.registro, name='registro'),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('crear-post/', views.crear_post, name='crear_post'),
+    path('mis-posts/', views.mis_posts, name='mis_posts'),
+    path('publicar/<int:post_id>/', views.publicar_post, name='publicar_post'),
+]
+
+# blog_seguro/urls.py
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('blog.urls')),
+]</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-success mt-4">
+                        <i class="fas fa-check-circle me-2"></i> <strong>¡Excelente!</strong> Has implementado un sistema completo de autenticación con diferentes niveles de permisos. Los usuarios pueden registrarse, crear posts, y solo usuarios con permisos especiales pueden publicarlos.
+                    </div>
+                </div>
+                
+                <div id="quiz" class="mb-5 fade-in">
+                    <h2>Quiz de Autenticación y Autorización</h2>
+                    <div class="quiz-container">
+                        <div class="quiz-question mb-4" data-question="1">
+                            <h5>1. ¿Cuál es la diferencia entre autenticación y autorización?</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q1" value="a">
+                                <label class="form-check-label">Son lo mismo, ambos verifican la identidad del usuario</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q1" value="b" data-correct="true">
+                                <label class="form-check-label">Autenticación verifica quién eres, autorización verifica qué puedes hacer</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q1" value="c">
+                                <label class="form-check-label">Autorización verifica quién eres, autenticación verifica qué puedes hacer</label>
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-question mb-4" data-question="2">
+                            <h5>2. ¿Qué método usar para cambiar la contraseña de un usuario?</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q2" value="a">
+                                <label class="form-check-label">user.password = 'nueva_password'</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q2" value="b" data-correct="true">
+                                <label class="form-check-label">user.set_password('nueva_password')</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q2" value="c">
+                                <label class="form-check-label">user.update_password('nueva_password')</label>
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-question mb-4" data-question="3">
+                            <h5>3. ¿Qué decorador usar para requerir un permiso específico?</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q3" value="a">
+                                <label class="form-check-label">@login_required</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q3" value="b" data-correct="true">
+                                <label class="form-check-label">@permission_required</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q3" value="c">
+                                <label class="form-check-label">@user_passes_test</label>
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-question mb-4" data-question="4">
+                            <h5>4. ¿Cómo verificar en un template si un usuario tiene un permiso específico?</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q4" value="a">
+                                <label class="form-check-label">{% if user.permissions.myapp.add_post %}</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q4" value="b" data-correct="true">
+                                <label class="form-check-label">{% if perms.myapp.add_post %}</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q4" value="c">
+                                <label class="form-check-label">{% if user.has_perm.myapp.add_post %}</label>
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-question mb-4" data-question="5">
+                            <h5>5. ¿Cuáles son los 4 permisos que Django crea automáticamente para cada modelo?</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q5" value="a">
+                                <label class="form-check-label">create, read, update, delete</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q5" value="b" data-correct="true">
+                                <label class="form-check-label">add, change, delete, view</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q5" value="c">
+                                <label class="form-check-label">insert, update, delete, select</label>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="checkQuiz()">Verificar respuestas</button>
+                        <div id="quiz-result" class="mt-3"></div>
+                    </div>
+                </div>
+                <hr><br>
+                <!-- Navegación entre módulos -->
+                <div class="d-flex justify-content-between mt-5">
+                    <a href="modulo4.html" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Módulo anterior
+                    </a>
+                    <a href="modulo6.html" class="btn btn-primary">
+                        Siguiente módulo<i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container text-center">
+            <p class="mb-0">© 2025 Guía Interactiva Django 5 | Creado con <i class="fas fa-heart text-danger"></i> para los aprendices SENA</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap & Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Prism JS for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/plugins/autoloader/prism-autoloader.min.js"></script>    <!-- Custom JS -->
+    <script src="../js/tutorial/module-progress.js"></script>
+    <script>
+        // Inicializar progreso del módulo
+        function initModule() {
+            document.addEventListener('DOMContentLoaded', function() {
+                // Inicializar progreso del módulo
+                initModuleProgress(5);
+            });
+        }
+
+        // Llamar a la inicialización
+        initModule();
+    </script>
+</body>
+</html>

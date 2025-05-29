@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 6: Proyecto CRUD Completo | Guía Interactiva Django 5</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/tutorial/styles.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-okaidia.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fab fa-python me-2"></i>Django 5 - Guía Interactiva
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#modulos">Módulos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#recursos">Recursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="theme-toggle" title="Cambiar tema">
+                            <i class="fas fa-moon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido del Módulo -->
+    <div class="container mt-5 pt-5 module-content">
+        <div class="row">            <!-- Barra lateral de navegación -->
+            <div class="col-lg-3 mb-4">
+                <div class="sticky-top pt-4" style="z-index: 1020;">
+                    <div class="list-group mb-4">
+                        <a href="#introduccion" class="list-group-item list-group-item-action active">Introducción al Proyecto</a>
+                        <a href="#planificacion" class="list-group-item list-group-item-action">Planificación</a>
+                        <a href="#estructura" class="list-group-item list-group-item-action">Estructura del Proyecto</a>
+                        <a href="#modelos" class="list-group-item list-group-item-action">Modelos y Base de Datos</a>
+                        <a href="#vistas" class="list-group-item list-group-item-action">Vistas y Formularios</a>
+                        <a href="#templates" class="list-group-item list-group-item-action">Templates y Frontend</a>
+                        <a href="#auth" class="list-group-item list-group-item-action">Autenticación y Permisos</a>
+                        <a href="#despliegue" class="list-group-item list-group-item-action">Despliegue</a>
+                        <a href="#pruebas" class="list-group-item list-group-item-action">Pruebas</a>
+                        <a href="#quiz" class="list-group-item list-group-item-action">Quiz</a>
+                    </div>
+                    
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-map-signs me-2 text-primary"></i>Progreso del Módulo</h5>
+                            <div class="progress mb-3">
+                                <div class="progress-bar module-progress" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <a href="modulo5.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Módulo anterior</a>
+                                <a href="#" class="btn btn-primary" id="next-module-btn">¡Completar curso!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contenido principal -->
+            <div class="col-lg-9">
+                <div id="introduccion" class="mb-5 fade-in">
+                    <h2>Proyecto CRUD Completo: Sistema de Gestión de Biblioteca</h2>
+                    <div class="alert alert-success mb-4">
+                        <i class="fas fa-graduation-cap me-2"></i> <strong>Objetivo de aprendizaje:</strong> En este módulo final, construiremos una aplicación web completa de gestión de biblioteca que integra todos los conceptos aprendidos en los módulos anteriores.
+                    </div>
+                    
+                    <p class="lead">Este proyecto práctico nos permitirá aplicar todo lo que hemos aprendido sobre Django, desde la configuración inicial hasta el despliegue, creando una aplicación web funcional y profesional.</p>
+
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-list-check text-primary me-2"></i>Características del Proyecto</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li>Gestión de libros y autores</li>
+                                        <li>Sistema de préstamos</li>
+                                        <li>Gestión de usuarios</li>
+                                        <li>Panel de administración</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li>Búsqueda y filtros</li>
+                                        <li>Sistema de reservas</li>
+                                        <li>Notificaciones</li>
+                                        <li>Reportes y estadísticas</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-lightbulb me-2"></i> Este proyecto es un ejemplo real de cómo las diferentes partes de Django trabajan juntas para crear una aplicación web completa y funcional.
+                    </div>
+                </div>
+
+                <div id="planificacion" class="mb-5 fade-in">
+                    <h2>Planificación del Proyecto</h2>
+                    <p>Antes de empezar a codificar, es importante planificar la estructura y funcionalidades de nuestra aplicación.</p>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>Requerimientos Funcionales</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Módulo</th>
+                                            <th>Funcionalidades</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Gestión de Libros</td>
+                                            <td>
+                                                <ul class="mb-0">
+                                                    <li>CRUD de libros</li>
+                                                    <li>Gestión de categorías</li>
+                                                    <li>Control de inventario</li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gestión de Usuarios</td>
+                                            <td>
+                                                <ul class="mb-0">
+                                                    <li>Registro y autenticación</li>
+                                                    <li>Perfiles de usuario</li>
+                                                    <li>Roles y permisos</li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sistema de Préstamos</td>
+                                            <td>
+                                                <ul class="mb-0">
+                                                    <li>Préstamo de libros</li>
+                                                    <li>Devoluciones</li>
+                                                    <li>Historial de préstamos</li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="estructura" class="mb-5 fade-in">
+                    <h2>Estructura del Proyecto</h2>
+                    <p>Organizaremos nuestro proyecto en múltiples aplicaciones Django para mantener el código modular y mantenible.</p>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-folder-tree me-2"></i>Estructura de Directorios</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-bash">biblioteca/
+    ├── manage.py
+    ├── biblioteca/
+    │   ├── __init__.py
+    │   ├── settings.py
+    │   ├── urls.py
+    │   └── wsgi.py
+    ├── libros/
+    │   ├── models.py
+    │   ├── views.py
+    │   ├── forms.py
+    │   └── urls.py
+    ├── usuarios/
+    │   ├── models.py
+    │   ├── views.py
+    │   └── forms.py
+    ├── prestamos/
+    │   ├── models.py
+    │   ├── views.py
+    │   └── forms.py
+    └── templates/
+        ├── base.html
+        ├── libros/
+        ├── usuarios/
+        └── prestamos/</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i> <strong>Importante:</strong> Una buena estructura de proyecto facilita:
+                        <ul class="mb-0 mt-2">
+                            <li>Mantenimiento del código</li>
+                            <li>Colaboración en equipo</li>
+                            <li>Escalabilidad de la aplicación</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="modelos" class="mb-5 fade-in">
+                    <h2>Modelos y Base de Datos</h2>
+                    <p>Implementaremos los modelos necesarios para nuestra aplicación de biblioteca.</p>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-database me-2"></i>Modelo de Libro</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># libros/models.py
+from django.db import models
+from django.urls import reverse
+
+class Categoria(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True)
+    
+    class Meta:
+        verbose_name_plural = "Categorías"
+    
+    def __str__(self):
+        return self.nombre
+
+class Autor(models.Model):
+    nombre = models.CharField(max_length=200)
+    biografia = models.TextField(blank=True)
+    fecha_nacimiento = models.DateField(null=True, blank=True)
+    
+    def __str__(self):
+        return self.nombre
+
+class Libro(models.Model):
+    titulo = models.CharField(max_length=200)
+    isbn = models.CharField('ISBN', max_length=13, unique=True)
+    autor = models.ForeignKey(Autor, on_delete=models.PROTECT, related_name='libros')
+    categorias = models.ManyToManyField(Categoria, related_name='libros')
+    descripcion = models.TextField()
+    portada = models.ImageField(upload_to='portadas/', null=True, blank=True)
+    copias_disponibles = models.PositiveIntegerField(default=1)
+    fecha_adicion = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.titulo
+    
+    def get_absolute_url(self):
+        return reverse('libro_detalle', args=[str(self.id)])</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-exchange-alt me-2"></i>Modelo de Préstamo</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># prestamos/models.py
+from django.db import models
+from django.contrib.auth.models import User
+from libros.models import Libro
+from django.utils import timezone
+from datetime import timedelta
+
+class Prestamo(models.Model):
+    ESTADO_CHOICES = [
+        ('prestado', 'Prestado'),
+        ('devuelto', 'Devuelto'),
+        ('vencido', 'Vencido'),
+    ]
+    
+    libro = models.ForeignKey(Libro, on_delete=models.PROTECT)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    fecha_prestamo = models.DateTimeField(auto_now_add=True)
+    fecha_devolucion_esperada = models.DateTimeField()
+    fecha_devolucion_real = models.DateTimeField(null=True, blank=True)
+    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='prestado')
+    
+    def save(self, *args, **kwargs):
+        if not self.fecha_devolucion_esperada:
+            # Por defecto, 14 días de préstamo
+            self.fecha_devolucion_esperada = timezone.now() + timedelta(days=14)
+        super().save(*args, **kwargs)
+    
+    def esta_vencido(self):
+        return self.estado == 'prestado' and timezone.now() > self.fecha_devolucion_esperada
+    
+    def __str__(self):
+        return f"{self.libro.titulo} - {self.usuario.username}"</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> Los modelos incluyen validaciones y métodos útiles que facilitarán el desarrollo de las vistas y la lógica de negocio.
+                    </div>
+                </div>
+
+                <div id="vistas" class="mb-5 fade-in">
+                    <h2>Vistas y Formularios</h2>
+                    <p>Implementaremos las vistas necesarias para manejar las operaciones CRUD y los formularios para la entrada de datos.</p>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Formularios</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># libros/forms.py
+from django import forms
+from .models import Libro, Autor, Categoria
+
+class LibroForm(forms.ModelForm):
+    class Meta:
+        model = Libro
+        fields = ['titulo', 'isbn', 'autor', 'categorias', 'descripcion', 'portada', 'copias_disponibles']
+        widgets = {
+            'descripcion': forms.Textarea(attrs={'rows': 4}),
+            'categorias': forms.CheckboxSelectMultiple(),
+        }
+
+class PrestamoForm(forms.ModelForm):
+    class Meta:
+        model = Prestamo
+        fields = ['libro']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['libro'].queryset = Libro.objects.filter(copias_disponibles__gt=0)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-code me-2"></i>Vistas Basadas en Clase</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># libros/views.py
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.urls import reverse_lazy
+from .models import Libro
+from .forms import LibroForm
+
+class LibroListView(ListView):
+    model = Libro
+    context_object_name = 'libros'
+    template_name = 'libros/libro_list.html'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        queryset = Libro.objects.all()
+        busqueda = self.request.GET.get('buscar')
+        if busqueda:
+            queryset = queryset.filter(titulo__icontains=busqueda)
+        return queryset
+
+class LibroCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = Libro
+    form_class = LibroForm
+    template_name = 'libros/libro_form.html'
+    success_url = reverse_lazy('libro_list')
+    permission_required = 'libros.add_libro'
+
+class LibroUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = Libro
+    form_class = LibroForm
+    template_name = 'libros/libro_form.html'
+    permission_required = 'libros.change_libro'
+
+class LibroDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = Libro
+    success_url = reverse_lazy('libro_list')
+    template_name = 'libros/libro_confirm_delete.html'
+    permission_required = 'libros.delete_libro'</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-exchange-alt me-2"></i>Vistas de Préstamos</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># prestamos/views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import Prestamo
+from .forms import PrestamoForm
+
+@login_required
+def solicitar_prestamo(request):
+    if request.method == 'POST':
+        form = PrestamoForm(request.POST)
+        if form.is_valid():
+            prestamo = form.save(commit=False)
+            prestamo.usuario = request.user
+            libro = form.cleaned_data['libro']
+            if libro.copias_disponibles > 0:
+                libro.copias_disponibles -= 1
+                libro.save()
+                prestamo.save()
+                messages.success(request, 'Préstamo realizado con éxito!')
+                return redirect('mis_prestamos')
+            else:
+                messages.error(request, 'No hay copias disponibles de este libro.')
+    else:
+        form = PrestamoForm()
+    return render(request, 'prestamos/solicitar_prestamo.html', {'form': form})
+
+@login_required
+def devolver_libro(request, prestamo_id):
+    prestamo = get_object_or_404(Prestamo, id=prestamo_id, usuario=request.user)
+    if prestamo.estado == 'prestado':
+        prestamo.estado = 'devuelto'
+        prestamo.fecha_devolucion_real = timezone.now()
+        prestamo.save()
+        prestamo.libro.copias_disponibles += 1
+        prestamo.libro.save()
+        messages.success(request, 'Libro devuelto con éxito!')
+    return redirect('mis_prestamos')</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i> <strong>Importante:</strong> Las vistas incluyen:
+                        <ul class="mb-0 mt-2">
+                            <li>Validación de permisos</li>
+                            <li>Manejo de transacciones</li>
+                            <li>Mensajes de retroalimentación</li>
+                            <li>Redirecciones apropiadas</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="templates" class="mb-5 fade-in">
+                    <h2>Templates y Frontend</h2>
+                    <p>Crearemos templates reutilizables y un frontend moderno usando Bootstrap.</p>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-code me-2"></i>Template Base</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-django">&lt;!-- templates/base.html --&gt;
+{% raw %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Biblioteca{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'inicio' %}">
+                <i class="fas fa-book me-2"></i>Biblioteca
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'libro_list' %}">Libros</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'mis_prestamos' %}">Mis Préstamos</a>
+                        </li>
+                        {% if user.is_staff %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'admin:index' %}">Administración</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+                <div class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <span class="nav-item nav-link text-light">
+                            <i class="fas fa-user me-1"></i>{{ user.username }}
+                        </span>
+                        <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a>
+                        <a class="nav-link" href="{% url 'registro' %}">Registrarse</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-dark text-light py-3 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 Biblioteca. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+{% endraw %}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-list me-2"></i>Lista de Libros</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-django">&lt;!-- templates/libros/libro_list.html --&gt;
+{% raw %}
+{% extends 'base.html' %}
+
+{% block title %}Libros | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2>Catálogo de Libros</h2>
+    </div>
+    <div class="col-md-4">
+        <form class="d-flex" method="get">
+            <input class="form-control me-2" type="search" placeholder="Buscar libro..." 
+                   name="buscar" value="{{ request.GET.buscar }}">
+            <button class="btn btn-outline-primary" type="submit">Buscar</button>
+        </form>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for libro in libros %}
+        <div class="col">
+            <div class="card h-100">
+                {% if libro.portada %}
+                    <img src="{{ libro.portada.url }}" class="card-img-top" 
+                         alt="{{ libro.titulo }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ libro.titulo }}</h5>
+                    <p class="card-text">
+                        <small class="text-muted">Por {{ libro.autor.nombre }}</small>
+                    </p>
+                    <p class="card-text">{{ libro.descripcion|truncatewords:30 }}</p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                No se encontraron libros.
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+{% endraw %}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="fas fa-paint-brush me-2"></i> <strong>Consejos de diseño:</strong> 
+                        <ul class="mb-0 mt-2">
+                            <li>Utiliza los tags <code>{% raw %}{% endraw %}</code> para mostrar correctamente la sintaxis de Django en los ejemplos</li>
+                            <li>Mantén un diseño consistente usando Bootstrap en todos los templates</li>
+                            <li>Implementa componentes reutilizables para elementos comunes</li>
+                            <li>Agrega comentarios explicativos en las secciones complejas</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="auth" class="mb-5 fade-in">
+                    <h2>Autenticación y Permisos</h2>
+                    <p>Implementaremos un sistema de autenticación y autorización robusto para controlar el acceso a las diferentes funcionalidades.</p>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-users me-2"></i>Grupos de Usuarios</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># usuarios/permissions.py
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
+from libros.models import Libro
+from prestamos.models import Prestamo
+
+def crear_grupos_permisos():
+    # Crear grupo de Bibliotecarios
+    bibliotecarios, _ = Group.objects.get_or_create(name='Bibliotecarios')
+    
+    # Obtener todos los permisos para Libros y Préstamos
+    libro_ct = ContentType.objects.get_for_model(Libro)
+    prestamo_ct = ContentType.objects.get_for_model(Prestamo)
+    
+    permisos_libro = Permission.objects.filter(content_type=libro_ct)
+    permisos_prestamo = Permission.objects.filter(content_type=prestamo_ct)
+    
+    # Asignar permisos al grupo
+    bibliotecarios.permissions.set([*permisos_libro, *permisos_prestamo])
+    
+    # Crear grupo de Usuarios Regulares
+    usuarios, _ = Group.objects.get_or_create(name='Usuarios')
+    
+    # Asignar permisos limitados
+    ver_libro = Permission.objects.get(codename='view_libro', content_type=libro_ct)
+    ver_prestamo = Permission.objects.get(codename='view_prestamo', content_type=prestamo_ct)
+    add_prestamo = Permission.objects.get(codename='add_prestamo', content_type=prestamo_ct)
+    
+    usuarios.permissions.set([ver_libro, ver_prestamo, add_prestamo])</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Decoradores y Mixins</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># usuarios/decorators.py
+from django.contrib.auth.decorators import user_passes_test
+from django.core.exceptions import PermissionDenied
+from functools import wraps
+
+def es_bibliotecario(user):
+    return user.groups.filter(name='Bibliotecarios').exists()
+
+def bibliotecario_required(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if not es_bibliotecario(request.user):
+            raise PermissionDenied
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+# Uso en vistas
+@login_required
+@bibliotecario_required
+def gestionar_prestamos(request):
+    # Solo bibliotecarios pueden acceder
+    prestamos = Prestamo.objects.all()
+    return render(request, 'prestamos/gestionar.html', {'prestamos': prestamos})</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <i class="fas fa-key me-2"></i> <strong>Seguridad:</strong>
+                        <ul class="mb-0 mt-2">
+                            <li>Implementa autenticación en todas las vistas sensibles</li>
+                            <li>Usa decoradores y mixins para control de acceso</li>
+                            <li>Verifica permisos tanto en backend como en frontend</li>
+                            <li>Mantén logs de acciones importantes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="despliegue" class="mb-5 fade-in">
+                    <h2>Despliegue</h2>
+                    <p>Preparar y desplegar una aplicación Django en producción requiere varias consideraciones importantes.</p>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-cogs me-2"></i>Configuración de Producción</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-python"># biblioteca/settings/production.py
+from .base import *
+
+DEBUG = False
+ALLOWED_HOSTS = ['biblioteca.example.com', 'www.biblioteca.example.com']
+
+# Configuración de base de datos PostgreSQL
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'biblioteca_db',
+        'USER': 'biblioteca_user',
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+
+# Configuración de archivos estáticos y media
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+# Seguridad
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-server me-2"></i>Configuración de Gunicorn</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-bash"># gunicorn.conf.py
+bind = '0.0.0.0:8000'
+workers = 3
+timeout = 120
+accesslog = '/var/log/gunicorn/access.log'
+errorlog = '/var/log/gunicorn/error.log'</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-network-wired me-2"></i>Configuración de Nginx</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-nginx"># /etc/nginx/sites-available/biblioteca
+server {
+    listen 80;
+    server_name biblioteca.example.com www.biblioteca.example.com;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    
+    location /static/ {
+        root /var/www/biblioteca;
+    }
+
+    location /media/ {
+        root /var/www/biblioteca;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning mt-4">
+                        <i class="fas fa-exclamation-triangle me-2"></i> <strong>Checklist de despliegue:</strong>
+                        <ul class="mb-0 mt-2">
+                            <li>Configurar variables de entorno</li>
+                            <li>Realizar respaldo de base de datos</li>
+                            <li>Recolectar archivos estáticos</li>
+                            <li>Configurar HTTPS con Let's Encrypt</li>
+                            <li>Implementar monitoreo y logs</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="quiz" class="mb-5 fade-in">
+                    <h2>Quiz: Proyecto CRUD Completo</h2>
+                    <p>Comprueba tu comprensión del proyecto completo respondiendo las siguientes preguntas:</p>
+                    
+                    <div class="quiz-container" data-quiz-id="quiz-modulo-6">
+                        <div class="quiz-question mb-4" data-question="1">
+                            <h5>1. ¿Cuál es la ventaja de dividir el proyecto en múltiples aplicaciones Django?</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q1" value="a">
+                                <label class="form-check-label">Mejora el rendimiento de la aplicación</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q1" value="b" data-correct="true">
+                                <label class="form-check-label">Facilita el mantenimiento y la modularidad del código</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q1" value="c">
+                                <label class="form-check-label">Reduce el tamaño de la base de datos</label>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question mb-4" data-question="2">
+                            <h5>2. ¿Por qué usamos models.PROTECT en la relación ForeignKey del modelo Libro?</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q2" value="a" data-correct="true">
+                                <label class="form-check-label">Para evitar que se elimine un autor que tiene libros asociados</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q2" value="b">
+                                <label class="form-check-label">Para mejorar el rendimiento de las consultas</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q2" value="c">
+                                <label class="form-check-label">Para permitir valores nulos en la relación</label>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question mb-4" data-question="3">
+                            <h5>3. ¿Qué ventaja ofrece usar Class-Based Views en lugar de Function-Based Views?</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q3" value="a">
+                                <label class="form-check-label">Son más rápidas de ejecutar</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q3" value="b">
+                                <label class="form-check-label">No requieren templates</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q3" value="c" data-correct="true">
+                                <label class="form-check-label">Reutilizan código común y siguen el principio DRY</label>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question mb-4" data-question="4">
+                            <h5>4. ¿Cuál es el propósito del decorador @bibliotecario_required?</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q4" value="a">
+                                <label class="form-check-label">Mejorar el rendimiento de las vistas</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q4" value="b" data-correct="true">
+                                <label class="form-check-label">Restringir el acceso solo a usuarios del grupo Bibliotecarios</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q4" value="c">
+                                <label class="form-check-label">Registrar las acciones de los bibliotecarios</label>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question mb-4" data-question="5">
+                            <h5>5. Al desplegar en producción, ¿por qué es importante configurar SECURE_SSL_REDIRECT = True?</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q5" value="a" data-correct="true">
+                                <label class="form-check-label">Para forzar todas las conexiones a usar HTTPS</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q5" value="b">
+                                <label class="form-check-label">Para mejorar el rendimiento del servidor</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="q5" value="c">
+                                <label class="form-check-label">Para habilitar el modo debug en producción</label>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info mt-4">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Recuerda revisar cada sección del módulo si tienes dudas sobre alguna pregunta.
+                        </div>
+
+                        <button class="btn btn-primary mt-3" onclick="checkQuiz('quiz-modulo-6')">
+                            Verificar respuestas
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="mt-5">
+                    <a href="../index.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Volver al inicio</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+        <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container text-center">
+            <p class="mb-0">© 2025 Guía Interactiva Django 5 | Creado con <i class="fas fa-heart text-danger"></i> para los aprendices SENA</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap & Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Prism.js para resaltado de sintaxis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/tutorial/main.js"></script>
+</body>
+</html>

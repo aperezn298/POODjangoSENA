@@ -22,5 +22,6 @@ Contenido de la Competencia de Python (POO + Django)
     - [Conceptos ORM](https://github.com/aperezn298/POODjangoSENA/blob/main/03_Django/02_1_ConceptosORM.pdf)
     - [HTML y Python](https://github.com/aperezn298/POODjangoSENA/blob/main/03_Django/02_2_HTML_Python.pdf)
 
-# Guia Interactiva POO con Python:
-[Comienza de forma Autonoma](https://aperezn298.github.io/POODjangoSENA/GuiaPythonPOO/)
+# Guias Interactiva de Aprendizaje:
+- [POO con Python](https://aperezn298.github.io/POODjangoSENA/GuiaPythonPOO/)
+- [Aplicaciones con Django](https://aperezn298.github.io/POODjangoSENA/GuiaDjango/)
