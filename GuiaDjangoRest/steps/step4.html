@@ -1,0 +1,349 @@
+<div class="tutorial-step">
+    <div class="alert alert-primary" role="alert">
+        <i class="fas fa-code me-2"></i>
+        En este paso crearemos los serializadores y vistas para nuestra API RESTful con Django REST Framework.
+    </div>
+
+    <h3>Serializadores y Vistas para nuestra API</h3>
+    <p>Los serializadores convierten los modelos de Django en formatos como JSON, mientras que las vistas manejan las solicitudes HTTP y devuelven respuestas adecuadas.</p>
+
+    <h3>Paso 4.1: Crear serializadores</h3>
+    <p>Primero, creamos un archivo <code>serializers.py</code> en nuestra aplicación <code>api</code>:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-python"># api/serializers.py
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from .models import Autor, Categoria, Editorial, Libro, Resena
+
+
+class UserSerializer(serializers.ModelSerializer):
+    """Serializador para el modelo User"""
+    
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
+
+
+class AutorSerializer(serializers.ModelSerializer):
+    """Serializador para el modelo Autor"""
+    
+    class Meta:
+        model = Autor
+        fields = '__all__'
+
+
+class CategoriaSerializer(serializers.ModelSerializer):
+    """Serializador para el modelo Categoria"""
+    
+    class Meta:
+        model = Categoria
+        fields = '__all__'
+
+
+class EditorialSerializer(serializers.ModelSerializer):
+    """Serializador para el modelo Editorial"""
+    
+    class Meta:
+        model = Editorial
+        fields = '__all__'
+
+
+class ResenaSerializer(serializers.ModelSerializer):
+    """Serializador para el modelo Resena"""
+    usuario = UserSerializer(read_only=True)
+    usuario_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        source='usuario',
+        write_only=True
+    )
+    
+    class Meta:
+        model = Resena
+        fields = ['id', 'libro', 'usuario', 'usuario_id', 'titulo', 'texto', 'valoracion', 'created']
+
+
+class LibroListSerializer(serializers.ModelSerializer):
+    """Serializador para listar libros (versión resumida)"""
+    autores = serializers.StringRelatedField(many=True)
+    categorias = serializers.StringRelatedField(many=True)
+    editorial = serializers.StringRelatedField()
+    promedio_valoraciones = serializers.FloatField(read_only=True)
+    
+    class Meta:
+        model = Libro
+        fields = ['id', 'titulo', 'autores', 'editorial', 'categorias', 'promedio_valoraciones']
+
+
+class LibroDetailSerializer(serializers.ModelSerializer):
+    """Serializador para detalles de un libro (versión completa)"""
+    autores = AutorSerializer(many=True, read_only=True)
+    categorias = CategoriaSerializer(many=True, read_only=True)
+    editorial = EditorialSerializer(read_only=True)
+    resenas = ResenaSerializer(many=True, read_only=True)
+    promedio_valoraciones = serializers.FloatField(read_only=True)
+    
+    # Campos para asociar relaciones al crear/actualizar
+    autor_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Autor.objects.all(),
+        source='autores',
+        write_only=True,
+        many=True
+    )
+    categoria_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Categoria.objects.all(),
+        source='categorias',
+        write_only=True,
+        many=True
+    )
+    editorial_id = serializers.PrimaryKeyRelatedField(
+        queryset=Editorial.objects.all(),
+        source='editorial',
+        write_only=True
+    )
+    
+    class Meta:
+        model = Libro
+        fields = [
+            'id', 'titulo', 'isbn', 'sinopsis', 'fecha_publicacion',
+            'portada', 'paginas', 'idioma', 'autores', 'categorias',
+            'editorial', 'autor_ids', 'categoria_ids', 'editorial_id',
+            'resenas', 'promedio_valoraciones', 'created', 'modified'
+        ]
+</code></pre>
+    </div>
+
+    <div class="alert alert-info mb-4">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Nota:</strong> Usamos dos serializadores para el modelo Libro: uno simplificado para listar y otro detallado para ver, crear y actualizar.
+    </div>
+
+    <h3>Paso 4.2: Crear vistas</h3>
+    <p>Ahora, vamos a crear las vistas usando ViewSets de Django REST Framework. Esto nos permite implementar todas las operaciones CRUD de forma sencilla:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-python"># api/views.py
+from rest_framework import viewsets, permissions, filters
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Avg
+
+from .models import Autor, Categoria, Editorial, Libro, Resena
+from .serializers import (
+    AutorSerializer, CategoriaSerializer, EditorialSerializer,
+    LibroListSerializer, LibroDetailSerializer, ResenaSerializer
+)
+
+
+class AutorViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint para autores.
+    """
+    queryset = Autor.objects.all()
+    serializer_class = AutorSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['nombre', 'apellidos']
+    ordering_fields = ['apellidos', 'nombre', 'fecha_nacimiento']
+
+
+class CategoriaViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint para categorías.
+    """
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['nombre']
+
+
+class EditorialViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint para editoriales.
+    """
+    queryset = Editorial.objects.all()
+    serializer_class = EditorialSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['nombre']
+
+
+class LibroViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint para libros.
+    """
+    queryset = Libro.objects.all().annotate(
+        promedio_valoraciones=Avg('resenas__valoracion')
+    )
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['categorias', 'editorial', 'autores', 'idioma']
+    search_fields = ['titulo', 'isbn', 'sinopsis']
+    ordering_fields = ['titulo', 'fecha_publicacion', 'promedio_valoraciones']
+    
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return LibroListSerializer
+        return LibroDetailSerializer
+    
+    @action(detail=True, methods=['get'])
+    def resenas(self, request, pk=None):
+        """Endpoint personalizado para obtener las reseñas de un libro específico"""
+        libro = self.get_object()
+        resenas = libro.resenas.all()
+        serializer = ResenaSerializer(resenas, many=True)
+        return Response(serializer.data)
+
+
+class ResenaViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint para reseñas.
+    """
+    queryset = Resena.objects.all()
+    serializer_class = ResenaSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = ['libro', 'usuario', 'valoracion']
+    ordering_fields = ['created', 'valoracion']
+    
+    def perform_create(self, serializer):
+        """Asigna automáticamente el usuario actual como autor de la reseña"""
+        serializer.save(usuario=self.request.user)
+</code></pre>
+    </div>
+
+    <h3>Paso 4.3: Configurar las URLs</h3>
+    <p>Ahora vamos a configurar las URLs para nuestra API. Primero, creamos un archivo <code>urls.py</code> en nuestra aplicación <code>api</code>:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-python"># api/urls.py
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from . import views
+
+# Crear router y registrar nuestros viewsets
+router = DefaultRouter()
+router.register(r'autores', views.AutorViewSet)
+router.register(r'categorias', views.CategoriaViewSet)
+router.register(r'editoriales', views.EditorialViewSet)
+router.register(r'libros', views.LibroViewSet)
+router.register(r'resenas', views.ResenaViewSet)
+
+# Las URLs de API son determinadas automáticamente por el router
+urlpatterns = [
+    path('', include(router.urls)),
+]</code></pre>
+    </div>
+
+    <p>Luego, modificamos el archivo <code>urls.py</code> del proyecto para incluir las URLs de nuestra API:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-python"># mi_proyecto/urls.py
+from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),  # Incluir las URLs de nuestra API
+    path('api-auth/', include('rest_framework.urls')),  # URLs para autenticación por navegador
+]
+
+# Configuración para servir archivos multimedia durante desarrollo
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)</code></pre>
+    </div>
+
+    <h3>Paso 4.4: Configurar la gestión de archivos multimedia</h3>
+    <p>Ya que nuestros modelos incluyen campos de imágenes (portada de libro y foto de autor), necesitamos configurar el manejo de archivos multimedia. Añadamos lo siguiente al archivo <code>settings.py</code>:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-python"># Configuración para archivos media (añadir al final de settings.py)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')</code></pre>
+    </div>
+
+    <p>Asegúrate de importar <code>os</code> al principio de <code>settings.py</code> si no está ya importado:</p>
+    <div class="code-block">
+        <pre><code class="language-python">import os</code></pre>
+    </div>
+
+    <h3>Paso 4.5: Probar la API</h3>
+    <p>Ahora podemos iniciar el servidor y probar nuestra API:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash"># Iniciar el servidor
+python manage.py runserver</code></pre>
+    </div>
+
+    <p>Abre tu navegador y visita <a href="http://127.0.0.1:8000/api/" target="_blank">http://127.0.0.1:8000/api/</a>. Deberías ver la interfaz de navegación de la API de Django REST Framework:</p>
+
+    <div class="alert alert-success mb-4">
+        <i class="fas fa-check-circle me-2"></i>
+        <strong>Nota:</strong> Django REST Framework proporciona una interfaz de navegación que facilita probar la API directamente desde el navegador.
+    </div>
+
+    <p>Probemos algunas operaciones básicas:</p>
+    <ul>
+        <li>Navega a <code>/api/autores/</code> para ver la lista de autores</li>
+        <li>Navega a <code>/api/categorias/</code> para ver la lista de categorías</li>
+        <li>Utiliza el formulario proporcionado para crear nuevos recursos</li>
+    </ul>
+
+    <div class="exercise-box">
+        <h4><i class="fas fa-laptop-code me-2"></i>Ejercicio Práctico:</h4>
+        <p>Modifica el <code>LibroViewSet</code> para añadir un endpoint personalizado que devuelva los libros mejor valorados (con promedio de valoraciones superior a 4).</p>
+        
+        <div class="mb-3">
+            <label for="code-top-books" class="form-label">Tu solución:</label>
+            <textarea class="form-control" id="code-top-books" rows="10"></textarea>
+        </div>
+        
+        <button id="check-top-books" class="btn btn-primary">Verificar</button>
+        
+        <div id="feedback-top-books" class="mt-3"></div>
+        
+        <div class="mt-3">
+            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#pista-top-books">
+                <i class="fas fa-lightbulb me-1"></i>Ver pista
+            </button>
+            <div class="collapse mt-2" id="pista-top-books">
+                <div class="card card-body">
+                    <p class="mb-0">Usa el decorador <code>@action</code> para crear un método personalizado en el ViewSet, filtrando por <code>promedio_valoraciones__gt=4</code>.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercise-validator d-none" data-exercise-id="top-books" data-solution="@action(detail=False, methods=['get'])
+def top_rated(self, request):
+    top_libros = self.get_queryset().filter(promedio_valoraciones__gt=4)
+    serializer = self.get_serializer(top_libros, many=True)
+    return Response(serializer.data)"></div>
+    </div>
+
+    <div class="mt-4">
+        <h4>¿Qué hemos aprendido?</h4>
+        <ul>
+            <li>Cómo crear serializadores que convierten modelos Django en formato JSON</li>
+            <li>Cómo implementar ViewSets para manejar operaciones CRUD en la API</li>
+            <li>Cómo configurar routers para definir las URLs de la API</li>
+            <li>Cómo configurar filtros, búsquedas y ordenaciones</li>
+            <li>Cómo crear endpoints personalizados</li>
+            <li>Cómo gestionar archivos multimedia</li>
+        </ul>
+    </div>
+
+    <div class="alert alert-success mt-4" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <strong>¡Felicitaciones!</strong> Has creado una API RESTful completamente funcional con Django REST Framework. En el siguiente paso, aprenderemos a implementar autenticación y permisos para proteger nuestra API.
+    </div>
+
+    <div class="text-center mt-5">
+        <button id="next-step-button" class="btn btn-lg btn-success" onclick="nextStep()">
+            Continuar al Paso 5: Autenticación y Permisos <i class="fas fa-arrow-right ms-2"></i>
+        </button>
+    </div>
+</div>

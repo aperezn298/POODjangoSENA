@@ -1,0 +1,325 @@
+<div class="tutorial-step">
+    <div class="alert alert-primary" role="alert">
+        <i class="fas fa-cubes me-2"></i>
+        En este paso crearemos los modelos de Django que definen la estructura de la base de datos MySQL.
+    </div>
+
+    <h3>Creando la Estructura de Datos</h3>
+    <p>Los modelos en Django son clases de Python que representan tablas en la base de datos. Definen los campos (columnas) y comportamientos de los datos almacenados.</p>
+
+    <h3>Paso 3.1: Planificar los Modelos</h3>
+    <p>Para este tutorial, crearemos una API para gestionar una biblioteca. Necesitaremos los siguientes modelos:</p>
+    
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Modelos para nuestra API de Biblioteca</h4>
+        </div>
+        <div class="card-body">
+            <ul>
+                <li><strong>Autor</strong>: Almacena información sobre los autores de los libros.</li>
+                <li><strong>Categoría</strong>: Categorías o géneros literarios.</li>
+                <li><strong>Editorial</strong>: Información sobre las editoriales.</li>
+                <li><strong>Libro</strong>: Detalles de los libros, relacionado con autores, categorías y editoriales.</li>
+                <li><strong>Reseña</strong>: Reseñas de los usuarios sobre los libros.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="alert alert-info mb-4">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Relaciones:</strong> Los modelos en Django permiten establecer relaciones entre tablas, como muchos-a-muchos (ManyToMany), uno-a-muchos (ForeignKey) y uno-a-uno (OneToOne).
+    </div>
+
+    <h3>Paso 3.2: Definir los Modelos</h3>
+    <p>Abre el archivo <code>api/models.py</code> y reemplaza su contenido con lo siguiente:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-python">from django.db import models
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
+
+
+class TimeStampedModel(models.Model):
+    """
+    Modelo abstracto que proporciona campos de timestamp
+    """
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class Autor(TimeStampedModel):
+    """
+    Modelo para representar autores de libros
+    """
+    nombre = models.CharField(max_length=100)
+    apellidos = models.CharField(max_length=100)
+    fecha_nacimiento = models.DateField(null=True, blank=True)
+    biografia = models.TextField(blank=True)
+    foto = models.ImageField(upload_to='autores/', null=True, blank=True)
+    
+    class Meta:
+        verbose_name = "Autor"
+        verbose_name_plural = "Autores"
+        ordering = ['apellidos', 'nombre']
+    
+    def __str__(self):
+        return f"{self.nombre} {self.apellidos}"
+    
+    @property
+    def nombre_completo(self):
+        return f"{self.nombre} {self.apellidos}"
+
+
+class Categoria(TimeStampedModel):
+    """
+    Modelo para categorías o géneros literarios
+    """
+    nombre = models.CharField(max_length=50, unique=True)
+    descripcion = models.TextField(blank=True)
+    
+    class Meta:
+        verbose_name = "Categoría"
+        verbose_name_plural = "Categorías"
+        ordering = ['nombre']
+    
+    def __str__(self):
+        return self.nombre
+
+
+class Editorial(TimeStampedModel):
+    """
+    Modelo para editoriales
+    """
+    nombre = models.CharField(max_length=100, unique=True)
+    direccion = models.TextField(blank=True)
+    sitio_web = models.URLField(blank=True)
+    email = models.EmailField(blank=True)
+    
+    class Meta:
+        verbose_name = "Editorial"
+        verbose_name_plural = "Editoriales"
+        ordering = ['nombre']
+    
+    def __str__(self):
+        return self.nombre
+
+
+class Libro(TimeStampedModel):
+    """
+    Modelo para libros
+    """
+    titulo = models.CharField(max_length=200)
+    isbn = models.CharField(max_length=13, unique=True, verbose_name="ISBN")
+    sinopsis = models.TextField(blank=True)
+    fecha_publicacion = models.DateField()
+    portada = models.ImageField(upload_to='portadas/', null=True, blank=True)
+    paginas = models.PositiveIntegerField(default=1)
+    idioma = models.CharField(max_length=30, default='Español')
+    
+    # Relaciones
+    autores = models.ManyToManyField(Autor, related_name='libros')
+    categorias = models.ManyToManyField(Categoria, related_name='libros')
+    editorial = models.ForeignKey(
+        Editorial, 
+        on_delete=models.CASCADE, 
+        related_name='libros'
+    )
+    
+    class Meta:
+        verbose_name = "Libro"
+        verbose_name_plural = "Libros"
+        ordering = ['-fecha_publicacion']
+    
+    def __str__(self):
+        return self.titulo
+    
+    @property
+    def promedio_valoraciones(self):
+        resultado = self.resenas.aggregate(models.Avg('valoracion'))
+        return resultado['valoracion__avg'] or 0
+
+
+class Resena(TimeStampedModel):
+    """
+    Modelo para reseñas de libros
+    """
+    libro = models.ForeignKey(
+        Libro,
+        on_delete=models.CASCADE,
+        related_name='resenas'
+    )
+    usuario = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='resenas'
+    )
+    titulo = models.CharField(max_length=100)
+    texto = models.TextField()
+    valoracion = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    
+    class Meta:
+        verbose_name = "Reseña"
+        verbose_name_plural = "Reseñas"
+        # Un usuario solo puede hacer una reseña por libro
+        unique_together = ['libro', 'usuario']
+        ordering = ['-created']
+    
+    def __str__(self):
+        return f"{self.titulo} - {self.libro.titulo} ({"★" * self.valoracion})"</code></pre>
+    </div>
+
+    <div class="alert alert-warning mt-3 mb-4">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Nota:</strong> Para usar ImageField, necesitas instalar Pillow:
+        <br>
+        <code>pip install Pillow</code>
+    </div>
+
+    <h3>Paso 3.3: Configurar la aplicación en el Admin de Django</h3>
+    <p>Para acceder a nuestros modelos desde el panel de administración de Django, necesitamos registrarlos. Abre el archivo <code>api/admin.py</code> y añade lo siguiente:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-python">from django.contrib import admin
+from .models import Autor, Categoria, Editorial, Libro, Resena
+
+@admin.register(Autor)
+class AutorAdmin(admin.ModelAdmin):
+    list_display = ('nombre_completo', 'fecha_nacimiento')
+    search_fields = ('nombre', 'apellidos')
+
+@admin.register(Categoria)
+class CategoriaAdmin(admin.ModelAdmin):
+    list_display = ('nombre',)
+    search_fields = ('nombre',)
+
+@admin.register(Editorial)
+class EditorialAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'sitio_web')
+    search_fields = ('nombre',)
+
+@admin.register(Libro)
+class LibroAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'isbn', 'fecha_publicacion', 'editorial')
+    list_filter = ('categorias', 'editorial', 'fecha_publicacion')
+    search_fields = ('titulo', 'isbn')
+    filter_horizontal = ('autores', 'categorias')
+    date_hierarchy = 'fecha_publicacion'
+
+@admin.register(Resena)
+class ResenaAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'libro', 'usuario', 'valoracion')
+    list_filter = ('valoracion',)
+    search_fields = ('titulo', 'libro__titulo')</code></pre>
+    </div>
+
+    <h3>Paso 3.4: Crear y aplicar las migraciones</h3>
+    <p>Ahora que hemos definido nuestros modelos, necesitamos crear y aplicar las migraciones para crear las tablas en la base de datos:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash"># Crear migraciones para nuestra app 'api'
+python manage.py makemigrations api
+
+# Aplicar las migraciones
+python manage.py migrate</code></pre>
+    </div>
+
+    <p>Deberías ver una salida similar a esta:</p>
+    <div class="alert alert-secondary">
+        <p class="mb-0"><code>Migrations for 'api':<br>
+  api/migrations/0001_initial.py<br>
+    - Create model Autor<br>
+    - Create model Categoria<br>
+    - Create model Editorial<br>
+    - Create model Libro<br>
+    - Create model Resena<br>
+    - Add field categorias to libro<br>
+    - Add field editorial to libro<br>
+Operations to perform:<br>
+  Apply all migrations: admin, api, auth, contenttypes, sessions<br>
+Running migrations:<br>
+  Applying api.0001_initial... OK</code></p>
+    </div>
+
+    <h3>Paso 3.5: Probar el panel de administración</h3>
+    <p>Ahora podemos iniciar el servidor de desarrollo y verificar que nuestros modelos aparecen en el panel de administración:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash"># Iniciar el servidor de desarrollo
+python manage.py runserver</code></pre>
+    </div>    <p>Abre tu navegador y ve a <a href="http://127.0.0.1:8000/admin/" target="_blank">http://127.0.0.1:8000/admin/</a>. Inicia sesión con el superusuario que creaste anteriormente.</p>
+
+    <p>Deberías ver todos nuestros modelos en la sección "API":</p>
+    <img src="assets/images/admin-panel.svg" alt="Panel de administración de Django" class="img-fluid rounded shadow-sm">
+
+    <div class="exercise-box">
+        <h4><i class="fas fa-laptop-code me-2"></i>Ejercicio Práctico:</h4>
+        <p>Añade un nuevo modelo llamado <code>Prestamo</code> que permita registrar préstamos de libros a usuarios. Debe incluir campos para:</p>
+        <ul>
+            <li>Libro (relación con el modelo Libro)</li>
+            <li>Usuario (relación con User)</li>
+            <li>Fecha de préstamo</li>
+            <li>Fecha de devolución programada</li>
+            <li>Fecha de devolución real (puede ser nulo)</li>
+            <li>Estado (opciones: 'prestado', 'devuelto', 'retrasado')</li>
+        </ul>
+        
+        <div class="mb-3">
+            <label for="code-prestamo" class="form-label">Tu solución:</label>
+            <textarea class="form-control" id="code-prestamo" rows="12"></textarea>
+        </div>
+        
+        <button id="check-prestamo" class="btn btn-primary">Verificar</button>
+        
+        <div id="feedback-prestamo" class="mt-3"></div>
+        
+        <div class="mt-3">
+            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#pista-prestamo">
+                <i class="fas fa-lightbulb me-1"></i>Ver pista
+            </button>
+            <div class="collapse mt-2" id="pista-prestamo">
+                <div class="card card-body">
+                    <p class="mb-0">Usa <code>models.ForeignKey</code> para las relaciones, <code>models.DateField</code> para las fechas y <code>models.CharField</code> con <code>choices</code> para el estado.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercise-validator d-none" data-exercise-id="prestamo" data-solution="class Prestamo(TimeStampedModel):
+    libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    fecha_prestamo = models.DateField()
+    fecha_devolucion_programada = models.DateField()
+    fecha_devolucion_real = models.DateField(null=True, blank=True)
+    estado = models.CharField(max_length=10, choices=[
+        ('prestado', 'Prestado'),
+        ('devuelto', 'Devuelto'),
+        ('retrasado', 'Retrasado'),
+    ])"></div>
+    </div>
+
+    <div class="mt-4">
+        <h4>¿Qué hemos aprendido?</h4>
+        <ul>
+            <li>Cómo definir modelos en Django para representar tablas en la base de datos</li>
+            <li>Cómo establecer relaciones entre modelos (uno-a-muchos, muchos-a-muchos)</li>
+            <li>Cómo crear modelos abstractos para reutilizar campos comunes</li>
+            <li>Cómo personalizar la visualización de los modelos en el panel de administración</li>
+            <li>Cómo crear y aplicar migraciones para actualizar el esquema de la base de datos</li>
+        </ul>
+    </div>
+
+    <div class="alert alert-success mt-4" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <strong>¡Excelente!</strong> Has definido los modelos para tu API. En el próximo paso, crearemos los serializadores y vistas para exponer estos datos como una API REST.
+    </div>
+
+    <div class="text-center mt-5">
+        <button id="next-step-button" class="btn btn-lg btn-success" onclick="nextStep()">
+            Continuar al Paso 4: Serializers y Views <i class="fas fa-arrow-right ms-2"></i>
+        </button>
+    </div>
+</div>

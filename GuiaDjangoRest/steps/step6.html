@@ -1,0 +1,542 @@
+<div class="tutorial-step">
+    <div class="alert alert-primary" role="alert">
+        <i class="fas fa-vial me-2"></i>
+        En este paso aprenderemos a probar nuestra API REST utilizando Postman, una herramienta esencial para el desarrollo y pruebas de APIs.
+    </div>
+
+    <h3>Pruebas con Postman</h3>
+    <p>Postman es una plataforma para desarrollo de API que permite diseñar, probar, documentar y compartir APIs. Es una herramienta indispensable para cualquier desarrollador que trabaje con APIs.</p>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Beneficios de Postman</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Facilidad de Uso</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Interfaz intuitiva que permite realizar solicitudes HTTP sin necesidad de escribir código.</p>
+                            <p class="small text-muted">Ideal para: Desarrollo rápido y pruebas</p>
+                            <p class="small text-muted">Características: Historial de solicitudes, entornos configurables</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="card-title mb-0">Colecciones y Flujos</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Organiza solicitudes en colecciones y ejecuta flujos completos para simular casos de uso reales.</p>
+                            <p class="small text-muted">Ideal para: Pruebas de integración</p>
+                            <p class="small text-muted">Características: Ejecución secuencial, variables dinámicas</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title mb-0">Automatización</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Crea pruebas automatizadas con scripts pre-request y post-request usando JavaScript.</p>
+                            <p class="small text-muted">Ideal para: CI/CD y pruebas repetitivas</p>
+                            <p class="small text-muted">Características: Assertions, reportes de pruebas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    <h3>Paso 6.1: Instalación y Configuración de Postman</h3>
+    <p>Para comenzar a probar nuestra API, primero debemos instalar y configurar Postman:</p>
+    
+    <p><strong>1. Descargar e Instalar Postman</strong></p>
+    <p>Visita <a href="https://www.postman.com/downloads/" target="_blank">postman.com/downloads</a> y descarga la versión correspondiente a tu sistema operativo. Sigue las instrucciones de instalación.</p>
+    
+    <div class="alert alert-info mb-4">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Alternativa:</strong> También puedes usar Postman directamente en tu navegador desde <a href="https://go.postman.co/build" target="_blank">go.postman.co/build</a> si no deseas instalar la aplicación de escritorio.
+    </div>
+
+    <p><strong>2. Crear una colección</strong></p>
+    <p>Las colecciones son grupos de solicitudes relacionadas. Vamos a crear una colección para nuestra API:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-text">1. Abre Postman y haz clic en "Collections" en el panel izquierdo
+2. Haz clic en el botón "+" para crear una nueva colección
+3. Nombra la colección "Django REST API"
+4. Puedes añadir una descripción opcional
+5. Haz clic en "Create"</code></pre>
+    </div>
+
+    <p><strong>3. Configurar un entorno</strong></p>
+    <p>Los entornos en Postman permiten definir variables reutilizables para diferentes contextos (desarrollo, producción, etc.):</p>
+    
+    <div class="code-block">
+        <pre><code class="language-text">1. Haz clic en "Environments" en el panel izquierdo
+2. Haz clic en "+" para crear un nuevo entorno
+3. Nombra el entorno "Development"
+4. Añade estas variables:
+   - base_url: http://127.0.0.1:8000
+   - api_version: api
+   - token: (déjalo en blanco por ahora)
+5. Haz clic en "Save"</code></pre>
+    </div>
+
+    <div class="alert alert-success mb-4">
+        <i class="fas fa-lightbulb me-2"></i>
+        <strong>Consejo:</strong> Para usar estas variables, utiliza la sintaxis <code>{{variable}}</code> en tus solicitudes, por ejemplo: <code>{{base_url}}/{{api_version}}/products/</code>
+    </div>
+
+    <p><strong>4. Configurar las cabeceras globales</strong></p>
+    <p>Para trabajar con APIs REST, necesitamos configurar algunas cabeceras HTTP comunes:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-json">{
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+}</code></pre>
+    </div>    <h3>Paso 6.2: Probando Endpoints sin Autenticación</h3>
+    <p>Vamos a empezar probando los endpoints que no requieren autenticación (si los hay). Asegurémonos de que nuestra API está funcionando:</p>
+    
+    <p><strong>1. Verificar que el servidor Django esté corriendo</strong></p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash"># Iniciar el servidor Django si no está corriendo
+python manage.py runserver</code></pre>
+    </div>
+
+    <p><strong>2. Probar un endpoint de lectura (GET)</strong></p>
+    <p>Vamos a crear nuestra primera solicitud GET en Postman:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-text">1. En tu colección "Django REST API", haz clic en "..." > "Add Request"
+2. Nombra la solicitud "Get All Products" (o el recurso correspondiente a tu API)
+3. Establece el método en GET
+4. En el campo URL, escribe: {{base_url}}/{{api_version}}/products/
+5. Asegúrate de que el entorno "Development" esté seleccionado
+6. Haz clic en "Send"</code></pre>
+    </div>
+
+    <p>Si todo está configurado correctamente, deberías recibir una respuesta con un código de estado 200 y datos en formato JSON.</p>
+
+    <div class="alert alert-info mb-4">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Consejo:</strong> Guarda las solicitudes útiles haciendo clic en "Save". Esto te permitirá reutilizarlas en el futuro sin tener que configurarlas nuevamente.
+    </div>
+
+    <h3>Paso 6.3: Probando la Autenticación</h3>
+    <p>Para probar endpoints protegidos, primero debemos obtener un token de autenticación:</p>
+    
+    <p><strong>1. Obtener un token de autenticación</strong></p>
+    
+    <div class="code-block">
+        <pre><code class="language-text">1. Crea una nueva solicitud en tu colección
+2. Nombra la solicitud "Get Auth Token"
+3. Establece el método en POST
+4. En el campo URL, escribe: {{base_url}}/api-token-auth/
+5. Ve a la pestaña "Body"
+6. Selecciona "raw" y "JSON" en el menú desplegable
+7. Ingresa las credenciales de un usuario existente:
+   {
+     "username": "tu_usuario",
+     "password": "tu_contraseña"
+   }
+8. Haz clic en "Send"</code></pre>
+    </div>
+
+    <p>La respuesta debería incluir un token de autenticación:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-json">{
+    "token": "9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"
+}</code></pre>
+    </div>
+
+    <p><strong>2. Guardar el token como variable de entorno</strong></p>
+    
+    <div class="code-block">
+        <pre><code class="language-text">1. Haz clic derecho en el valor del token en la respuesta
+2. Selecciona "Set as variable" > "Development" > "token"
+3. El token ahora está guardado y puede usarse en otras solicitudes</code></pre>
+    </div>
+
+# Crear entorno virtual
+python3 -m venv venv
+source venv/bin/activate
+
+# Instalar dependencias
+pip install -r requirements.txt
+pip install gunicorn
+
+# Crear archivo .env con las variables de entorno
+nano .env
+# (Añadir variables como se mostró anteriormente)
+
+# Aplicar migraciones
+python manage.py migrate
+
+# Recoger archivos estáticos
+python manage.py collectstatic --noinput</code></pre>
+    </div>
+
+    <p><strong>3. Configurar Gunicorn como servicio</strong></p>
+    <p>Crea un archivo de servicio systemd:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash">sudo nano /etc/systemd/system/gunicorn_mi_api.service</code></pre>
+    </div>
+
+    <p>Añade el siguiente contenido:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-text">[Unit]
+Description=gunicorn daemon for mi_api_django
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/mi_api_django
+ExecStart=/var/www/mi_api_django/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/var/www/mi_api_django/mi_api_django.sock mi_proyecto.wsgi:application
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+    </div>
+
+    <p>Inicia el servicio:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash">sudo systemctl start gunicorn_mi_api
+sudo systemctl enable gunicorn_mi_api</code></pre>
+    </div>
+
+    <p><strong>4. Configurar Nginx</strong></p>
+    <p>Crea una configuración para Nginx:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash">sudo nano /etc/nginx/sites-available/mi_api_django</code></pre>
+    </div>
+
+    <p>Añade el siguiente contenido:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-text">server {
+    listen 80;
+    server_name tudominio.com www.tudominio.com;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    
+    location /static/ {
+        root /var/www/mi_api_django;
+    }
+
+    location /media/ {
+        root /var/www/mi_api_django;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/var/www/mi_api_django/mi_api_django.sock;
+    }
+}</code></pre>
+    </div>
+
+    <p>Habilita el sitio y reinicia Nginx:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash">sudo ln -s /etc/nginx/sites-available/mi_api_django /etc/nginx/sites-enabled
+sudo nginx -t  # Verificar configuración
+sudo systemctl restart nginx</code></pre>
+    </div>
+
+    <p><strong>5. Configurar SSL con Let's Encrypt</strong></p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash"># Instalar Certbot
+sudo apt install -y certbot python3-certbot-nginx
+
+# Obtener certificado SSL
+sudo certbot --nginx -d tudominio.com -d www.tudominio.com</code></pre>
+    </div>
+
+    <h3>Paso 6.4: Despliegue con Docker (alternativa)</h3>
+    <p>Si prefieres usar Docker, aquí hay una configuración básica:</p>
+    
+    <p><strong>1. Crear Dockerfile</strong></p>
+    
+    <div class="code-block">
+        <pre><code class="language-docker">FROM python:3.10-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on
+
+WORKDIR /app
+
+# Instalar dependencias del sistema
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    build-essential \
+    default-libmysqlclient-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instalar dependencias
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+# Copiar el proyecto
+COPY . .
+
+# Exponer puerto
+EXPOSE 8000
+
+# Comando para iniciar el servidor
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "mi_proyecto.wsgi:application"]</code></pre>
+    </div>
+
+    <p><strong>2. Crear docker-compose.yml</strong></p>
+    
+    <div class="code-block">
+        <pre><code class="language-yaml">version: '3'
+
+services:
+  web:
+    build: .
+    restart: always
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    depends_on:
+      - db
+    env_file:
+      - .env
+    networks:
+      - app_network
+      
+  db:
+    image: mysql:8
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - app_network
+      
+  nginx:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web
+    networks:
+      - app_network
+
+networks:
+  app_network:
+
+volumes:
+  mysql_data:
+  static_volume:
+  media_volume:</code></pre>
+    </div>
+
+    <p><strong>3. Crear configuración Nginx para Docker</strong></p>
+    <p>Crea un directorio <code>nginx/conf.d</code> y un archivo <code>nginx/conf.d/app.conf</code>:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-text">server {
+    listen 80;
+    server_name localhost;
+    
+    location /static/ {
+        alias /app/staticfiles/;
+    }
+    
+    location /media/ {
+        alias /app/media/;
+    }
+    
+    location / {
+        proxy_pass http://web:8000;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_redirect off;
+    }
+}</code></pre>
+    </div>
+
+    <p><strong>4. Ejecutar con Docker Compose</strong></p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash">docker-compose up -d
+
+# Aplicar migraciones en el contenedor
+docker-compose exec web python manage.py migrate
+
+# Recoger archivos estáticos
+docker-compose exec web python manage.py collectstatic --noinput</code></pre>
+    </div>
+
+    <div class="alert alert-info mb-4">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Ventaja de Docker:</strong> Con esta configuración, puedes desplegar tu aplicación en cualquier entorno que soporte Docker, como AWS ECS, Google Cloud Run o Kubernetes.
+    </div>
+
+    <h3>Paso 6.5: Tareas Post-Despliegue</h3>
+    <p>Después de desplegar tu API, es importante realizar estas tareas adicionales:</p>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-chart-line me-2"></i>Monitoreo</h5>
+                    <p>Configura herramientas de monitoreo para seguir el rendimiento y la disponibilidad:</p>
+                    <ul>
+                        <li>Sentry para monitoreo de errores</li>
+                        <li>Prometheus + Grafana para métricas</li>
+                        <li>ELK Stack para análisis de logs</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5><i class="fas fa-shield-alt me-2"></i>Seguridad</h5>
+                    <p>Implementa medidas de seguridad adicionales:</p>
+                    <ul>
+                        <li>Configurar un firewall (UFW)</li>
+                        <li>Implementar rate limiting</li>
+                        <li>Configurar CORS adecuadamente</li>
+                        <li>Actualización automática de paquetes</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-sync me-2"></i>Respaldos</h5>
+                    <p>Configurar respaldos automáticos para la base de datos:</p>
+                    <ul>
+                        <li>Respaldos diarios con rotación</li>
+                        <li>Almacenamiento externo (S3, Google Cloud Storage)</li>
+                        <li>Pruebas periódicas de restauración</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5><i class="fas fa-truck me-2"></i>CI/CD</h5>
+                    <p>Implementa integración y despliegue continuos:</p>
+                    <ul>
+                        <li>GitHub Actions o GitLab CI</li>
+                        <li>Pruebas automáticas</li>
+                        <li>Despliegue automático después de pruebas exitosas</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="exercise-box">
+        <h4><i class="fas fa-laptop-code me-2"></i>Ejercicio Práctico:</h4>
+        <p>Escribe un script bash para realizar respaldos diarios de tu base de datos MySQL y rotarlos (mantener sólo los últimos 7).</p>
+        
+        <div class="mb-3">
+            <label for="code-backup" class="form-label">Tu solución:</label>
+            <textarea class="form-control" id="code-backup" rows="12"></textarea>
+        </div>
+        
+        <button id="check-backup" class="btn btn-primary">Verificar</button>
+        
+        <div id="feedback-backup" class="mt-3"></div>
+        
+        <div class="mt-3">
+            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#pista-backup">
+                <i class="fas fa-lightbulb me-1"></i>Ver pista
+            </button>
+            <div class="collapse mt-2" id="pista-backup">
+                <div class="card card-body">
+                    <p class="mb-0">Usa <code>mysqldump</code> para crear el respaldo y <code>find</code> con <code>-mtime</code> para eliminar archivos antiguos. No olvides añadir la fecha al nombre del archivo de respaldo.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercise-validator d-none" data-exercise-id="backup" data-solution="#!/bin/bash
+
+# Configuración
+DB_NAME="mi_api_django_db"
+DB_USER="usuario_db_produccion"
+DB_PASS="contraseña_muy_segura"
+BACKUP_DIR="/var/backups/mysql"
+DATE=$(date +"%Y%m%d")
+
+# Crear directorio de respaldo si no existe
+mkdir -p $BACKUP_DIR
+
+# Crear respaldo
+mysqldump -u $DB_USER -p$DB_PASS $DB_NAME | gzip > "$BACKUP_DIR/$DB_NAME-$DATE.sql.gz"
+
+# Eliminar respaldos antiguos (más de 7 días)
+find $BACKUP_DIR -type f -name "$DB_NAME-*.sql.gz" -mtime +7 -delete"></div>
+    </div>
+
+    <div class="mt-4">
+        <h4>¿Qué hemos aprendido?</h4>
+        <ul>
+            <li>Cómo preparar un proyecto Django para producción</li>
+            <li>Cómo configurar variables de entorno para datos sensibles</li>
+            <li>Cómo desplegar en un VPS con Nginx y Gunicorn</li>
+            <li>Cómo implementar despliegue con Docker</li>
+            <li>Mejores prácticas post-despliegue</li>
+            <li>Configuración de SSL para HTTPS</li>
+        </ul>
+    </div>
+
+    <div class="alert alert-success mt-4" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <strong>¡Felicitaciones!</strong> Has completado todos los pasos para crear y desplegar una API completa con Django y MySQL. Ahora tienes los conocimientos necesarios para desarrollar y publicar tus propias APIs.
+    </div>
+
+    <div class="card border-primary mt-5">
+        <div class="card-header bg-primary text-white">
+            <h4 class="card-title mb-0"><i class="fas fa-graduation-cap me-2"></i>Conclusión del Tutorial</h4>
+        </div>
+        <div class="card-body">
+            <p>En esta guía interactiva has aprendido:</p>
+            <ul>
+                <li>Configurar un entorno de desarrollo Django con MySQL</li>
+                <li>Diseñar y crear modelos para tu base de datos</li>
+                <li>Implementar serializadores y vistas RESTful</li>
+                <li>Proteger tu API con autenticación y permisos</li>
+                <li>Desplegar la API en un entorno de producción</li>
+            </ul>
+            <p>Te recomendamos explorar los siguientes temas para seguir mejorando tu API:</p>
+            <ul>
+                <li>Testing automatizado</li>
+                <li>Documentación de API (con Swagger/OpenAPI)</li>
+                <li>Versionado de API</li>
+                <li>Caching para mejorar el rendimiento</li>
+                <li>Webhooks y procesamiento asíncrono</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="#inicio" class="btn btn-lg btn-primary">
+            <i class="fas fa-home me-2"></i>Volver al Inicio
+        </a>
+    </div>
+</div>

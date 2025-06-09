@@ -1,0 +1,203 @@
+<div class="tutorial-step">
+    <div class="alert alert-primary" role="alert">
+        <i class="fas fa-database me-2"></i>
+        En este paso configuraremos MySQL para nuestro proyecto Django y estableceremos la conexión a la base de datos.
+    </div>
+
+    <h3>Configuración de MySQL</h3>
+    <p>Ahora que tenemos nuestro proyecto Django creado, necesitamos configurar una base de datos MySQL para almacenar nuestros datos.</p>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Instalación de MySQL</h4>
+        </div>
+        <div class="card-body">
+            <p>Si aún no tienes MySQL instalado, puedes descargarlo e instalarlo desde:</p>
+            <ul>
+                <li><a href="https://dev.mysql.com/downloads/mysql/" target="_blank">MySQL Community Server</a></li>
+                <li><a href="https://www.mysql.com/products/workbench/" target="_blank">MySQL Workbench</a> (herramienta visual, opcional pero recomendada)</li>
+            </ul>
+            
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Alternativa:</strong> También puedes usar XAMPP, WAMP o MAMP que incluyen MySQL preinstalado.
+            </div>
+        </div>
+    </div>
+
+    <h3>Paso 2.1: Crear la base de datos</h3>
+    <p>Primero, necesitamos crear una base de datos en MySQL para nuestro proyecto.</p>
+    
+    <div class="code-tabs">
+        <ul class="nav nav-tabs" id="mysqlTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="console-tab" data-bs-toggle="tab" data-bs-target="#console" type="button">MySQL Console</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="workbench-tab" data-bs-toggle="tab" data-bs-target="#workbench" type="button">MySQL Workbench</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="mysqlTabsContent">
+            <div class="tab-pane fade show active" id="console" role="tabpanel">
+                <div class="code-block">
+                    <pre><code class="language-sql"># Iniciar sesión en MySQL (reemplaza 'usuario' por tu usuario)
+mysql -u usuario -p
+
+# Una vez dentro de MySQL, crear la base de datos
+CREATE DATABASE mi_api_django_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+# Crear un usuario para la base de datos (opcional pero recomendado)
+CREATE USER 'api_user'@'localhost' IDENTIFIED BY 'contraseña_segura';
+
+# Dar permisos al usuario sobre la base de datos
+GRANT ALL PRIVILEGES ON mi_api_django_db.* TO 'api_user'@'localhost';
+
+# Actualizar permisos
+FLUSH PRIVILEGES;
+
+# Salir de MySQL
+EXIT;</code></pre>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="workbench" role="tabpanel">
+                <p class="mt-3">Con MySQL Workbench:</p>
+                <ol>
+                    <li>Abre MySQL Workbench y conéctate a tu servidor local</li>
+                    <li>Ve a la sección "Schemas" y haz clic derecho</li>
+                    <li>Selecciona "Create Schema..."</li>
+                    <li>Introduce "mi_api_django_db" como nombre</li>
+                    <li>Selecciona "utf8mb4" como conjunto de caracteres y "utf8mb4_unicode_ci" como colación</li>
+                    <li>Haz clic en "Apply"</li>
+                </ol>
+                <p>Para crear un usuario:</p>
+                <ol>
+                    <li>Ve a "Administration" > "Users and Privileges"</li>
+                    <li>Haz clic en "Add Account"</li>
+                    <li>Introduce "api_user" como nombre y "localhost" como host</li>
+                    <li>Establece una contraseña segura</li>
+                    <li>En la pestaña "Schema Privileges" concede todos los privilegios sobre "mi_api_django_db"</li>
+                    <li>Aplica los cambios</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-warning mt-3 mb-4">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Seguridad:</strong> En un entorno de producción, limita los privilegios del usuario a solo los que necesita (SELECT, INSERT, UPDATE, DELETE).
+    </div>
+
+    <h3>Paso 2.2: Configurar Django para usar MySQL</h3>
+    <p>Ahora necesitamos configurar Django para que utilice nuestra base de datos MySQL en lugar de SQLite (el valor predeterminado).</p>
+    <p>Abre el archivo <code>mi_proyecto/settings.py</code> y busca la sección <code>DATABASES</code>. Reemplázala con lo siguiente:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-python">DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mi_api_django_db',
+        'USER': 'api_user',           # O tu usuario de MySQL
+        'PASSWORD': 'contraseña_segura',  # Tu contraseña
+        'HOST': 'localhost',          # O la dirección IP del servidor de tu base de datos
+        'PORT': '3306',               # Puerto predeterminado de MySQL
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
+    }
+}</code></pre>
+    </div>
+
+    <div class="alert alert-info mb-4">
+        <i class="fas fa-shield-alt me-2"></i>
+        <strong>Mejores prácticas:</strong> En producción, no almacenes contraseñas directamente en el código. Usa variables de entorno o un archivo de configuración separado que no esté en el control de versiones.
+    </div>
+
+    <h3>Paso 2.3: Probar la conexión a la base de datos</h3>
+    <p>Vamos a probar que la conexión a la base de datos funciona correctamente:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash"># Verifica que la conexión a la base de datos funciona
+python manage.py check</code></pre>
+    </div>
+
+    <p>Si no hay errores, significa que la conexión está configurada correctamente.</p>
+
+    <h3>Paso 2.4: Crear las migraciones iniciales</h3>
+    <p>Ahora ejecutaremos las migraciones iniciales para crear las tablas del sistema:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash"># Crear migraciones iniciales
+python manage.py migrate</code></pre>
+    </div>
+
+    <p>Deberías ver una salida similar a esta:</p>
+    <div class="alert alert-secondary">
+        <p class="mb-0"><code>Operations to perform:<br>
+  Apply all migrations: admin, auth, contenttypes, sessions<br>
+Running migrations:<br>
+  Applying contenttypes.0001_initial... OK<br>
+  Applying auth.0001_initial... OK<br>
+  Applying admin.0001_initial... OK<br>
+  ...</code></p>
+    </div>
+
+    <div class="exercise-box">
+        <h4><i class="fas fa-laptop-code me-2"></i>Ejercicio Práctico:</h4>
+        <p>Escribe el código que agregarías al archivo <code>settings.py</code> para usar variables de entorno en la configuración de la base de datos.</p>
+        
+        <div class="mb-3">
+            <label for="code-env" class="form-label">Tu solución:</label>
+            <textarea class="form-control" id="code-env" rows="6"></textarea>
+        </div>
+        
+        <button id="check-env" class="btn btn-primary">Verificar</button>
+        
+        <div id="feedback-env" class="mt-3"></div>
+        
+        <div class="mt-3">
+            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#pista-env">
+                <i class="fas fa-lightbulb me-1"></i>Ver pista
+            </button>
+            <div class="collapse mt-2" id="pista-env">
+                <div class="card card-body">
+                    <p class="mb-0">Puedes usar el módulo <code>os</code> de Python para acceder a las variables de entorno con <code>os.environ.get('NOMBRE_VARIABLE', 'valor_predeterminado')</code>.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercise-validator d-none" data-exercise-id="env" data-solution="os.environ.get"></div>
+    </div>
+
+    <h3>Paso 2.5: Crear un superusuario</h3>
+    <p>Por último, vamos a crear un superusuario para poder acceder al panel de administración de Django:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash"># Crear un superusuario
+python manage.py createsuperuser</code></pre>
+    </div>
+
+    <p>Sigue las instrucciones para crear un nombre de usuario, dirección de correo electrónico y contraseña.</p>
+
+    <div class="mt-4">
+        <h4>¿Qué hemos aprendido?</h4>
+        <ul>
+            <li>Crear una base de datos MySQL para nuestro proyecto</li>
+            <li>Configurar un usuario en MySQL con los permisos adecuados</li>
+            <li>Configurar Django para utilizar MySQL en lugar de SQLite</li>
+            <li>Ejecutar las migraciones iniciales para crear las tablas del sistema</li>
+            <li>Crear un superusuario de Django</li>
+        </ul>
+    </div>
+
+    <div class="alert alert-success mt-4" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <strong>¡Felicitaciones!</strong> Has configurado con éxito MySQL para tu proyecto Django. Ahora estás listo para comenzar a crear los modelos de tu API.
+    </div>
+
+    <div class="text-center mt-5">
+        <button id="next-step-button" class="btn btn-lg btn-success" onclick="nextStep()">
+            Continuar al Paso 3: Creación de Modelos <i class="fas fa-arrow-right ms-2"></i>
+        </button>
+    </div>
+</div>

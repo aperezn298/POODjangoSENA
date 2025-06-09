@@ -1,0 +1,28 @@
+<!-- Esta es una imagen en base64 para simular el panel de administración de Django -->
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="100%" height="100%" fill="#f8f9fa"/>
+  <rect x="0" y="0" width="800" height="60" fill="#417690"/>
+  <text x="20" y="40" font-family="Arial" font-size="24" fill="#ffffff">Administración de Django</text>
+  <rect x="20" y="80" width="760" height="50" fill="#79aec8" rx="4"/>
+  <text x="40" y="112" font-family="Arial" font-size="18" fill="#ffffff">API</text>
+  <rect x="20" y="140" width="760" height="320" fill="#ffffff" stroke="#ddd" stroke-width="1" rx="4"/>
+  <text x="40" y="180" font-family="Arial" font-size="16" fill="#417690">Autores</text>
+  <text x="200" y="180" font-family="Arial" font-size="16" fill="#333">Añadir</text>
+  <text x="260" y="180" font-family="Arial" font-size="16" fill="#333">Cambiar</text>
+  <line x1="40" y1="190" x2="740" y2="190" stroke="#eee" stroke-width="1"/>
+  <text x="40" y="220" font-family="Arial" font-size="16" fill="#417690">Categorías</text>
+  <text x="200" y="220" font-family="Arial" font-size="16" fill="#333">Añadir</text>
+  <text x="260" y="220" font-family="Arial" font-size="16" fill="#333">Cambiar</text>
+  <line x1="40" y1="230" x2="740" y2="230" stroke="#eee" stroke-width="1"/>
+  <text x="40" y="260" font-family="Arial" font-size="16" fill="#417690">Editoriales</text>
+  <text x="200" y="260" font-family="Arial" font-size="16" fill="#333">Añadir</text>
+  <text x="260" y="260" font-family="Arial" font-size="16" fill="#333">Cambiar</text>
+  <line x1="40" y1="270" x2="740" y2="270" stroke="#eee" stroke-width="1"/>
+  <text x="40" y="300" font-family="Arial" font-size="16" fill="#417690">Libros</text>
+  <text x="200" y="300" font-family="Arial" font-size="16" fill="#333">Añadir</text>
+  <text x="260" y="300" font-family="Arial" font-size="16" fill="#333">Cambiar</text>
+  <line x1="40" y1="310" x2="740" y2="310" stroke="#eee" stroke-width="1"/>
+  <text x="40" y="340" font-family="Arial" font-size="16" fill="#417690">Reseñas</text>
+  <text x="200" y="340" font-family="Arial" font-size="16" fill="#333">Añadir</text>
+  <text x="260" y="340" font-family="Arial" font-size="16" fill="#333">Cambiar</text>
+</svg>

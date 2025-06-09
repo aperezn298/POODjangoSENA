@@ -1,0 +1,367 @@
+<div class="tutorial-step">
+    <div class="alert alert-primary" role="alert">
+        <i class="fas fa-book-open me-2"></i>
+        <strong>FUNDAMENTOS TEÓRICOS:</strong> Conceptos fundamentales y definiciones para el desarrollo de APIs con Django y MySQL.
+    </div>
+    
+    <div class="ribbon-container mb-4">
+        <div class="ribbon ribbon-top-left"><span>Conceptos teóricos</span></div>
+        <div class="card">
+            <div class="card-body p-4">
+                <h4 class="text-center">Introducción a los conceptos que usaremos</h4>
+                <p class="text-center text-muted">Esta sección presenta los conceptos teóricos fundamentales que utilizarás a lo largo del tutorial práctico. Tómate tu tiempo para comprenderlos antes de comenzar con la implementación.</p>
+            </div>
+        </div>
+    </div>
+
+    <h3>Fundamentos de API REST</h3>
+    <p>Antes de comenzar con el desarrollo práctico, es importante comprender los conceptos teóricos clave que utilizaremos a lo largo de esta guía.</p>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">¿Qué es una API?</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>API (Application Programming Interface)</strong> es un conjunto de reglas y definiciones que permite que diferentes aplicaciones se comuniquen entre sí. Una API actúa como mensajero que recibe solicitudes de un programa y envía respuestas desde otro.</p>
+            
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">API REST</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>REST (Representational State Transfer)</strong> es un estilo de arquitectura para desarrollar servicios web que utiliza el protocolo HTTP para la comunicación.</p>
+                            <p>Características principales:</p>
+                            <ul>
+                                <li>Sin estado (Stateless): Cada solicitud contiene toda la información necesaria</li>
+                                <li>Interfaz uniforme: Recursos identificados por URLs</li>
+                                <li>Cliente-Servidor: Separación clara de responsabilidades</li>
+                                <li>Cacheable: Las respuestas pueden almacenarse en caché</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="card-title mb-0">Métodos HTTP</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Los métodos HTTP definen la acción que se realiza sobre un recurso:</p>
+                            <ul>
+                                <li><strong>GET</strong>: Obtener información (lectura)</li>
+                                <li><strong>POST</strong>: Crear un recurso nuevo</li>
+                                <li><strong>PUT/PATCH</strong>: Actualizar un recurso existente</li>
+                                <li><strong>DELETE</strong>: Eliminar un recurso</li>
+                            </ul>
+                            <p>Estos métodos corresponden a operaciones CRUD (Create, Read, Update, Delete).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Códigos de Estado HTTP</h3>
+    <p>Los códigos de estado HTTP indican si una solicitud HTTP se ha completado correctamente o no, y proporcionan información sobre el resultado:</p>
+    
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <div class="card border-success h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">2xx (Éxito)</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li><strong>200</strong>: OK</li>
+                        <li><strong>201</strong>: Creado</li>
+                        <li><strong>204</strong>: Sin contenido</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-warning h-100">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">3xx (Redirección)</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li><strong>301</strong>: Movido permanentemente</li>
+                        <li><strong>302</strong>: Encontrado</li>
+                        <li><strong>304</strong>: No modificado</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-danger h-100">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">4xx (Error del cliente)</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li><strong>400</strong>: Solicitud incorrecta</li>
+                        <li><strong>401</strong>: No autorizado</li>
+                        <li><strong>403</strong>: Prohibido</li>
+                        <li><strong>404</strong>: No encontrado</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-dark h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">5xx (Error del servidor)</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li><strong>500</strong>: Error interno</li>
+                        <li><strong>502</strong>: Puerta de enlace incorrecta</li>
+                        <li><strong>503</strong>: Servicio no disponible</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="mt-4">Django y Django REST Framework</h3>
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title mb-0">Django</h4>
+                </div>
+                <div class="card-body">
+                    <p><strong>Django</strong> es un framework de desarrollo web de alto nivel escrito en Python que fomenta el desarrollo rápido, limpio y pragmático.</p>
+                    <p>Características principales:</p>
+                    <ul>
+                        <li><strong>ORM (Object-Relational Mapping)</strong>: Permite interactuar con la base de datos mediante objetos Python en lugar de SQL directo</li>
+                        <li><strong>Admin Site</strong>: Panel de administración automático</li>
+                        <li><strong>MVT (Model-View-Template)</strong>: Arquitectura similar a MVC pero adaptada</li>
+                        <li><strong>Seguridad</strong>: Protección contra vulnerabilidades comunes</li>
+                        <li><strong>Escalabilidad</strong>: Diseñado para crecer con tu aplicación</li>
+                    </ul>
+                    <div class="text-center">
+                        <img src="assets/images/django-logo.svg" alt="Django Logo" style="max-width: 150px;" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h4 class="card-title mb-0">Django REST Framework</h4>
+                </div>
+                <div class="card-body">
+                    <p><strong>Django REST Framework (DRF)</strong> es una potente y flexible herramienta para construir APIs Web.</p>
+                    <p>Componentes principales:</p>
+                    <ul>
+                        <li><strong>Serializadores</strong>: Convierten objetos Python en tipos de datos nativos que pueden ser fácilmente renderizados en JSON, XML, etc.</li>
+                        <li><strong>Vistas</strong>: Manejan solicitudes HTTP y devuelven respuestas (APIView, ViewSets)</li>
+                        <li><strong>Routers</strong>: Gestionan automáticamente la configuración de URL</li>
+                        <li><strong>Autenticación</strong>: Métodos para validar usuarios (Token, JWT, OAuth)</li>
+                        <li><strong>Permisos</strong>: Control de acceso a operaciones API</li>
+                    </ul>
+                    <div class="text-center">
+                        <img src="assets/images/drf-logo.svg" alt="Django REST Framework Logo" style="max-width: 150px;" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="mt-4">Base de Datos MySQL</h3>
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h4 class="card-title mb-0">MySQL</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>MySQL</strong> es un sistema de gestión de bases de datos relacional (RDBMS) de código abierto, basado en lenguaje SQL.</p>
+                    <p>Características principales:</p>
+                    <ul>
+                        <li>Alto rendimiento y fiabilidad</li>
+                        <li>Escalabilidad y flexibilidad</li>
+                        <li>Alta disponibilidad</li>
+                        <li>Robusto soporte para transacciones</li>
+                        <li>Fuerte protección de datos</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Conceptos clave en MySQL:</strong></p>
+                    <ul>
+                        <li><strong>Tablas</strong>: Estructuras que almacenan datos</li>
+                        <li><strong>Relaciones</strong>: Conexiones entre tablas (uno-a-uno, uno-a-muchos, muchos-a-muchos)</li>
+                        <li><strong>Claves primarias y foráneas</strong>: Identifican registros y establecen relaciones</li>
+                        <li><strong>Índices</strong>: Mejoran la velocidad de búsqueda</li>
+                        <li><strong>Consultas</strong>: Lenguaje SQL para interactuar con los datos</li>
+                        <li><strong>Transacciones</strong>: Operaciones atómicas que garantizan integridad</li>
+                    </ul>
+                    <div class="text-center">
+                        <img src="assets/images/mysql-logo.svg" alt="MySQL Logo" style="max-width: 120px;" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Arquitectura de una API Django con MySQL</h3>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-7">
+                    <p>La arquitectura típica de una API REST con Django y MySQL consiste en:</p>
+                    <ol>
+                        <li><strong>Capa de Base de Datos</strong>: MySQL almacena los datos persistentes</li>
+                        <li><strong>Capa de Modelo</strong>: ORM de Django define la estructura de datos</li>
+                        <li><strong>Capa de Serialización</strong>: Serializadores de DRF convierten objetos Python y JSON</li>
+                        <li><strong>Capa de Vista</strong>: Viewsets/APIViews manejan solicitudes HTTP</li>
+                        <li><strong>Capa de URL</strong>: Routers definen los endpoints de la API</li>
+                        <li><strong>Middlewares</strong>: Procesan solicitudes/respuestas (autenticación, CORS, etc.)</li>
+                        <li><strong>Cliente</strong>: Aplicaciones que consumen la API</li>
+                    </ol>
+                </div>
+                <div class="col-lg-5">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <p class="text-center fw-bold">Flujo de una solicitud</p>
+                            <div class="d-flex flex-column align-items-center">
+                                <div class="p-2 bg-primary text-white rounded mb-2 w-75 text-center">Cliente HTTP</div>
+                                <i class="fas fa-arrow-down mb-2"></i>
+                                <div class="p-2 bg-secondary text-white rounded mb-2 w-75 text-center">URLs / Router</div>
+                                <i class="fas fa-arrow-down mb-2"></i>
+                                <div class="p-2 bg-success text-white rounded mb-2 w-75 text-center">ViewSets / APIView</div>
+                                <i class="fas fa-arrow-down mb-2"></i>
+                                <div class="p-2 bg-info text-white rounded mb-2 w-75 text-center">Serializadores</div>
+                                <i class="fas fa-arrow-down mb-2"></i>
+                                <div class="p-2 bg-warning text-dark rounded mb-2 w-75 text-center">Modelos (ORM)</div>
+                                <i class="fas fa-arrow-down mb-2"></i>
+                                <div class="p-2 bg-danger text-white rounded w-75 text-center">Base de datos MySQL</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Conceptos de Seguridad en APIs</h3>
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <h4 class="card-title mb-0">Seguridad en APIs</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Autenticación</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Autenticación</strong>: Proceso de verificar la identidad de un usuario o sistema.</p>
+                            <p>Métodos comunes en DRF:</p>
+                            <ul>
+                                <li><strong>Token Authentication</strong>: Tokens simples asociados a usuarios</li>
+                                <li><strong>JWT (JSON Web Tokens)</strong>: Tokens autocontenidos con información codificada</li>
+                                <li><strong>OAuth2</strong>: Protocolo de autorización estándar para acceso delegado</li>
+                                <li><strong>Session Authentication</strong>: Usando sesiones de Django</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Autorización</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Autorización</strong>: Determinar qué acciones puede realizar un usuario autenticado.</p>
+                            <p>Sistema de permisos en DRF:</p>
+                            <ul>
+                                <li><strong>Permisos predefinidos</strong>: IsAuthenticated, IsAdminUser, etc.</li>
+                                <li><strong>Permisos a nivel de objeto</strong>: Controlar acceso a objetos específicos</li>
+                                <li><strong>Permisos personalizados</strong>: Lógica de autorización específica</li>
+                                <li><strong>Throttling</strong>: Limitar el número de solicitudes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-warning mt-3">
+                <i class="fas fa-shield-alt me-2"></i>
+                <strong>Buenas Prácticas de Seguridad:</strong>
+                <ul class="mb-0">
+                    <li>Usar HTTPS para cifrar la comunicación</li>
+                    <li>Validar y sanitizar todas las entradas de usuario</li>
+                    <li>Implementar controles de acceso adecuados</li>
+                    <li>Almacenar contraseñas y datos sensibles de forma segura</li>
+                    <li>Implementar protección contra ataques comunes (CSRF, XSS, inyección SQL)</li>
+                    <li>Registrar y monitorear actividades sospechosas</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h4>Recursos y Herramientas Recomendados</h4>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Desarrollo</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><i class="fab fa-python me-2"></i><strong>Python</strong>: Lenguaje de programación</li>
+                            <li><i class="fas fa-cube me-2"></i><strong>Django</strong>: Framework web</li>
+                            <li><i class="fas fa-database me-2"></i><strong>MySQL</strong>: Sistema de base de datos</li>
+                            <li><i class="fas fa-terminal me-2"></i><strong>Virtualenv</strong>: Entornos virtuales</li>
+                            <li><i class="fas fa-code-branch me-2"></i><strong>Git</strong>: Control de versiones</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="card-title mb-0">Pruebas</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-vial me-2"></i><strong>Postman</strong>: Pruebas de API</li>
+                            <li><i class="fas fa-bug me-2"></i><strong>Django Debug Toolbar</strong>: Depuración</li>
+                            <li><i class="fas fa-check-circle me-2"></i><strong>pytest/unittest</strong>: Testing</li>
+                            <li><i class="fas fa-tachometer-alt me-2"></i><strong>Locust</strong>: Pruebas de carga</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="card-title mb-0">Documentación</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-book me-2"></i><strong>Swagger/OpenAPI</strong>: Documentación API</li>
+                            <li><i class="fas fa-file-code me-2"></i><strong>Markdown</strong>: Documentación simple</li>
+                            <li><i class="fas fa-project-diagram me-2"></i><strong>Draw.io</strong>: Diagramas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-success mt-4" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <strong>¡Estás listo para comenzar!</strong> Ahora que has comprendido los conceptos fundamentales, podemos comenzar a desarrollar paso a paso nuestra API con Django y MySQL.
+    </div>    <div class="text-center mt-5">
+        <button class="btn btn-lg btn-primary" onclick="nextStep()">
+            Comenzar con el Paso 1: Configuración Inicial <i class="fas fa-arrow-right ms-2"></i>
+        </button>
+    </div>
+</div>
