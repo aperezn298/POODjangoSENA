@@ -31,7 +31,7 @@ La guía está organizada en 9 pasos secuenciales:
 
 - Conocimientos básicos de Python
 - Conocimientos básicos de HTTP y APIs REST
-- MySQL instalado en el sistema
+- XAMPP instalado (para acceder a MySQL)
 - Python 3.8+ instalado
 
 ## Estructura del proyecto

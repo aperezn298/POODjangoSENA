@@ -5,43 +5,67 @@
     </div>
 
     <h3>Configuración de MySQL</h3>
-    <p>Ahora que tenemos nuestro proyecto Django creado, necesitamos configurar una base de datos MySQL para almacenar nuestros datos.</p>
-
-    <div class="card mb-4">
+    <p>Ahora que tenemos nuestro proyecto Django creado, necesitamos configurar una base de datos MySQL para almacenar nuestros datos.</p>    <div class="card mb-4">
         <div class="card-header bg-light">
-            <h4 class="card-title mb-0">Instalación de MySQL</h4>
+            <h4 class="card-title mb-0">Instalación y configuración de XAMPP</h4>
         </div>
         <div class="card-body">
-            <p>Si aún no tienes MySQL instalado, puedes descargarlo e instalarlo desde:</p>
-            <ul>
-                <li><a href="https://dev.mysql.com/downloads/mysql/" target="_blank">MySQL Community Server</a></li>
-                <li><a href="https://www.mysql.com/products/workbench/" target="_blank">MySQL Workbench</a> (herramienta visual, opcional pero recomendada)</li>
-            </ul>
+            <p>Para esta guía, utilizaremos XAMPP como entorno para acceder a MySQL:</p>
+            <ol>
+                <li>Descarga e instala XAMPP desde <a href="https://www.apachefriends.org/es/download.html" target="_blank">https://www.apachefriends.org</a></li>
+                <li>Inicia XAMPP Control Panel</li>
+                <li>Inicia los módulos de Apache y MySQL haciendo clic en los botones "Start"</li>
+                <li>Una vez iniciados los servicios, puedes acceder a phpMyAdmin haciendo clic en el botón "Admin" en la fila de MySQL o visitando <a href="http://localhost/phpmyadmin" target="_blank">http://localhost/phpmyadmin</a></li>
+            </ol>
             
             <div class="alert alert-info">
                 <i class="fas fa-info-circle me-2"></i>
-                <strong>Alternativa:</strong> También puedes usar XAMPP, WAMP o MAMP que incluyen MySQL preinstalado.
+                <strong>Nota:</strong> XAMPP viene con MySQL preinstalado y configurado. El usuario por defecto es 'root' sin contraseña.
             </div>
         </div>
     </div>
 
-    <h3>Paso 2.1: Crear la base de datos</h3>
+    <h3>Paso 2.1: Crear la base de datos en XAMPP</h3>
     <p>Primero, necesitamos crear una base de datos en MySQL para nuestro proyecto.</p>
-    
-    <div class="code-tabs">
+      <div class="code-tabs">
         <ul class="nav nav-tabs" id="mysqlTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="console-tab" data-bs-toggle="tab" data-bs-target="#console" type="button">MySQL Console</button>
+                <button class="nav-link active" id="phpmyadmin-tab" data-bs-toggle="tab" data-bs-target="#phpmyadmin" type="button">phpMyAdmin (XAMPP)</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="workbench-tab" data-bs-toggle="tab" data-bs-target="#workbench" type="button">MySQL Workbench</button>
+                <button class="nav-link" id="console-tab" data-bs-toggle="tab" data-bs-target="#console" type="button">MySQL Console</button>
             </li>
         </ul>
         <div class="tab-content" id="mysqlTabsContent">
-            <div class="tab-pane fade show active" id="console" role="tabpanel">
+            <div class="tab-pane fade show active" id="phpmyadmin" role="tabpanel">
+                <p class="mt-3">Con phpMyAdmin en XAMPP:</p>
+                <ol>
+                    <li>Abre tu navegador e ingresa a <code>http://localhost/phpmyadmin</code></li>
+                    <li>Inicia sesión con el usuario <code>root</code> (por defecto en XAMPP no tiene contraseña)</li>
+                    <li>Haz clic en "Nuevo" en el panel izquierdo</li>
+                    <li>En el campo "Nombre de la base de datos", escribe <code>mi_api_django_db</code></li>
+                    <li>En "Cotejamiento", selecciona <code>utf8mb4_unicode_ci</code></li>
+                    <li>Haz clic en "Crear"</li>
+                </ol>
+                <p>Para crear un usuario (opcional):</p>
+                <ol>
+                    <li>Haz clic en la pestaña "Cuentas de usuario"</li>
+                    <li>Haz clic en "Agregar cuenta de usuario"</li>
+                    <li>Completa los campos:
+                        <ul>
+                            <li>Nombre de usuario: <code>api_user</code></li>
+                            <li>Nombre del host: <code>localhost</code></li>
+                            <li>Contraseña: establece una contraseña segura</li>
+                        </ul>
+                    </li>
+                    <li>En la sección "Privilegios de bases de datos", selecciona "Otorgar todos los privilegios en la base de datos" y selecciona <code>mi_api_django_db</code></li>
+                    <li>Haz clic en "Continuar" para crear el usuario</li>
+                </ol>
+            </div>
+            <div class="tab-pane fade" id="console" role="tabpanel">
                 <div class="code-block">
-                    <pre><code class="language-sql"># Iniciar sesión en MySQL (reemplaza 'usuario' por tu usuario)
-mysql -u usuario -p
+                    <pre><code class="language-sql"># Iniciar sesión en MySQL (usando usuario root de XAMPP)
+mysql -u root
 
 # Una vez dentro de MySQL, crear la base de datos
 CREATE DATABASE mi_api_django_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -59,26 +83,6 @@ FLUSH PRIVILEGES;
 EXIT;</code></pre>
                 </div>
             </div>
-            <div class="tab-pane fade" id="workbench" role="tabpanel">
-                <p class="mt-3">Con MySQL Workbench:</p>
-                <ol>
-                    <li>Abre MySQL Workbench y conéctate a tu servidor local</li>
-                    <li>Ve a la sección "Schemas" y haz clic derecho</li>
-                    <li>Selecciona "Create Schema..."</li>
-                    <li>Introduce "mi_api_django_db" como nombre</li>
-                    <li>Selecciona "utf8mb4" como conjunto de caracteres y "utf8mb4_unicode_ci" como colación</li>
-                    <li>Haz clic en "Apply"</li>
-                </ol>
-                <p>Para crear un usuario:</p>
-                <ol>
-                    <li>Ve a "Administration" > "Users and Privileges"</li>
-                    <li>Haz clic en "Add Account"</li>
-                    <li>Introduce "api_user" como nombre y "localhost" como host</li>
-                    <li>Establece una contraseña segura</li>
-                    <li>En la pestaña "Schema Privileges" concede todos los privilegios sobre "mi_api_django_db"</li>
-                    <li>Aplica los cambios</li>
-                </ol>
-            </div>
         </div>
     </div>
 
@@ -90,16 +94,15 @@ EXIT;</code></pre>
     <h3>Paso 2.2: Configurar Django para usar MySQL</h3>
     <p>Ahora necesitamos configurar Django para que utilice nuestra base de datos MySQL en lugar de SQLite (el valor predeterminado).</p>
     <p>Abre el archivo <code>mi_proyecto/settings.py</code> y busca la sección <code>DATABASES</code>. Reemplázala con lo siguiente:</p>
-    
-    <div class="code-block">
+      <div class="code-block">
         <pre><code class="language-python">DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mi_api_django_db',
-        'USER': 'api_user',           # O tu usuario de MySQL
-        'PASSWORD': 'contraseña_segura',  # Tu contraseña
-        'HOST': 'localhost',          # O la dirección IP del servidor de tu base de datos
-        'PORT': '3306',               # Puerto predeterminado de MySQL
+        'USER': 'root',            # Usuario por defecto en XAMPP
+        'PASSWORD': '',            # Contraseña vacía por defecto en XAMPP
+        'HOST': 'localhost',       # Servidor local de XAMPP
+        'PORT': '3306',            # Puerto predeterminado de MySQL en XAMPP
         'OPTIONS': {
             'charset': 'utf8mb4',
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
@@ -110,11 +113,39 @@ EXIT;</code></pre>
 
     <div class="alert alert-info mb-4">
         <i class="fas fa-shield-alt me-2"></i>
-        <strong>Mejores prácticas:</strong> En producción, no almacenes contraseñas directamente en el código. Usa variables de entorno o un archivo de configuración separado que no esté en el control de versiones.
+        <strong>Nota sobre XAMPP:</strong> En un entorno de desarrollo con XAMPP, el usuario por defecto es 'root' sin contraseña. Si creaste un usuario específico en phpMyAdmin, usa ese usuario y su contraseña correspondiente.
     </div>
 
-    <h3>Paso 2.3: Probar la conexión a la base de datos</h3>
-    <p>Vamos a probar que la conexión a la base de datos funciona correctamente:</p>
+    <div class="alert alert-warning mb-4">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Seguridad:</strong> En un entorno de producción, nunca uses el usuario root y siempre establece contraseñas seguras. Además, no almacenes contraseñas directamente en el código. Usa variables de entorno o un archivo de configuración separado que no esté en el control de versiones.
+    </div>    <h3>Paso 2.3: Instalar el conector de MySQL para Python</h3>
+    <p>Para que Django pueda conectarse a MySQL a través de XAMPP, necesitamos instalar el conector adecuado:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-bash"># Instalar el conector MySQL para Python
+pip install mysqlclient</code></pre>
+    </div>
+
+    <div class="alert alert-info mb-3">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Nota:</strong> Si experimentas problemas al instalar mysqlclient, considera usar una alternativa como:
+        <pre><code class="language-bash">pip install pymysql</code></pre>
+        Y luego añade estas líneas al archivo <code>__init__.py</code> de tu proyecto:
+        <pre><code class="language-python">import pymysql
+pymysql.install_as_MySQLdb()</code></pre>
+    </div>
+
+    <h3>Paso 2.4: Verificar que XAMPP está en funcionamiento</h3>
+    <p>Antes de probar la conexión, asegúrate de que los servicios de XAMPP están funcionando:</p>
+    <ol>
+        <li>Abre XAMPP Control Panel</li>
+        <li>Comprueba que MySQL y Apache muestran una luz verde o están en estado "Running"</li>
+        <li>Si no están activos, iniciarlos haciendo clic en el botón "Start"</li>
+    </ol>
+    
+    <h3>Paso 2.5: Probar la conexión a la base de datos</h3>
+    <p>Vamos a probar que la conexión a la base de datos a través de XAMPP funciona correctamente:</p>
     
     <div class="code-block">
         <pre><code class="language-bash"># Verifica que la conexión a la base de datos funciona
@@ -123,7 +154,7 @@ python manage.py check</code></pre>
 
     <p>Si no hay errores, significa que la conexión está configurada correctamente.</p>
 
-    <h3>Paso 2.4: Crear las migraciones iniciales</h3>
+    <h3>Paso 2.6: Crear las migraciones iniciales</h3>
     <p>Ahora ejecutaremos las migraciones iniciales para crear las tablas del sistema:</p>
     
     <div class="code-block">
@@ -169,7 +200,7 @@ Running migrations:<br>
         <div class="exercise-validator d-none" data-exercise-id="env" data-solution="os.environ.get"></div>
     </div>
 
-    <h3>Paso 2.5: Crear un superusuario</h3>
+    <h3>Paso 2.7: Crear un superusuario</h3>
     <p>Por último, vamos a crear un superusuario para poder acceder al panel de administración de Django:</p>
     
     <div class="code-block">
@@ -177,17 +208,22 @@ Running migrations:<br>
 python manage.py createsuperuser</code></pre>
     </div>
 
-    <p>Sigue las instrucciones para crear un nombre de usuario, dirección de correo electrónico y contraseña.</p>
-
-    <div class="mt-4">
+    <p>Sigue las instrucciones para crear un nombre de usuario, dirección de correo electrónico y contraseña.</p>    <div class="mt-4">
         <h4>¿Qué hemos aprendido?</h4>
         <ul>
-            <li>Crear una base de datos MySQL para nuestro proyecto</li>
-            <li>Configurar un usuario en MySQL con los permisos adecuados</li>
-            <li>Configurar Django para utilizar MySQL en lugar de SQLite</li>
+            <li>Configurar y utilizar XAMPP para acceder a MySQL</li>
+            <li>Crear una base de datos MySQL en phpMyAdmin</li>
+            <li>Configurar un usuario en MySQL con los permisos adecuados (opcional)</li>
+            <li>Instalar el conector MySQL para Python</li>
+            <li>Configurar Django para utilizar MySQL a través de XAMPP</li>
             <li>Ejecutar las migraciones iniciales para crear las tablas del sistema</li>
             <li>Crear un superusuario de Django</li>
         </ul>
+    </div>
+
+    <div class="alert alert-info mt-4" role="alert">
+        <i class="fas fa-lightbulb me-2"></i>
+        <strong>Consejo adicional:</strong> XAMPP incluye phpMyAdmin, una herramienta visual que facilita la gestión de bases de datos MySQL. Puedes acceder a ella desde <a href="http://localhost/phpmyadmin" target="_blank">http://localhost/phpmyadmin</a> para administrar tu base de datos de forma gráfica.
     </div>
 
     <div class="alert alert-success mt-4" role="alert">
@@ -201,3 +237,4 @@ python manage.py createsuperuser</code></pre>
         </button>
     </div>
 </div>
+

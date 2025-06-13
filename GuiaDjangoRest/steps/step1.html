@@ -2,14 +2,12 @@
     <div class="alert alert-primary" role="alert">
         <i class="fas fa-info-circle me-2"></i>
         En este paso configuraremos el entorno de desarrollo para nuestro proyecto Django con MySQL.
-    </div>
-
-    <h3>Prerrequisitos</h3>
+    </div>    <h3>Prerrequisitos</h3>
     <p>Antes de comenzar, asegúrate de tener instalado:</p>
     <ul>
         <li>Python 3.8 o superior</li>
         <li>pip (gestor de paquetes de Python)</li>
-        <li>MySQL Server</li>
+        <li>XAMPP (que incluye MySQL Server y phpMyAdmin)</li>
         <li>Un editor de código (VS Code recomendado)</li>
     </ul>
 
@@ -19,19 +17,23 @@
         </div>
         <div class="card-body">
             <p>Ejecuta estos comandos en tu terminal para verificar que tienes las versiones correctas:</p>
-            
-            <div class="code-block">
+              <div class="code-block">
                 <pre><code class="language-bash">python --version
-pip --version
-mysql --version</code></pre>
+pip --version</code></pre>
             </div>
             
             <p>Deberías ver algo similar a:</p>
             <div class="alert alert-secondary">
                 <p class="mb-0"><code>Python 3.10.0</code></p>
                 <p class="mb-0"><code>pip 22.3.1</code></p>
-                <p class="mb-0"><code>mysql Ver 8.0.28</code></p>
             </div>
+
+            <p>Además, asegúrate de que XAMPP está instalado correctamente:</p>
+            <ol>
+                <li>Abre XAMPP Control Panel</li>
+                <li>Verifica que puedas iniciar los servicios de Apache y MySQL haciendo clic en los botones "Start"</li>
+                <li>Si los servicios se inician correctamente, verás luces verdes o el estado "Running"</li>
+            </ol>
         </div>
     </div>
 
