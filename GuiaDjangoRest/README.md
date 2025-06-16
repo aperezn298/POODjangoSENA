@@ -88,8 +88,8 @@ API/
 - HTML5
 - CSS3 con Bootstrap 5
 - JavaScript (ES6+)
-- Django 4.2+
-- Django REST Framework
+- Django 3.2.*
+- Django REST Framework 3.14.*
 - MySQL
 - Postman
 - Herramientas de pruebas de Django

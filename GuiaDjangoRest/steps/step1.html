@@ -58,20 +58,19 @@ venv\Scripts\activate
     <div class="alert alert-success mb-4">
         <i class="fas fa-lightbulb me-2"></i>
         <strong>Tip:</strong> Siempre verás <code>(venv)</code> al inicio de tu línea de comandos cuando el entorno virtual esté activado.
-    </div>
-
-    <h3>Paso 1.2: Instalar Django y dependencias</h3>
-    <p>Ahora instalaremos Django, Django REST framework y el conector para MySQL:</p>
+    </div>    <h3>Paso 1.2: Instalar Django y dependencias</h3>
+    <p>Ahora instalaremos Django, Django REST framework y el conector para MySQL (usamos versiones específicas para garantizar la compatibilidad con MySQL de XAMPP):</p>
     
     <div class="code-block">
-        <pre><code class="language-bash"># Instalar Django y Django REST framework
-pip install django djangorestframework
+        <pre><code class="language-bash"># Instalar Django y Django REST framework con versiones específicas para compatibilidad con MySQL de XAMPP
+pip install "Django==3.2.*"
+pip install "djangorestframework==3.14.*"
 
 # Instalar conector para MySQL
 pip install mysqlclient
 
-# Opcional: Instalar otras herramientas útiles
-pip install django-cors-headers django-filter markdown</code></pre>
+# Opcional: Instalar otras herramientas útiles con versiones específicas
+pip install "django-cors-headers==3.14.*" "django-filter==23.2" markdown</code></pre>
     </div>
 
     <h3>Paso 1.3: Crear un proyecto Django</h3>
@@ -79,7 +78,10 @@ pip install django-cors-headers django-filter markdown</code></pre>
     
     <div class="code-block">
         <pre><code class="language-bash"># Crear proyecto (reemplaza 'mi_proyecto' con el nombre que prefieras)
-django-admin startproject mi_proyecto .
+django-admin startproject mi_proyecto
+
+# Cambiar al directorio del proyecto
+cd mi_proyecto
 
 # Crear una aplicación (usaremos 'api' como nombre)
 python manage.py startapp api</code></pre>

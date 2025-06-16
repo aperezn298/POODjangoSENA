@@ -71,9 +71,8 @@ ALLOWED_HOSTS=tudominio.com,www.tudominio.com</code></pre>
     </div>
 
     <p>Ahora modifica <code>settings.py</code> para usar estas variables:</p>
-    
-    <div class="code-block">
-        <pre><code class="language-python"># Instalar django-environ primero: pip install django-environ
+      <div class="code-block">
+        <pre><code class="language-python"># Instalar django-environ primero: pip install "django-environ==0.10.*"
 import environ
 import os
 from pathlib import Path
