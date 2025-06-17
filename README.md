@@ -21,6 +21,9 @@ Contenido de la Competencia de Python (POO + Django)
     - [Material de Clase](https://github.com/aperezn298/POODjangoSENA/blob/main/03_Django/02_0_ConceptosDjango.pdf)
     - [Conceptos ORM](https://github.com/aperezn298/POODjangoSENA/blob/main/03_Django/02_1_ConceptosORM.pdf)
     - [HTML y Python](https://github.com/aperezn298/POODjangoSENA/blob/main/03_Django/02_2_HTML_Python.pdf)
+5. Evaluación de API 
+    - [Postman](https://github.com/aperezn298/POODjangoSENA/blob/main/04_EvaluacionAPI/PruebasPostman.md)
+    - [Thunder Client](https://github.com/aperezn298/POODjangoSENA/blob/main/04_EvaluacionAPI/PruebasThunderCliente.md)
 
 # Guias Interactivas de Aprendizaje:
 - [POO con Python](https://aperezn298.github.io/POODjangoSENA/GuiaPythonPOO/)
