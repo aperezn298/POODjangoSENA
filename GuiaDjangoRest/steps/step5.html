@@ -52,17 +52,16 @@
 
     <h3>Paso 5.1: Configurar Token Authentication</h3>
     <p>Para comenzar, vamos a implementar la autenticación por token, que es sencilla pero efectiva:</p>
-    
-    <p><strong>1. Activar la autenticación por token en settings.py</strong></p>
+      <p><strong>1. La autenticación por token ya debería estar configurada en settings.py</strong></p>
     
     <div class="code-block">
-        <pre><code class="language-python"># En INSTALLED_APPS, añadir:
+        <pre><code class="language-python"># Verificar que esto ya está en INSTALLED_APPS:
 INSTALLED_APPS = [
     # ... aplicaciones existentes ...
-    'rest_framework.authtoken',  # Añadir esta línea
+    'rest_framework.authtoken',  # Autenticación por token
 ]
 
-# Actualizar la configuración de REST Framework
+# Verificar que REST Framework ya está configurado así:
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -79,24 +78,31 @@ REST_FRAMEWORK = {
     
     <div class="code-block">
         <pre><code class="language-bash">python manage.py migrate</code></pre>
-    </div>
-
-    <p><strong>3. Crear endpoints para obtener tokens</strong></p>
-    <p>Modifica <code>mi_proyecto/urls.py</code> para añadir la URL de obtención de tokens:</p>
+    </div>    <p><strong>3. Comprobar la configuración de URLs para tokens</strong></p>
+    <p>Asegúrate de que el archivo <code>mi_proyecto/urls.py</code> incluye la URL para obtención de tokens:</p>
     
     <div class="code-block">
         <pre><code class="language-python"># mi_proyecto/urls.py
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
 from rest_framework.authtoken import views as auth_views  # Importar vistas para tokens
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
-    path('api-auth/', include('rest_framework.urls')),
-    path('api-token-auth/', auth_views.obtain_auth_token),  # Añadir esta línea
+    
+    # URLs versionadas para la API
+    # Ejemplo: /api/v1/autores/
+    path(f"{settings.API_BASE}/{settings.API_VERSION}/", include('api.urls')),
+    
+    # URLs sin versionar (compatibilidad)
+    path(f"{settings.API_BASE}/", include('api.urls')), 
+    
+    # Autenticación y tokens
+    path('api-auth/', include('rest_framework.urls')),  # URLs para autenticación por navegador
+    path('api-token-auth/', auth_views.obtain_auth_token, name='api_token_auth'),  # URL para obtener el token
 ]
 
 # Configuración para servir archivos multimedia durante desarrollo
@@ -273,19 +279,50 @@ class UserRegistrationView(generics.CreateAPIView):
         }, status=status.HTTP_201_CREATED)</code></pre>
     </div>
 
-    <p>Finalmente, añadimos la URL para el registro en <code>api/urls.py</code>:</p>
+    <p>También, creamos una vista para verificar el estado del usuario:</p>
     
     <div class="code-block">
-        <pre><code class="language-python"># Añadir a api/urls.py
-from .views import UserRegistrationView
+        <pre><code class="language-python">class UserStatusView(APIView):
+    """
+    Vista para verificar el estado y permisos del usuario actual
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request, format=None):
+        user = request.user
+        return Response({
+            'username': user.username,
+            'is_authenticated': user.is_authenticated,
+            'is_staff': user.is_staff,
+            'is_superuser': user.is_superuser,
+            'permissions': {
+                'can_add_autor': user.has_perm('api.add_autor'),
+                'can_change_autor': user.has_perm('api.change_autor'),
+                'can_delete_autor': user.has_perm('api.delete_autor'),
+                'can_view_autor': user.has_perm('api.view_autor')
+            },
+            'groups': list(user.groups.values_list('name', flat=True)),
+        })</code></pre>
+    </div>
 
-# Añadir antes de urlpatterns
+    <p><strong>Finalmente, actualizamos <code>api/urls.py</code> para incluir el endpoint de registro:</strong></p>
+    
+    <div class="code-block">
+        <pre><code class="language-python"># Actualizar api/urls.py
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from . import views
+from .views import UserRegistrationView, UserStatusView
+
+# El router ya debería estar configurado con los viewsets
 router = DefaultRouter()
 # ... registro de viewsets ...
 
+# Actualizar las URLs para incluir el endpoint de registro
 urlpatterns = [
     path('', include(router.urls)),
-    path('register/', UserRegistrationView.as_view(), name='register'),  # Añadir esta línea
+    path('register/', UserRegistrationView.as_view(), name='register'),
+    path('user-status/', UserStatusView.as_view(), name='user-status'),
 ]</code></pre>
     </div>
 

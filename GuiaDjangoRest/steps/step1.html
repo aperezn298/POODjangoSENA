@@ -69,7 +69,7 @@ pip install "djangorestframework==3.14.*"
 # Instalar conector para MySQL
 pip install mysqlclient
 
-# Opcional: Instalar otras herramientas útiles con versiones específicas
+# Instalar herramientas necesarias con versiones específicas
 pip install "django-cors-headers==3.14.*" "django-filter==23.2" markdown</code></pre>
     </div>
 
@@ -118,8 +118,7 @@ python manage.py startapp api</code></pre>
     
     <p><strong>1. Editar settings.py</strong></p>
     <p>Abre el archivo <code>mi_proyecto/settings.py</code> y modifica lo siguiente:</p>
-    
-    <div class="code-block">
+      <div class="code-block">
         <pre><code class="language-python">INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -132,6 +131,7 @@ python manage.py startapp api</code></pre>
     'corsheaders',              # CORS headers
     # Aplicaciones propias
     'api',                      # Nuestra aplicación API
+    'rest_framework.authtoken',  # Autenticación por token
 ]
 
 # Agregar middleware de CORS
@@ -145,21 +145,52 @@ MIDDLEWARE = [
 
 # Configuración de CORS (permitir todos los orígenes en desarrollo)
 CORS_ALLOW_ALL_ORIGINS = True  # Solo para desarrollo
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 # Configuración básica de REST Framework
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }</code></pre>
     </div>
+    
+    <p><strong>2. Configuración para API versionada</strong></p>
+    <p>Agregamos la configuración para una API versionada. Esto facilitará la evolución de la API en el futuro:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-python"># Configuración de la API REST versionada
+API_BASE = 'api'
+API_VERSION = 'v1'
 
+# URLs para clientes
+API_URL_PREFIX = f'/{API_BASE}/{API_VERSION}'  # Para construir URLs en el frontend (ej: /api/v1)</code></pre>
+    </div>
+    
     <div class="exercise-box">
         <h4><i class="fas fa-laptop-code me-2"></i>Ejercicio Práctico:</h4>
         <p>Crea un archivo <code>requirements.txt</code> que incluya todas las dependencias que hemos instalado hasta ahora.</p>

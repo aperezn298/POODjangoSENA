@@ -58,7 +58,7 @@ class Autor(TimeStampedModel):
     apellidos = models.CharField(max_length=100)
     fecha_nacimiento = models.DateField(null=True, blank=True)
     biografia = models.TextField(blank=True)
-    foto = models.ImageField(upload_to='autores/', null=True, blank=True)
+    foto = models.URLField(null=True, blank=True)
     
     class Meta:
         verbose_name = "Autor"
