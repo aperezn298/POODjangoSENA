@@ -1,0 +1,246 @@
+<div class="tutorial-step">
+    <div class="alert alert-primary" role="alert">
+        <i class="fas fa-code me-2"></i>
+        En este paso crearemos los serializadores para nuestra API RESTful con Django REST Framework.
+    </div>
+
+    <h3>Serializadores para nuestra API</h3>
+    <p>Los serializadores convierten los modelos de Django en formatos como JSON, permitiendo transformar objetos Python complejos en tipos de datos nativos que pueden ser fácilmente convertidos a JSON, XML u otros formatos.</p>
+
+    <h3>Paso 4.1: Crear serializadores</h3>
+    <p>Primero, creamos un archivo <code>serializers.py</code> en nuestra aplicación <code>api</code>:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-python"># api/serializers.py
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from .models import Autor, Categoria, Editorial, Libro, Resena
+
+
+class UserSerializer(serializers.ModelSerializer):
+    """Serializador para el modelo User"""
+    
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
+
+
+class AutorSerializer(serializers.ModelSerializer):
+    """Serializador para el modelo Autor"""
+    
+    class Meta:
+        model = Autor
+        fields = '__all__'
+
+
+class CategoriaSerializer(serializers.ModelSerializer):
+    """Serializador para el modelo Categoria"""
+    
+    class Meta:
+        model = Categoria
+        fields = '__all__'
+
+
+class EditorialSerializer(serializers.ModelSerializer):
+    """Serializador para el modelo Editorial"""
+    
+    class Meta:
+        model = Editorial
+        fields = '__all__'
+
+
+class ResenaSerializer(serializers.ModelSerializer):
+    """Serializador para el modelo Resena"""
+    usuario = UserSerializer(read_only=True)
+    usuario_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        source='usuario',
+        write_only=True
+    )
+    
+    class Meta:
+        model = Resena
+        fields = ['id', 'libro', 'usuario', 'usuario_id', 'titulo', 'texto', 'valoracion', 'created']
+
+
+class LibroListSerializer(serializers.ModelSerializer):
+    """Serializador para listar libros (versión resumida)"""
+    autores = serializers.StringRelatedField(many=True)
+    categorias = serializers.StringRelatedField(many=True)
+    editorial = serializers.StringRelatedField()
+    promedio_valoraciones = serializers.FloatField(read_only=True)
+    
+    class Meta:
+        model = Libro
+        fields = ['id', 'titulo', 'autores', 'editorial', 'categorias', 'promedio_valoraciones']
+
+
+class LibroDetailSerializer(serializers.ModelSerializer):
+    """Serializador para detalles de un libro (versión completa)"""
+    autores = AutorSerializer(many=True, read_only=True)
+    categorias = CategoriaSerializer(many=True, read_only=True)
+    editorial = EditorialSerializer(read_only=True)
+    resenas = ResenaSerializer(many=True, read_only=True)
+    promedio_valoraciones = serializers.FloatField(read_only=True)
+    
+    # Campos para asociar relaciones al crear/actualizar
+    autor_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Autor.objects.all(),
+        source='autores',
+        write_only=True,
+        many=True
+    )
+    categoria_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Categoria.objects.all(),
+        source='categorias',
+        write_only=True,
+        many=True
+    )
+    editorial_id = serializers.PrimaryKeyRelatedField(
+        queryset=Editorial.objects.all(),
+        source='editorial',
+        write_only=True
+    )
+    
+    class Meta:
+        model = Libro
+        fields = [
+            'id', 'titulo', 'isbn', 'sinopsis', 'fecha_publicacion',
+            'portada', 'paginas', 'idioma', 'autores', 'categorias',
+            'editorial', 'autor_ids', 'categoria_ids', 'editorial_id',
+            'resenas', 'promedio_valoraciones', 'created', 'modified'
+        ]</code></pre>
+    </div>
+
+    <div class="alert alert-info mb-4">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Nota:</strong> Usamos dos serializadores para el modelo Libro: uno simplificado para listar y otro detallado para ver, crear y actualizar.
+    </div>
+
+    <h3>Paso 4.2: Personalizando Serializadores</h3>
+    <p>Los serializadores también permiten implementar lógica de validación y transformación de datos. Vamos a añadir algunas personalizaciones:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-python"># Añadir estos métodos a LibroDetailSerializer
+class LibroDetailSerializer(serializers.ModelSerializer):
+    # ... código anterior del serializador ...
+    
+    def validate_isbn(self, value):
+        """Validación personalizada para el campo ISBN"""
+        if not value.isdigit():
+            raise serializers.ValidationError("El ISBN debe contener solo dígitos")
+        
+        if len(value) != 13:
+            raise serializers.ValidationError("El ISBN debe tener exactamente 13 dígitos")
+            
+        return value
+    
+    def validate(self, data):
+        """Validación a nivel de objeto para verificar coherencia entre campos"""
+        if 'fecha_publicacion' in data and data['fecha_publicacion'] > datetime.date.today():
+            raise serializers.ValidationError({
+                "fecha_publicacion": "La fecha de publicación no puede estar en el futuro"
+            })
+        return data
+        
+    def create(self, validated_data):
+        """Método para crear un libro con sus relaciones"""
+        # Extraer las relaciones many-to-many
+        autores = validated_data.pop('autores', [])
+        categorias = validated_data.pop('categorias', [])
+        
+        # Crear el libro
+        libro = Libro.objects.create(**validated_data)
+        
+        # Asignar relaciones many-to-many
+        libro.autores.set(autores)
+        libro.categorias.set(categorias)
+        
+        return libro
+        
+    def update(self, instance, validated_data):
+        """Método para actualizar un libro con sus relaciones"""
+        # Actualizar relaciones many-to-many si están presentes
+        if 'autores' in validated_data:
+            instance.autores.set(validated_data.pop('autores'))
+        
+        if 'categorias' in validated_data:
+            instance.categorias.set(validated_data.pop('categorias'))
+        
+        # Actualizar los demás campos
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+            
+        instance.save()
+        return instance</code></pre>
+    </div>
+
+    <p>No olvides añadir la importación necesaria al principio del archivo:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-python">import datetime</code></pre>
+    </div>
+
+    <h3>Paso 4.3: Serializadores Anidados</h3>
+    <p>Django REST Framework permite crear serializadores anidados para representar relaciones complejas. Vamos a crear un serializador para mostrar información detallada de un autor con sus libros:</p>
+    
+    <div class="code-block">
+        <pre><code class="language-python"># Añadir al archivo api/serializers.py
+class AutorDetailSerializer(serializers.ModelSerializer):
+    """Serializador detallado para autor con sus libros"""
+    libros = LibroListSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Autor
+        fields = ['id', 'nombre', 'apellidos', 'biografia', 'fecha_nacimiento', 'libros']</code></pre>
+    </div>
+
+    <div class="exercise-box">
+        <h4><i class="fas fa-laptop-code me-2"></i>Ejercicio Práctico:</h4>
+        <p>Crea un serializador llamado <code>EditorialDetailSerializer</code> que muestre la información de una editorial junto con todos sus libros.</p>
+        
+        <div class="mb-3">
+            <label for="code-serializer" class="form-label">Tu solución:</label>
+            <textarea class="form-control" id="code-serializer" rows="10"></textarea>
+        </div>
+        
+        <button id="check-serializer" class="btn btn-primary">Verificar</button>
+        
+        <div id="feedback-serializer" class="mt-3"></div>
+        
+        <div class="mt-3">
+            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#pista-serializer">
+                <i class="fas fa-lightbulb me-1"></i>Ver pista
+            </button>
+            <div class="collapse mt-2" id="pista-serializer">
+                <div class="card card-body">
+                    <p class="mb-0">Usa como referencia el <code>AutorDetailSerializer</code>, solo debes cambiar el modelo y los campos.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercise-validator d-none" data-exercise-id="serializer" data-solution="class EditorialDetailSerializer(serializers.ModelSerializer):
+    libros = LibroListSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Editorial
+        fields = ['id', 'nombre', 'direccion', 'sitio_web', 'email', 'libros']"></div>
+    </div>
+
+    <div class="mt-4">
+        <h4>¿Qué hemos aprendido?</h4>
+        <ul>
+            <li>Cómo crear serializadores básicos en Django REST Framework</li>
+            <li>Cómo personalizar la validación en los serializadores</li>
+            <li>Cómo manejar relaciones entre modelos en los serializadores</li>
+            <li>Cómo crear serializadores anidados para representar datos complejos</li>
+            <li>Cómo implementar la lógica de creación y actualización en los serializadores</li>
+        </ul>
+    </div>
+
+    <div class="text-center mt-5">
+        <button id="next-step-button" class="btn btn-lg btn-success" onclick="nextStep()">
+            Continuar al Paso 5: Vistas y URLs <i class="fas fa-arrow-right ms-2"></i>
+        </button>
+    </div>
+</div>

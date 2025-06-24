@@ -485,6 +485,56 @@ header {
     margin-bottom: 1rem;
 }
 
+/* Nuevos estilos para las pestañas */
+.code-tabs .tab {
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-bottom: 0;
+}
+
+.code-tabs .tablinks {
+    border: 1px solid #dee2e6;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    background-color: #f8f9fa;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    outline: none;
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: -1px;
+    position: relative;
+}
+
+.code-tabs .tablinks:hover {
+    background-color: #e9ecef;
+}
+
+.code-tabs .tablinks.active {
+    background-color: #fff;
+    color: var(--primary-color);
+    border-bottom-color: #fff;
+    border-top: 2px solid var(--primary-color);
+}
+
+.code-tabs .tabcontent {
+    display: none;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    background-color: #fff;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .code-tabs .nav-link {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem 0.5rem 0 0;

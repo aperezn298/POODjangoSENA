@@ -4,17 +4,18 @@ Esta guía interactiva está diseñada para estudiantes y desarrolladores que de
 
 ## Contenido de la Guía
 
-La guía está organizada en 9 pasos secuenciales:
+La guía está organizada en 10 pasos secuenciales:
 
 0. **Conceptos Fundamentales** - Introducción a API REST, Django y MySQL
 1. **Configuración Inicial** - Preparación del entorno de desarrollo y estructura del proyecto
 2. **Configuración de MySQL** - Instalación y configuración de la base de datos
 3. **Creación de Modelos** - Diseño de modelos de datos y migraciones
-4. **Serializers y Views** - Implementación de la API REST con Django REST Framework
-5. **Autenticación y Permisos** - Seguridad y control de acceso a la API
-6. **Pruebas con Postman** - Cómo probar la API utilizando Postman
-7. **Pruebas Automatizadas** - Implementación de pruebas unitarias y de integración
-8. **Despliegue** - Publicación de la API en un entorno de producción
+4. **Serializadores Básicos** - Creación de serializadores para transformar modelos en JSON
+5. **Vistas y URLs** - Configuración de endpoints y lógica básica
+6. **Autenticación y Permisos** - Seguridad y control de acceso a la API
+7. **Pruebas Manuales con Postman/Thunder Client** - Cómo probar la API manualmente
+8. **Pruebas Automatizadas** - Implementación de pruebas unitarias y de integración
+9. **Despliegue en Producción** - Publicación de la API en un entorno de producción
 
 ## Características
 

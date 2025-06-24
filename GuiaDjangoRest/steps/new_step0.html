@@ -1,0 +1,268 @@
+<div class="tutorial-step">
+    <div class="alert alert-primary" role="alert">
+        <i class="fas fa-book-open me-2"></i>
+        <strong>FUNDAMENTOS TEÓRICOS:</strong> Conceptos fundamentales y definiciones para el desarrollo de APIs con Django y MySQL.
+    </div>
+    
+    <div class="ribbon-container mb-4">
+        <div class="ribbon ribbon-top-left"><span>Conceptos teóricos</span></div>
+        <div class="card">
+            <div class="card-body p-4">
+                <h4 class="text-center">Introducción a los conceptos que usaremos</h4>
+                <p class="text-center text-muted">Esta sección presenta los conceptos teóricos fundamentales que utilizarás a lo largo del tutorial práctico. Tómate tu tiempo para comprenderlos antes de comenzar con la implementación.</p>
+            </div>
+        </div>
+    </div>
+
+    <h3>Fundamentos de API REST</h3>
+    <p>Antes de comenzar con el desarrollo práctico, es importante comprender los conceptos teóricos clave que utilizaremos a lo largo de esta guía.</p>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">¿Qué es una API?</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>API (Application Programming Interface)</strong> es un conjunto de reglas y definiciones que permite que diferentes aplicaciones se comuniquen entre sí. Una API actúa como mensajero que recibe solicitudes de un programa y envía respuestas desde otro.</p>
+            
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">API REST</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>REST (Representational State Transfer)</strong> es un estilo de arquitectura para desarrollar servicios web que utiliza el protocolo HTTP para la comunicación.</p>
+                            <p>Características principales:</p>
+                            <ul>
+                                <li>Sin estado (Stateless): Cada solicitud contiene toda la información necesaria</li>
+                                <li>Interfaz uniforme: Recursos identificados por URLs</li>
+                                <li>Cliente-Servidor: Separación clara de responsabilidades</li>
+                                <li>Cacheable: Las respuestas pueden almacenarse en caché</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="card-title mb-0">Métodos HTTP</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Las APIs REST utilizan métodos HTTP para realizar operaciones en recursos:</p>
+                            <ul>
+                                <li><strong>GET:</strong> Recuperar datos (lectura)</li>
+                                <li><strong>POST:</strong> Crear nuevos recursos</li>
+                                <li><strong>PUT/PATCH:</strong> Actualizar recursos existentes</li>
+                                <li><strong>DELETE:</strong> Eliminar recursos</li>                            </ul>
+                            <p>Cada método corresponde a una acción específica, siguiendo el patrón CRUD (Create, Read, Update, Delete).</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Nueva sección para Códigos de Estado HTTP -->
+                <div class="col-12 mt-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="card-title mb-0">Códigos de Estado HTTP</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Las APIs REST utilizan códigos de estado HTTP estándar para indicar el resultado de una solicitud:</p>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Categoría</th>
+                                            <th>Código</th>
+                                            <th>Descripción</th>
+                                            <th>Uso común en APIs</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="3" class="align-middle"><strong>2xx</strong><br>Éxito</td>
+                                            <td>200 OK</td>
+                                            <td>La solicitud se completó con éxito</td>
+                                            <td>Respuesta a GET, PUT/PATCH exitosos</td>
+                                        </tr>
+                                        <tr>
+                                            <td>201 Created</td>
+                                            <td>Recurso creado exitosamente</td>
+                                            <td>Respuesta a POST que crea un nuevo recurso</td>
+                                        </tr>
+                                        <tr>
+                                            <td>204 No Content</td>
+                                            <td>Solicitud exitosa sin contenido para devolver</td>
+                                            <td>Respuesta común a DELETE</td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="3" class="align-middle"><strong>4xx</strong><br>Error del cliente</td>
+                                            <td>400 Bad Request</td>
+                                            <td>Solicitud incorrecta o inválida</td>
+                                            <td>Datos de entrada con formato incorrecto</td>
+                                        </tr>
+                                        <tr>
+                                            <td>401 Unauthorized</td>
+                                            <td>Autenticación necesaria</td>
+                                            <td>Token de acceso faltante o inválido</td>
+                                        </tr>
+                                        <tr>
+                                            <td>403 Forbidden</td>
+                                            <td>No autorizado para acceder al recurso</td>
+                                            <td>Permisos insuficientes (aunque esté autenticado)</td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2" class="align-middle"><strong>5xx</strong><br>Error del servidor</td>
+                                            <td>500 Internal Server Error</td>
+                                            <td>Error inesperado en el servidor</td>
+                                            <td>Excepción no controlada en el código</td>
+                                        </tr>
+                                        <tr>
+                                            <td>503 Service Unavailable</td>
+                                            <td>Servicio temporalmente no disponible</td>
+                                            <td>Servidor sobrecargado o en mantenimiento</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="mt-2 mb-0"><strong>Nota:</strong> En Django REST Framework, estos códigos se manejan automáticamente o pueden especificarse con <code>Response(data, status=status.HTTP_XXX_XXX)</code>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Framework Django</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="../assets/images/django-logo.svg" alt="Logo de Django" class="img-fluid mb-3">
+                </div>
+                <div class="col-md-9">
+                    <p><strong>Django</strong> es un framework web de alto nivel escrito en Python que fomenta el desarrollo rápido y un diseño limpio y pragmático.</p>
+                    <p>Características clave:</p>
+                    <ul>
+                        <li><strong>ORM (Object-Relational Mapping):</strong> Permite trabajar con la base de datos a través de objetos Python en lugar de SQL directo.</li>
+                        <li><strong>Admin site:</strong> Panel de administración automático para gestionar los datos de tu aplicación.</li>
+                        <li><strong>MVT (Model-View-Template):</strong> Patrón de arquitectura de software que separa los datos, la lógica y la presentación. Es similar al patrón MVC (Model-View-Controller) pero adaptado a Django, donde el Controller es manejado por el framework y las Templates reemplazan a las Views tradicionales.</li>
+                        <li><strong>Seguridad:</strong> Incluye protecciones contra vulnerabilidades comunes como CSRF, SQL Injection, XSS, etc.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Django REST Framework</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="../assets/images/drf-logo.svg" alt="Logo de Django REST Framework" class="img-fluid mb-3">
+                </div>
+                <div class="col-md-9">
+                    <p><strong>Django REST Framework (DRF)</strong> es una potente extensión de Django que facilita la creación de APIs web.</p>
+                    <p>Componentes principales:</p>
+                    <ul>
+                        <li><strong>Serializadores:</strong> Convierten objetos Python complejos (como modelos de Django) en tipos de datos nativos de Python que se pueden convertir fácilmente a JSON, XML, etc.</li>
+                        <li><strong>Vistas basadas en clases:</strong> Proporcionan una estructura organizada para manejar diferentes métodos HTTP (GET, POST, etc.).</li>
+                        <li><strong>ViewSets:</strong> Combinan la lógica para un conjunto de vistas relacionadas en una sola clase.</li>
+                        <li><strong>Enrutadores:</strong> Generan automáticamente los URLs para los ViewSets.</li>
+                        <li><strong>Autenticación y permisos:</strong> Sistemas flexibles para controlar el acceso a la API.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">MySQL como Sistema Gestor de Base de Datos</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="../assets/images/mysql-logo.svg" alt="Logo de MySQL" class="img-fluid mb-3">
+                </div>
+                <div class="col-md-9">
+                    <p><strong>MySQL</strong> es un sistema de gestión de bases de datos relacional, multihilo y multiusuario, ampliamente utilizado en aplicaciones web.</p>
+                    <p>Ventajas de MySQL:</p>
+                    <ul>
+                        <li><strong>Rendimiento:</strong> Optimizado para manejar grandes cantidades de datos.</li>
+                        <li><strong>Fiabilidad:</strong> Proporciona transacciones ACID (Atomicidad, Consistencia, Aislamiento, Durabilidad).</li>
+                        <li><strong>Escalabilidad:</strong> Puede escalar horizontalmente para manejar más carga.</li>
+                        <li><strong>Comunidad:</strong> Amplio soporte de la comunidad y documentación.</li>
+                        <li><strong>Compatibilidad:</strong> Integración sencilla con Django a través del ORM.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Arquitectura de una API Django con MySQL</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-7">
+                    <p>La arquitectura típica de una API REST con Django y MySQL consiste en:</p>
+                    <ol>
+                        <li><strong>Capa de Base de Datos</strong>: MySQL almacena los datos persistentes</li>
+                        <li><strong>Capa de Modelo</strong>: ORM de Django define la estructura de datos</li>
+                        <li><strong>Capa de Serialización</strong>: Serializadores de DRF convierten objetos Python y JSON</li>
+                        <li><strong>Capa de Vista</strong>: Viewsets/APIViews manejan solicitudes HTTP</li>
+                        <li><strong>Capa de URL</strong>: Routers definen los endpoints de la API</li>
+                        <li><strong>Middlewares</strong>: Procesan solicitudes/respuestas (autenticación, CORS, etc.)</li>
+                        <li><strong>Cliente</strong>: Aplicaciones que consumen la API</li>
+                    </ol>
+                </div>
+                <div class="col-lg-5">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <p class="text-center fw-bold">Flujo de una solicitud</p>
+                            <div class="d-flex flex-column align-items-center">
+                                <div class="p-2 bg-primary text-white rounded mb-2 w-75 text-center">Cliente HTTP</div>
+                                <i class="fas fa-arrow-down mb-2"></i>
+                                <div class="p-2 bg-secondary text-white rounded mb-2 w-75 text-center">URLs / Router</div>
+                                <i class="fas fa-arrow-down mb-2"></i>
+                                <div class="p-2 bg-success text-white rounded mb-2 w-75 text-center">ViewSets / APIView</div>
+                                <i class="fas fa-arrow-down mb-2"></i>
+                                <div class="p-2 bg-info text-white rounded mb-2 w-75 text-center">Serializadores</div>
+                                <i class="fas fa-arrow-down mb-2"></i>
+                                <div class="p-2 bg-warning text-dark rounded mb-2 w-75 text-center">Modelos (ORM)</div>
+                                <i class="fas fa-arrow-down mb-2"></i>
+                                <div class="p-2 bg-danger text-white rounded w-75 text-center">Base de datos MySQL</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <p><strong>Flujo de datos en una API Django:</strong></p>
+                <ol>
+                    <li>El <strong>cliente</strong> envía una solicitud HTTP a una URL específica.</li>
+                    <li>El sistema de <strong>URLs</strong> de Django dirige la solicitud a la vista correspondiente.</li>
+                    <li>La <strong>vista</strong> procesa la solicitud, interactúa con los modelos y aplica la lógica de negocio.</li>
+                    <li>Los <strong>serializadores</strong> convierten los datos de los modelos Django a formatos que se pueden devolver al cliente (JSON, etc.).</li>
+                    <li>Los <strong>modelos</strong> interactúan con la base de datos a través del ORM de Django.</li>
+                    <li><strong>MySQL</strong> almacena y recupera los datos según sea necesario.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-success">
+        <i class="fas fa-check-circle me-2"></i>
+        <strong>¡Fundamentos listos!</strong> Ahora que conoces los conceptos básicos, estás listo para comenzar a construir tu propia API REST con Django y MySQL.
+    </div>
+
+    <div class="text-center mt-5">
+        <button id="next-step-button" class="btn btn-lg btn-success" onclick="loadStep(1)">
+            Iniciar la creación de la API <i class="fas fa-arrow-right ms-2"></i>
+        </button>
+    </div>
+</div>

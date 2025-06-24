@@ -4,20 +4,21 @@
  */
 
 // Variables globales
-const totalSteps = 8;
+const totalSteps = 9;
 let currentStep = 0;
 const stepTitles = [
     "Conceptos Fundamentales",
     "Configuración Inicial", 
     "Configuración de MySQL", 
     "Creación de Modelos", 
-    "Serializers y Views", 
+    "Serializadores Básicos", 
+    "Vistas y URLs",
     "Autenticación y Permisos",
-    "Pruebas con Postman",
+    "Pruebas Manuales con Postman",
     "Pruebas Automatizadas",
-    "Despliegue"
+    "Despliegue en Producción"
 ];
-const stepDurations = [5, 15, 10, 20, 20, 15, 15, 20, 15]; // Tiempo en minutos
+const stepDurations = [5, 15, 10, 20, 15, 15, 15, 15, 20, 20]; // Tiempo en minutos
 
 // Funciones principales
 function initializeGuide() {
@@ -391,9 +392,8 @@ function loadStep(stepNumber) {
                 <p class="mt-3">Cargando paso ${stepNumber}...</p>
             </div>
         `;
-        
-        // Cargar contenido del paso
-        fetch(`steps/step${stepNumber}.html`)
+          // Cargar contenido del paso
+        fetch(`steps/new_step${stepNumber}.html`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('No se pudo cargar el contenido del paso');
@@ -908,3 +908,25 @@ document.addEventListener('DOMContentLoaded', function() {
     window.previousStep = previousStep;
     window.showCompletionModal = showCompletionModal;
 });
+
+// --- FUNCIÓN PARA MANEJAR PESTAÑAS ---
+function openTab(evt, tabId) {
+    // Ocultar todos los contenidos de pestañas
+    const tabcontents = document.getElementsByClassName("tabcontent");
+    for (let i = 0; i < tabcontents.length; i++) {
+        tabcontents[i].style.display = "none";
+    }
+    
+    // Eliminar la clase "active" de todos los botones de pestaña
+    const tablinks = document.getElementsByClassName("tablinks");
+    for (let i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+    }
+    
+    // Mostrar la pestaña actual y añadir la clase "active" al botón que abrió la pestaña
+    document.getElementById(tabId).style.display = "block";
+    evt.currentTarget.classList.add("active");
+}
+
+// Hacemos que la función esté disponible globalmente
+window.openTab = openTab;

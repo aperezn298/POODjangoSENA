@@ -1,0 +1,429 @@
+<div class="tutorial-step">
+    <div class="alert alert-primary" role="alert">
+        <i class="fas fa-vial me-2"></i>
+        En este paso aprenderemos a probar nuestra API REST utilizando Postman o Thunder Client, herramientas esenciales para el desarrollo y pruebas de APIs.
+    </div>
+
+    <h3>Pruebas Manuales con Postman</h3>
+    <p>Postman es una plataforma para desarrollo de API que permite diseñar, probar, documentar y compartir APIs. Es una herramienta indispensable para cualquier desarrollador que trabaje con APIs.</p>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Beneficios de Postman</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Facilidad de Uso</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Interfaz intuitiva que permite realizar solicitudes HTTP sin necesidad de escribir código.</p>
+                            <p class="small text-muted">Ideal para: Desarrollo rápido y pruebas</p>
+                            <p class="small text-muted">Características: Historial de solicitudes, entornos configurables</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="card-title mb-0">Colecciones y Flujos</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Organiza solicitudes en colecciones y ejecuta flujos completos para simular casos de uso reales.</p>
+                            <p class="small text-muted">Ideal para: Pruebas de integración</p>
+                            <p class="small text-muted">Características: Ejecución secuencial, variables dinámicas</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title mb-0">Automatización</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Crea pruebas automatizadas con scripts pre-request y post-request usando JavaScript.</p>
+                            <p class="small text-muted">Ideal para: CI/CD y pruebas repetitivas</p>
+                            <p class="small text-muted">Características: Assertions, reportes de pruebas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Paso 1: Instalación de Postman o Thunder Client</h3>
+    <p>Puedes elegir entre Postman o Thunder Client (una extensión más ligera para VS Code).</p>
+      <div class="code-tabs">
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'postman')">Postman</button>
+            <button class="tablinks" onclick="openTab(event, 'thunder')">Thunder Client</button>
+        </div>
+        
+        <div id="postman" class="tabcontent" style="display: block;">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <ol>
+                        <li>Descarga e instala Postman desde <a href="https://www.postman.com/downloads/" target="_blank">la página oficial</a></li>
+                        <li>Abre la aplicación y crea una cuenta (opcional pero recomendado para sincronización)</li>
+                        <li>Familiarízate con la interfaz:
+                            <ul>
+                                <li>Panel izquierdo: colecciones y solicitudes</li>
+                                <li>Panel central: editor de solicitudes y visualizador de respuestas</li>
+                                <li>Panel derecho (opcional): documentación y ejemplos</li>
+                            </ul>
+                        </li>                    </ol>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Nota:</strong> Familiarízate con la interfaz de Postman. Incluye secciones para colecciones, variables de entorno, editor de solicitudes y visualizador de respuestas.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="thunder" class="tabcontent">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <ol>
+                        <li>Abre VS Code</li>
+                        <li>Ve a la pestaña de extensiones (o presiona <code>Ctrl+Shift+X</code>)</li>
+                        <li>Busca "Thunder Client" y haz clic en "Instalar"</li>
+                        <li>Una vez instalado, haz clic en el icono de Thunder Client en la barra lateral</li>
+                        <li>Familiarízate con la interfaz:
+                            <ul>
+                                <li>Collections: para organizar tus solicitudes</li>
+                                <li>New Request: para crear una nueva solicitud</li>
+                            </ul>
+                        </li>                    </ol>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Nota:</strong> Thunder Client tiene una interfaz más simple integrada en VS Code. Te permite organizar colecciones y crear solicitudes directamente desde el editor.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Paso 2: Configurar un Entorno para pruebas</h3>
+    <p>Es recomendable crear entornos para manejar variables como URLs base, tokens de autenticación, etc.</p>    <div class="code-tabs">
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'env-postman')">En Postman</button>
+            <button class="tablinks" onclick="openTab(event, 'env-thunder')">En Thunder Client</button>
+        </div>
+        
+        <div id="env-postman" class="tabcontent" style="display: block;">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <ol>
+                        <li>Haz clic en el icono de engranaje (arriba a la derecha) y selecciona "Manage Environments"</li>
+                        <li>Haz clic en "Add" para crear un nuevo entorno (ej. "API Django Local")</li>
+                        <li>Agrega estas variables:
+                            <ul>
+                                <li><code>base_url</code>: <code>http://127.0.0.1:8000</code></li>
+                                <li><code>api</code>: <code>api</code></li>
+                                <li><code>version</code>: <code>v1</code></li>
+                                <li><code>token</code>: (dejar vacío por ahora)</li>
+                            </ul>
+                        </li>
+                        <li>Guarda el entorno y selecciónalo en el menú desplegable (arriba a la derecha)</li>
+                    </ol>
+                    <div class="alert alert-info">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Tip:</strong> De este modo, todas las peticiones utilizarán <code>{{base_url}}/{{api}}/{{version}}/recurso/</code> permitiéndote cambiar fácilmente entre entornos o versiones de la API.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="env-thunder" class="tabcontent">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <ol>
+                        <li>Haz clic en "Env" en la barra lateral de Thunder Client</li>
+                        <li>Haz clic en el botón "+" para crear un nuevo entorno (ej. "API Django Local")</li>
+                        <li>Agrega estas variables:
+                            <ul>
+                                <li><code>base_url</code>: <code>http://127.0.0.1:8000</code></li>
+                                <li><code>api</code>: <code>api</code></li>
+                                <li><code>version</code>: <code>v1</code></li>
+                                <li><code>token</code>: (dejar vacío por ahora)</li>
+                            </ul>
+                        </li>
+                        <li>Guarda el entorno haciendo clic en "Save"</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Paso 3: Crear una Colección para nuestra API</h3>
+    <p>Organizaremos nuestras peticiones en colecciones según la estructura de nuestra API.</p>    <div class="code-tabs">
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'col-postman')">En Postman</button>
+            <button class="tablinks" onclick="openTab(event, 'col-thunder')">En Thunder Client</button>
+        </div>
+        
+        <div id="col-postman" class="tabcontent" style="display: block;">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <ol>
+                        <li>En el panel izquierdo, haz clic en "Collections" y luego en "+" para crear una nueva colección</li>
+                        <li>Nombra la colección como "API Biblioteca Django"</li>
+                        <li>Crea subcarpetas para organizar los endpoints:
+                            <ul>
+                                <li>Autenticación</li>
+                                <li>Autores</li>
+                                <li>Categorías</li>
+                                <li>Editoriales</li>
+                                <li>Libros</li>
+                                <li>Reseñas</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <div id="col-thunder" class="tabcontent">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <ol>
+                        <li>Haz clic en "Collections" en la barra lateral</li>
+                        <li>Haz clic en el botón "+" para crear una nueva colección</li>
+                        <li>Nombra la colección como "API Biblioteca Django" y haz clic en "Save"</li>
+                        <li>Haz clic derecho en la colección para crear subcarpetas (New Folder) para:
+                            <ul>
+                                <li>Autenticación</li>
+                                <li>Autores</li>
+                                <li>Categorías</li>
+                                <li>Editoriales</li>
+                                <li>Libros</li>
+                                <li>Reseñas</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div><h3>Paso 4: Probar Endpoints Sin Autenticación</h3>
+    <p>Comencemos probando algunos endpoints que no requieren autenticación, como obtener la lista de libros.</p>
+
+    <div class="code-block">
+        <pre><code class="language-http">GET {{base_url}}/{{api}}/{{version}}/libros/</code></pre>
+    </div>
+
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Nota:</strong> Asegúrate de que el servidor de desarrollo de Django esté ejecutándose con <code>python manage.py runserver</code>
+    </div>
+
+    <p>Crea y guarda las siguientes solicitudes:</p>
+    <ol>
+        <li>GET Lista de Autores: <code>GET {{base_url}}/{{api}}/{{version}}/autores/</code></li>
+        <li>GET Lista de Categorías: <code>GET {{base_url}}/{{api}}/{{version}}/categorias/</code></li>
+        <li>GET Lista de Editoriales: <code>GET {{base_url}}/{{api}}/{{version}}/editoriales/</code></li>
+        <li>GET Lista de Libros: <code>GET {{base_url}}/{{api}}/{{version}}/libros/</code></li>
+        <li>GET Detalle de un Libro: <code>GET {{base_url}}/{{api}}/{{version}}/libros/1/</code> (ajusta el ID según sea necesario)</li>
+    </ol>
+
+    <h3>Paso 5: Probar Autenticación</h3>
+    <p>Ahora probaremos la obtención de token de autenticación:</p>    <div class="code-tabs">
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'auth-token')">Token Auth</button>
+            <button class="tablinks" onclick="openTab(event, 'auth-jwt')">JWT Auth (opcional)</button>
+        </div>
+        
+        <div id="auth-token" class="tabcontent" style="display: block;">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <p>Crea una solicitud POST para obtener un token:</p>
+                    <ul>
+                        <li>URL: <code>{{base_url}}/{{api}}/{{version}}/api-token-auth/</code></li>
+                        <li>Body (raw JSON):
+                            <pre><code class="language-json">{
+    "username": "admin",
+    "password": "tu_contraseña"
+}</code></pre>
+                        </li>
+                    </ul>
+                    <p>Cuando ejecutes la solicitud, deberías recibir una respuesta similar a esta:</p>
+                    <pre><code class="language-json">{
+    "token": "9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"
+}</code></pre>
+                    <p>Guarda este token en la variable de entorno <code>token</code>:</p>
+                    <ul>
+                        <li>En Postman: Haz clic en "Tests" y añade:
+                            <pre><code class="language-javascript">var jsonData = pm.response.json();
+pm.environment.set("token", jsonData.token);</code></pre>
+                        </li>
+                        <li>En Thunder Client: Haz clic en "Tests" y añade:
+                            <pre><code class="language-javascript">tc.setEnvVariable("token", json.token);</code></pre>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="auth-jwt" class="tabcontent">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <p>Si implementaste JWT, crea una solicitud POST para obtener tokens:</p>
+                    <ul>
+                        <li>URL: <code>{{base_url}}/{{api}}/{{version}}/token/</code></li>
+                        <li>Body (raw JSON):
+                            <pre><code class="language-json">{
+    "username": "admin",
+    "password": "tu_contraseña"
+}</code></pre>
+                        </li>
+                    </ul>
+                    <p>Cuando ejecutes la solicitud, deberías recibir una respuesta con access y refresh tokens:</p>
+                    <pre><code class="language-json">{
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+}</code></pre>
+                    <p>Guarda el token de acceso en la variable de entorno <code>token</code>:</p>
+                    <ul>
+                        <li>En Postman: Haz clic en "Tests" y añade:
+                            <pre><code class="language-javascript">var jsonData = pm.response.json();
+pm.environment.set("token", jsonData.access);</code></pre>
+                        </li>
+                        <li>En Thunder Client: Haz clic en "Tests" y añade:
+                            <pre><code class="language-javascript">tc.setEnvVariable("token", json.access);</code></pre>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Paso 6: Probar Endpoints con Autenticación</h3>
+    <p>Ahora podemos probar endpoints protegidos usando el token que obtuvimos.</p>    <div class="code-tabs">
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'auth-header')">Token Auth</button>
+            <button class="tablinks" onclick="openTab(event, 'jwt-header')">JWT Auth (opcional)</button>
+        </div>
+        
+        <div id="auth-header" class="tabcontent" style="display: block;">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <p>Para cada solicitud protegida, añade este encabezado:</p>
+                    <pre><code class="language-http">Authorization: Token {{token}}</code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <div id="jwt-header" class="tabcontent">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <p>Para cada solicitud protegida con JWT, añade este encabezado:</p>
+                    <pre><code class="language-http">Authorization: Bearer {{token}}</code></pre>
+                </div>
+            </div>
+        </div>
+    </div><p>Crea y prueba las siguientes solicitudes:</p>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <ol>
+                <li>
+                    <strong>Crear un Autor</strong>
+                    <ul>
+                        <li>Método: POST</li>
+                        <li>URL: <code>{{base_url}}/{{api}}/{{version}}/autores/</code></li>
+                        <li>Headers: Authorization como se muestra arriba</li>
+                        <li>Body (raw JSON):
+                            <pre><code class="language-json">{
+    "nombre": "Gabriel",
+    "apellidos": "García Márquez",
+    "fecha_nacimiento": "1927-03-06",
+    "biografia": "Escritor colombiano, premio Nobel de Literatura en 1982"
+}</code></pre>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Crear una Categoría</strong>
+                    <ul>
+                        <li>Método: POST</li>
+                        <li>URL: <code>{{base_url}}/{{api}}/{{version}}/categorias/</code></li>
+                        <li>Headers: Authorization</li>
+                        <li>Body (raw JSON):
+                            <pre><code class="language-json">{
+    "nombre": "Realismo Mágico",
+    "descripcion": "Género literario donde elementos mágicos aparecen en un entorno realista"
+}</code></pre>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Actualizar un Autor</strong>
+                    <ul>
+                        <li>Método: PUT</li>
+                        <li>URL: <code>{{base_url}}/{{api}}/{{version}}/autores/1/</code> (ajusta el ID según corresponda)</li>
+                        <li>Headers: Authorization</li>
+                        <li>Body (raw JSON):
+                            <pre><code class="language-json">{
+    "nombre": "Gabriel",
+    "apellidos": "García Márquez",
+    "fecha_nacimiento": "1927-03-06",
+    "biografia": "Escritor colombiano, premio Nobel de Literatura en 1982. Autor de 'Cien años de soledad'"
+}</code></pre>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Eliminar un Autor</strong>
+                    <ul>
+                        <li>Método: DELETE</li>
+                        <li>URL: <code>{{base_url}}/{{api}}/{{version}}/autores/2/</code> (ajusta el ID según corresponda)</li>
+                        <li>Headers: Authorization</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <h3>Paso 7: Automatización Básica en Postman</h3>
+    <p>Podemos añadir pruebas sencillas para verificar que nuestras solicitudes funcionan correctamente:</p>
+
+    <div class="code-block">
+        <pre><code class="language-javascript">// Añade esto en la pestaña "Tests" de una solicitud GET
+pm.test("Estado es 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("El tiempo de respuesta es menos de 200ms", function () {
+    pm.expect(pm.response.responseTime).to.be.below(200);
+});
+
+// Para verificar datos específicos en una respuesta
+pm.test("La respuesta contiene los datos esperados", function () {
+    var jsonData = pm.response.json();
+    pm.expect(jsonData.length).to.be.above(0);
+    if (jsonData.length > 0) {
+        pm.expect(jsonData[0].id).to.exist;
+    }
+});</code></pre>
+    </div>
+
+    <div class="alert alert-success mt-4">
+        <i class="fas fa-check-circle me-2"></i>
+        <strong>¡Felicidades!</strong> Has aprendido a probar manualmente tu API REST con Postman o Thunder Client. Estas herramientas son esenciales para el desarrollo y depuración de APIs. En el siguiente paso, implementaremos pruebas automatizadas con el framework de pruebas de Django.
+    </div>
+
+    <div class="alert alert-info mt-4">
+        <i class="fas fa-camera me-2"></i>
+        <strong>Nota para instructores:</strong> Se recomienda agregar capturas de pantalla reales de:
+        <ol>
+            <li>La interfaz principal de Postman (nombre de archivo: <code>postman-interface.png</code>)</li>
+            <li>La interfaz de Thunder Client en VS Code (nombre de archivo: <code>thunder-client.png</code>)</li>
+        </ol>
+        Colocar las imágenes en el directorio <code>assets/images/</code> para mejorar la experiencia visual de la guía.
+    </div>
+
+    <div class="tutorial-nav mt-5">        <a href="javascript:loadStep(6)" class="btn btn-outline-primary"><i class="fas fa-arrow-left"></i> Paso anterior</a>
+        <a href="javascript:loadStep(8)" class="btn btn-primary">Siguiente paso <i class="fas fa-arrow-right"></i></a>
+    </div>
+</div>

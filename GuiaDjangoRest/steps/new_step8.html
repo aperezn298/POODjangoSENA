@@ -1,0 +1,594 @@
+<div class="tutorial-step">
+    <div class="alert alert-primary" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        En este paso implementaremos pruebas automatizadas para nuestra API Django utilizando el framework de pruebas de Django.
+    </div>
+
+    <h3>Pruebas Automatizadas para API REST</h3>
+    <p>Las pruebas automatizadas son una parte esencial del desarrollo de software moderno. Para nuestra API con Django REST Framework, implementaremos varios tipos de pruebas para garantizar la calidad y robustez de nuestro código.</p>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Tipos de Pruebas</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Pruebas Unitarias</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Comprueban el funcionamiento de componentes individuales de manera aislada.</p>
+                            <ul>
+                                <li>Pruebas de modelos</li>
+                                <li>Pruebas de serializadores</li>
+                                <li>Pruebas de utilidades</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="card-title mb-0">Pruebas de Integración</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Verifican que diferentes componentes funcionen correctamente juntos.</p>
+                            <ul>
+                                <li>Pruebas de vistas/viewsets</li>
+                                <li>Pruebas de autenticación</li>
+                                <li>Pruebas de permisos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title mb-0">Pruebas de API</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Simulan solicitudes HTTP completas para probar el comportamiento end-to-end.</p>
+                            <ul>
+                                <li>Pruebas de endpoints</li>
+                                <li>Pruebas de respuestas JSON</li>
+                                <li>Pruebas de paginación y filtrado</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Paso 1: Configuración del Entorno de Pruebas</h3>
+    <p>Django incluye un robusto framework de pruebas que podemos utilizar para nuestra API. Vamos a configurar el entorno de pruebas en nuestra aplicación.</p>
+
+    <div class="code-block">
+        <pre><code class="language-bash"># Crear un directorio de tests si no existe
+mkdir -p api/tests</code></pre>
+    </div>
+
+    <p>Crea un archivo <code>__init__.py</code> dentro del directorio tests para que Python lo reconozca como un paquete:</p>
+
+    <div class="code-block">
+        <pre><code class="language-bash">touch api/tests/__init__.py</code></pre>
+    </div>
+
+    <h3>Paso 2: Pruebas Unitarias para Modelos</h3>
+    <p>Primero, vamos a crear pruebas para nuestros modelos. Crea un archivo <code>api/tests/test_models.py</code>:</p>
+
+    <div class="code-block">
+        <pre><code class="language-python">from django.test import TestCase
+from django.contrib.auth.models import User
+from api.models import Autor, Categoria, Editorial, Libro, Resena
+from django.utils import timezone
+from django.core.exceptions import ValidationError
+
+
+class AutorModelTest(TestCase):
+    def setUp(self):
+        """Configuración inicial para las pruebas"""
+        self.autor = Autor.objects.create(
+            nombre="Gabriel",
+            apellidos="García Márquez",
+            fecha_nacimiento="1927-03-06",
+            biografia="Escritor colombiano"
+        )
+
+    def test_creacion_autor(self):
+        """Prueba que un autor se crea correctamente"""
+        self.assertTrue(isinstance(self.autor, Autor))
+        self.assertEqual(self.autor.__str__(), "Gabriel García Márquez")
+
+    def test_nombre_completo(self):
+        """Prueba la propiedad nombre_completo"""
+        self.assertEqual(self.autor.nombre_completo, "Gabriel García Márquez")
+
+
+class LibroModelTest(TestCase):
+    def setUp(self):
+        """Configuración inicial para las pruebas"""
+        self.editorial = Editorial.objects.create(
+            nombre="Editorial Ejemplo",
+            sitio_web="https://ejemplo.com"
+        )
+        
+        self.libro = Libro.objects.create(
+            titulo="Cien años de soledad",
+            isbn="9780307474728",
+            fecha_publicacion=timezone.now().date(),
+            editorial=self.editorial
+        )
+        
+        self.autor = Autor.objects.create(
+            nombre="Gabriel",
+            apellidos="García Márquez"
+        )
+        
+        self.categoria = Categoria.objects.create(
+            nombre="Realismo Mágico"
+        )
+        
+        # Añadir relaciones many-to-many
+        self.libro.autores.add(self.autor)
+        self.libro.categorias.add(self.categoria)
+        
+        # Crear usuario para reseñas
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpassword'
+        )
+        
+        # Crear reseñas
+        self.resena1 = Resena.objects.create(
+            libro=self.libro,
+            usuario=self.user,
+            titulo="Gran libro",
+            texto="Me encantó este libro",
+            valoracion=5
+        )
+        
+        self.resena2 = Resena.objects.create(
+            libro=self.libro,
+            usuario=User.objects.create_user(username='otheruser', password='pass'),
+            titulo="Bueno",
+            texto="Interesante lectura",
+            valoracion=4
+        )
+
+    def test_creacion_libro(self):
+        """Prueba que un libro se crea correctamente"""
+        self.assertTrue(isinstance(self.libro, Libro))
+        self.assertEqual(self.libro.__str__(), "Cien años de soledad")
+        
+    def test_relaciones_libro(self):
+        """Prueba las relaciones del modelo Libro"""
+        self.assertEqual(self.libro.autores.count(), 1)
+        self.assertEqual(self.libro.categorias.count(), 1)
+        self.assertEqual(self.libro.editorial.nombre, "Editorial Ejemplo")
+        
+    def test_promedio_valoraciones(self):
+        """Prueba el cálculo del promedio de valoraciones"""
+        self.assertEqual(self.libro.promedio_valoraciones, 4.5)  # (5+4)/2</code></pre>
+    </div>
+
+    <h3>Paso 3: Pruebas para Serializadores</h3>
+    <p>Ahora, vamos a crear pruebas para nuestros serializadores. Crea un archivo <code>api/tests/test_serializers.py</code>:</p>
+
+    <div class="code-block">
+        <pre><code class="language-python">from django.test import TestCase
+from django.contrib.auth.models import User
+from api.models import Autor, Categoria, Editorial, Libro
+from api.serializers import (
+    AutorSerializer, 
+    CategoriaSerializer, 
+    EditorialSerializer, 
+    LibroSerializer
+)
+from django.utils import timezone
+
+
+class AutorSerializerTest(TestCase):
+    def setUp(self):
+        self.autor_attributes = {
+            'nombre': 'Gabriel',
+            'apellidos': 'García Márquez',
+            'fecha_nacimiento': '1927-03-06',
+            'biografia': 'Escritor colombiano'
+        }
+        
+        self.autor = Autor.objects.create(**self.autor_attributes)
+        self.serializer = AutorSerializer(instance=self.autor)
+    
+    def test_contiene_campos_esperados(self):
+        """Prueba que el serializador contiene los campos esperados"""
+        data = self.serializer.data
+        self.assertEqual(set(data.keys()), set([
+            'id', 'nombre', 'apellidos', 'fecha_nacimiento', 
+            'biografia', 'foto', 'created', 'modified', 'nombre_completo'
+        ]))
+    
+    def test_nombre_completo_campo(self):
+        """Prueba que el campo nombre_completo es correcto"""
+        data = self.serializer.data
+        self.assertEqual(data['nombre_completo'], 'Gabriel García Márquez')
+    
+    def test_deserializacion(self):
+        """Prueba la deserialización y validación"""
+        serializer = AutorSerializer(data=self.autor_attributes)
+        self.assertTrue(serializer.is_valid())
+
+
+class LibroSerializerTest(TestCase):
+    def setUp(self):
+        self.editorial = Editorial.objects.create(
+            nombre="Editorial Ejemplo",
+            sitio_web="https://ejemplo.com"
+        )
+        
+        self.autor = Autor.objects.create(
+            nombre="Gabriel",
+            apellidos="García Márquez"
+        )
+        
+        self.categoria = Categoria.objects.create(
+            nombre="Realismo Mágico"
+        )
+        
+        self.libro_attributes = {
+            'titulo': 'Cien años de soledad',
+            'isbn': '9780307474728',
+            'sinopsis': 'Historia de la familia Buendía',
+            'fecha_publicacion': timezone.now().date(),
+            'paginas': 417,
+            'idioma': 'Español',
+            'editorial': self.editorial.id,
+        }
+        
+        self.libro = Libro.objects.create(**self.libro_attributes)
+        self.libro.autores.add(self.autor)
+        self.libro.categorias.add(self.categoria)
+        
+        self.serializer = LibroSerializer(instance=self.libro)
+    
+    def test_contiene_campos_esperados(self):
+        """Prueba que el serializador contiene los campos esperados"""
+        data = self.serializer.data
+        self.assertEqual(set(data.keys()), set([
+            'id', 'titulo', 'isbn', 'sinopsis', 'fecha_publicacion',
+            'portada', 'paginas', 'idioma', 'autores', 'categorias',
+            'editorial', 'created', 'modified', 'promedio_valoraciones'
+        ]))
+    
+    def test_relaciones_serializadas(self):
+        """Prueba que las relaciones se serializan correctamente"""
+        data = self.serializer.data
+        self.assertEqual(len(data['autores']), 1)
+        self.assertEqual(len(data['categorias']), 1)
+        self.assertEqual(data['editorial'], self.editorial.id)</code></pre>
+    </div>
+
+    <h3>Paso 4: Pruebas para API Endpoints</h3>
+    <p>Finalmente, vamos a crear pruebas para los endpoints de nuestra API. Crea un archivo <code>api/tests/test_views.py</code>:</p>
+
+    <div class="code-block">
+        <pre><code class="language-python">from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase, APIClient
+from django.contrib.auth.models import User
+from api.models import Autor, Categoria, Editorial, Libro
+from django.utils import timezone
+
+
+class AutorViewSetTest(APITestCase):
+    def setUp(self):
+        """Configuración inicial para las pruebas"""
+        # Crear un usuario para autenticación
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpassword'
+        )
+        
+        # Crear datos de prueba
+        self.autor1 = Autor.objects.create(
+            nombre="Gabriel",
+            apellidos="García Márquez",
+            biografia="Escritor colombiano"
+        )
+        self.autor2 = Autor.objects.create(
+            nombre="Jorge Luis",
+            apellidos="Borges",
+            biografia="Escritor argentino"
+        )
+        
+        # URLs para las pruebas
+        self.list_url = reverse('autor-list')  # Asegúrate de que coincide con tus URLs
+        self.detail_url = reverse('autor-detail', args=[self.autor1.id])
+        
+        # Cliente para hacer requests
+        self.client = APIClient()
+    
+    def test_obtener_lista_autores(self):
+        """Prueba obtener la lista de autores"""
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)  # Verificar que hay 2 autores
+    
+    def test_obtener_detalle_autor(self):
+        """Prueba obtener los detalles de un autor"""
+        response = self.client.get(self.detail_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['nombre'], 'Gabriel')
+    
+    def test_crear_autor_sin_autenticacion(self):
+        """Prueba crear un autor sin autenticación (debería fallar)"""
+        data = {
+            'nombre': 'Mario',
+            'apellidos': 'Vargas Llosa',
+            'biografia': 'Escritor peruano'
+        }
+        response = self.client.post(self.list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    
+    def test_crear_autor_con_autenticacion(self):
+        """Prueba crear un autor con autenticación"""
+        self.client.force_authenticate(user=self.user)
+        data = {
+            'nombre': 'Mario',
+            'apellidos': 'Vargas Llosa',
+            'biografia': 'Escritor peruano'
+        }
+        response = self.client.post(self.list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Autor.objects.count(), 3)
+    
+    def test_actualizar_autor(self):
+        """Prueba actualizar un autor"""
+        self.client.force_authenticate(user=self.user)
+        data = {
+            'nombre': 'Gabriel José',
+            'apellidos': 'García Márquez',
+            'biografia': 'Escritor y periodista colombiano'
+        }
+        response = self.client.put(self.detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.autor1.refresh_from_db()
+        self.assertEqual(self.autor1.nombre, 'Gabriel José')
+    
+    def test_eliminar_autor(self):
+        """Prueba eliminar un autor"""
+        self.client.force_authenticate(user=self.user)
+        response = self.client.delete(self.detail_url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Autor.objects.count(), 1)
+
+
+class LibroViewSetTest(APITestCase):
+    def setUp(self):
+        """Configuración inicial para las pruebas"""
+        # Crear un usuario para autenticación
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpassword'
+        )
+        
+        # Crear datos de prueba
+        self.autor = Autor.objects.create(
+            nombre="Gabriel",
+            apellidos="García Márquez"
+        )
+        
+        self.categoria = Categoria.objects.create(
+            nombre="Realismo Mágico"
+        )
+        
+        self.editorial = Editorial.objects.create(
+            nombre="Editorial Ejemplo"
+        )
+        
+        self.libro = Libro.objects.create(
+            titulo="Cien años de soledad",
+            isbn="9780307474728",
+            fecha_publicacion=timezone.now().date(),
+            editorial=self.editorial
+        )
+        self.libro.autores.add(self.autor)
+        self.libro.categorias.add(self.categoria)
+        
+        # URLs para las pruebas
+        self.list_url = reverse('libro-list')  # Ajusta según tus URLs
+        self.detail_url = reverse('libro-detail', args=[self.libro.id])
+        
+        # Cliente para hacer requests
+        self.client = APIClient()
+    
+    def test_obtener_lista_libros(self):
+        """Prueba obtener la lista de libros"""
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)  # Verificar que hay 1 libro
+    
+    def test_filtrar_libros_por_autor(self):
+        """Prueba filtrar libros por autor"""
+        url = f"{self.list_url}?autor={self.autor.id}"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+    
+    def test_crear_libro_con_autenticacion(self):
+        """Prueba crear un libro con autenticación"""
+        self.client.force_authenticate(user=self.user)
+        data = {
+            'titulo': 'El amor en los tiempos del cólera',
+            'isbn': '9780307387264',
+            'fecha_publicacion': '1985-01-01',
+            'editorial': self.editorial.id,
+            'autores': [self.autor.id],
+            'categorias': [self.categoria.id]
+        }
+        response = self.client.post(self.list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Libro.objects.count(), 2)</code></pre>
+    </div>
+
+    <h3>Paso 5: Pruebas para Autenticación y Permisos</h3>
+    <p>Es importante probar nuestros mecanismos de autenticación y permisos. Crea un archivo <code>api/tests/test_auth.py</code>:</p>
+
+    <div class="code-block">
+        <pre><code class="language-python">from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase, APIClient
+from django.contrib.auth.models import User
+from api.models import Autor
+from rest_framework.authtoken.models import Token
+
+
+class AuthenticationTest(APITestCase):
+    def setUp(self):
+        """Configuración inicial para las pruebas"""
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='test@example.com',
+            password='testpassword'
+        )
+        
+        self.token_url = reverse('api-token-auth')  # Ajusta según tus URLs
+        self.autor_list_url = reverse('autor-list')
+        self.register_url = reverse('register')  # Ajusta según tus URLs
+        
+        # Crear un autor para pruebas de acceso
+        self.autor = Autor.objects.create(
+            nombre="Test", 
+            apellidos="Author"
+        )
+    
+    def test_obtener_token(self):
+        """Prueba obtener un token de autenticación"""
+        data = {
+            'username': 'testuser',
+            'password': 'testpassword'
+        }
+        response = self.client.post(self.token_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue('token' in response.data)
+    
+    def test_usar_token_para_acceso(self):
+        """Prueba usar un token para acceder a un endpoint protegido"""
+        # Crear token manualmente
+        token = Token.objects.create(user=self.user)
+        
+        # Configurar cliente con autenticación
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION=f'Token {token.key}')
+        
+        # Intentar crear un autor (operación protegida)
+        data = {
+            'nombre': 'Nuevo',
+            'apellidos': 'Autor'
+        }
+        response = client.post(self.autor_list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    
+    def test_registro_usuario(self):
+        """Prueba el registro de un nuevo usuario"""
+        data = {
+            'username': 'newuser',
+            'email': 'new@example.com',
+            'password': 'newpassword',
+            'password2': 'newpassword'  # Asume que tu API requiere confirmación
+        }
+        response = self.client.post(self.register_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(User.objects.filter(username='newuser').exists())
+    
+    def test_acceso_sin_autenticacion(self):
+        """Prueba acceder a un endpoint protegido sin autenticación"""
+        data = {
+            'nombre': 'Intento',
+            'apellidos': 'No Autorizado'
+        }
+        response = self.client.post(self.autor_list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)</code></pre>
+    </div>
+
+    <h3>Paso 6: Ejecutar las Pruebas</h3>
+    <p>Ahora podemos ejecutar nuestras pruebas para verificar que todo funciona correctamente:</p>
+
+    <div class="code-block">
+        <pre><code class="language-bash"># Ejecutar todas las pruebas
+python manage.py test api.tests
+
+# Ejecutar pruebas específicas
+python manage.py test api.tests.test_models
+python manage.py test api.tests.test_serializers
+python manage.py test api.tests.test_views
+python manage.py test api.tests.test_auth</code></pre>
+    </div>
+
+    <div class="alert alert-info mb-4">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Cobertura de pruebas:</strong> Para medir la cobertura de nuestras pruebas, podemos usar la librería <code>coverage</code>. Instálala con <code>pip install coverage</code> y ejecútala con:
+        <pre><code class="language-bash">coverage run --source='api' manage.py test api
+coverage report
+coverage html  # Para generar un reporte HTML detallado</code></pre>
+    </div>
+
+    <h3>Paso 7: Integración con CI/CD</h3>
+    <p>Para integrar nuestras pruebas en un sistema de integración continua como GitHub Actions, podemos crear un archivo de configuración:</p>
+
+    <div class="code-block">
+        <pre><code class="language-yaml"># .github/workflows/django-tests.yml
+name: Django Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test_db
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run Tests
+      env:
+        DATABASE_URL: mysql://root:root@localhost:3306/test_db
+      run: |
+        python manage.py test
+    - name: Run Coverage
+      run: |
+        pip install coverage
+        coverage run --source='api' manage.py test
+        coverage report</code></pre>
+    </div>
+
+    <div class="alert alert-success mt-4">
+        <i class="fas fa-check-circle me-2"></i>
+        <strong>¡Felicidades!</strong> Has implementado pruebas automatizadas para tu API REST con Django. Estas pruebas te ayudarán a mantener la calidad del código y detectar regresiones a medida que desarrollas nuevas funcionalidades. En el siguiente paso, aprenderemos a desplegar nuestra API en un entorno de producción.
+    </div>
+
+    <div class="tutorial-nav mt-5">        <a href="javascript:loadStep(7)" class="btn btn-outline-primary"><i class="fas fa-arrow-left"></i> Paso anterior</a>
+        <a href="javascript:loadStep(9)" class="btn btn-primary">Siguiente paso <i class="fas fa-arrow-right"></i></a>
+    </div>
+</div>

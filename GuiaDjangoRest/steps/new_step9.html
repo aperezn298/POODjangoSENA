@@ -1,0 +1,610 @@
+<div class="tutorial-step">
+    <div class="alert alert-primary" role="alert">
+        <i class="fas fa-cloud-upload-alt me-2"></i>
+        En este paso aprenderemos a desplegar nuestra API Django con MySQL en un entorno de producción.
+    </div>
+
+    <h3>Preparando y Desplegando la API</h3>
+    <p>El despliegue de una aplicación Django con MySQL involucra varias etapas para asegurar que sea seguro, eficiente y estable en un entorno de producción.</p>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Opciones de Despliegue</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">VPS</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Servidor Virtual Privado con control total. Recomendado para aplicaciones que necesitan configuración específica.</p>
+                            <p class="small text-muted">Nivel de control: Alto</p>
+                            <p class="small text-muted">Ejemplos: DigitalOcean, Linode, AWS EC2</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="card-title mb-0">PaaS</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Plataforma como servicio. Más fácil de configurar pero con menos control. Ideal para desarrollo y startups.</p>
+                            <p class="small text-muted">Nivel de control: Medio</p>
+                            <p class="small text-muted">Ejemplos: Heroku, PythonAnywhere, Google App Engine</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title mb-0">Contenedores</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Despliegue basado en contenedores. Excelente para escalar y mantener entornos consistentes.</p>
+                            <p class="small text-muted">Nivel de control: Alto con abstracción</p>
+                            <p class="small text-muted">Ejemplos: Docker con Kubernetes, AWS ECS</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Paso 1: Preparación del Proyecto para Producción</h3>
+    <p>Antes de desplegar, necesitamos hacer algunos ajustes al proyecto para que sea apto para un entorno de producción.</p>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Variables de Entorno</h4>
+        </div>
+        <div class="card-body">
+            <p>Primero, configuraremos las variables de entorno para almacenar datos sensibles. Instalaremos y usaremos <code>python-dotenv</code> para esto:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-bash">pip install python-dotenv</code></pre>
+            </div>
+            
+            <p>Crea un archivo <code>.env</code> en la raíz de tu proyecto (no lo incluyas en el control de versiones):</p>
+            
+            <div class="code-block">
+                <pre><code class="language-env"># .env
+DEBUG=False
+SECRET_KEY=tu_clave_secreta_larga_y_aleatoria
+DATABASE_URL=mysql://usuario:contraseña@host:puerto/nombre_db
+ALLOWED_HOSTS=tudominio.com,www.tudominio.com
+CORS_ALLOWED_ORIGINS=https://tudominio.com,https://www.tudominio.com</code></pre>
+            </div>
+            
+            <p>Y un archivo <code>.env.example</code> para compartir con otros desarrolladores (sin datos sensibles):</p>
+            
+            <div class="code-block">
+                <pre><code class="language-env"># .env.example
+DEBUG=False
+SECRET_KEY=your_secret_key_here
+DATABASE_URL=mysql://user:password@host:port/db_name
+ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
+CORS_ALLOWED_ORIGINS=https://yourdomain.com</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Modificar settings.py</h4>
+        </div>
+        <div class="card-body">
+            <p>Ahora, actualiza tu archivo <code>settings.py</code> para usar estas variables de entorno:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-python">import os
+from pathlib import Path
+from dotenv import load_dotenv
+import dj_database_url
+
+# Cargar variables de entorno
+load_dotenv()
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+
+# CORS configuration
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
+
+# Database
+# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+if os.getenv('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_URL')
+        )
+    }
+else:
+    # Configuración de base de datos para desarrollo
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'api_django_db',
+            'USER': 'root',
+            'PASSWORD': '',
+            'HOST': 'localhost',
+            'PORT': '3306',
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
+        }
+    }
+
+# Configuración de archivos estáticos
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Configuración de seguridad adicional
+if not DEBUG:
+    # HTTPS settings
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    
+    # HSTS settings
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True</code></pre>
+            </div>
+            
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Nota:</strong> Necesitarás instalar <code>dj-database-url</code> para la configuración de la base de datos:
+                <pre><code class="language-bash">pip install dj-database-url</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Requerimientos</h4>
+        </div>
+        <div class="card-body">
+            <p>Asegúrate de tener un archivo <code>requirements.txt</code> con todas las dependencias:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-bash">pip freeze > requirements.txt</code></pre>
+            </div>
+            
+            <p>O crea uno manualmente con las dependencias principales:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-text"># requirements.txt
+Django==3.2.10
+djangorestframework==3.13.1
+mysqlclient==2.1.0
+python-dotenv==0.19.2
+dj-database-url==0.5.0
+gunicorn==20.1.0
+Pillow==9.0.0
+django-cors-headers==3.10.1
+djangorestframework-simplejwt==5.0.0</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <h3>Paso 2: Despliegue en VPS con Nginx y Gunicorn</h3>
+    <p>Vamos a desplegar nuestra API en un VPS utilizando Nginx como servidor web y Gunicorn como servidor WSGI.</p>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Configuración del Servidor</h4>
+        </div>
+        <div class="card-body">
+            <p>Primero, necesitamos instalar las dependencias necesarias en nuestro servidor:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-bash"># Actualizar el sistema
+sudo apt update
+sudo apt upgrade -y
+
+# Instalar dependencias
+sudo apt install -y python3-pip python3-dev libmysqlclient-dev nginx mysql-server
+
+# Crear un entorno virtual
+python3 -m venv env
+source env/bin/activate
+
+# Instalar Gunicorn
+pip install gunicorn
+
+# Clonar el repositorio (si estás usando Git)
+git clone https://github.com/tu-usuario/tu-proyecto.git
+cd tu-proyecto
+
+# Instalar dependencias del proyecto
+pip install -r requirements.txt</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Configuración de MySQL en el Servidor</h4>
+        </div>
+        <div class="card-body">
+            <p>Configura MySQL en el servidor:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-bash"># Asegurar MySQL
+sudo mysql_secure_installation
+
+# Crear base de datos y usuario (desde la terminal de MySQL)
+sudo mysql -u root -p
+</code></pre>
+            </div>
+            
+            <p>Una vez dentro de MySQL, ejecuta:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-sql">CREATE DATABASE api_django_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'django_user'@'localhost' IDENTIFIED BY 'tu_contraseña_segura';
+GRANT ALL PRIVILEGES ON api_django_db.* TO 'django_user'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Configuración de Gunicorn</h4>
+        </div>
+        <div class="card-body">
+            <p>Crea un archivo de servicio para Gunicorn:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-bash">sudo nano /etc/systemd/system/gunicorn.service</code></pre>
+            </div>
+            
+            <p>Añade esta configuración:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-ini">[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=tu_usuario
+Group=www-data
+WorkingDirectory=/ruta/a/tu/proyecto
+ExecStart=/ruta/a/tu/proyecto/env/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/ruta/a/tu/proyecto/tu_proyecto.sock \
+          tu_proyecto.wsgi:application
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+            </div>
+            
+            <p>Ahora, inicia y habilita el servicio:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-bash">sudo systemctl start gunicorn
+sudo systemctl enable gunicorn
+sudo systemctl status gunicorn  # Verificar el estado</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Configuración de Nginx</h4>
+        </div>
+        <div class="card-body">
+            <p>Crea un archivo de configuración para tu sitio en Nginx:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-bash">sudo nano /etc/nginx/sites-available/tu_proyecto</code></pre>
+            </div>
+            
+            <p>Añade esta configuración:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-nginx">server {
+    listen 80;
+    server_name tudominio.com www.tudominio.com;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    
+    location /static/ {
+        root /ruta/a/tu/proyecto;
+    }
+    
+    location /media/ {
+        root /ruta/a/tu/proyecto;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/ruta/a/tu/proyecto/tu_proyecto.sock;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}</code></pre>
+            </div>
+            
+            <p>Habilita el sitio y reinicia Nginx:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-bash">sudo ln -s /etc/nginx/sites-available/tu_proyecto /etc/nginx/sites-enabled
+sudo nginx -t  # Verificar la configuración
+sudo systemctl restart nginx</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Configuración SSL con Let's Encrypt</h4>
+        </div>
+        <div class="card-body">
+            <p>Para habilitar HTTPS, usaremos Let's Encrypt:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-bash"># Instalar Certbot
+sudo apt install -y certbot python3-certbot-nginx
+
+# Obtener certificado SSL
+sudo certbot --nginx -d tudominio.com -d www.tudominio.com</code></pre>
+            </div>
+            
+            <p>Sigue las instrucciones del asistente para completar la configuración.</p>
+        </div>
+    </div>
+
+    <h3>Paso 3: Despliegue con Docker (Alternativa)</h3>
+    <p>Alternativamente, podemos usar Docker para simplificar el despliegue, asegurando que nuestro entorno sea consistente.</p>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Dockerfile</h4>
+        </div>
+        <div class="card-body">
+            <p>Crea un <code>Dockerfile</code> en la raíz del proyecto:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-dockerfile">FROM python:3.9
+
+WORKDIR /app
+
+# Instalar dependencias requeridas para mysqlclient
+RUN apt-get update && apt-get install -y default-libmysqlclient-dev build-essential
+
+# Copiar y instalar requisitos
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiar el código del proyecto
+COPY . .
+
+# Recolectar archivos estáticos
+RUN python manage.py collectstatic --noinput
+
+# Exponer puerto
+EXPOSE 8000
+
+# Comando para iniciar Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "tu_proyecto.wsgi:application"]</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Docker Compose</h4>
+        </div>
+        <div class="card-body">
+            <p>Crea un archivo <code>docker-compose.yml</code> para definir los servicios:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-yaml">version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: api_django_db
+      MYSQL_USER: django_user
+      MYSQL_PASSWORD: userpassword
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  web:
+    build: .
+    restart: always
+    volumes:
+      - .:/app
+      - static_data:/app/staticfiles
+      - media_data:/app/media
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=mysql://django_user:userpassword@db:3306/api_django_db
+      - DEBUG=False
+      - SECRET_KEY=your_secret_key_here
+      - ALLOWED_HOSTS=localhost,127.0.0.1,yourserver.com
+    command: >
+      bash -c "python manage.py migrate &&
+               gunicorn tu_proyecto.wsgi:application --bind 0.0.0.0:8000"
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - static_data:/var/www/static
+      - media_data:/var/www/media
+    depends_on:
+      - web
+
+volumes:
+  mysql_data:
+  static_data:
+  media_data:</code></pre>
+            </div>
+            
+            <p>Crea un archivo de configuración para Nginx en <code>nginx/conf.d/default.conf</code>:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-nginx">server {
+    listen 80;
+    server_name localhost;
+
+    location /static/ {
+        alias /var/www/static/;
+    }
+
+    location /media/ {
+        alias /var/www/media/;
+    }
+
+    location / {
+        proxy_pass http://web:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Desplegar con Docker Compose</h4>
+        </div>
+        <div class="card-body">
+            <p>Para desplegar la aplicación con Docker Compose:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-bash"># Construir e iniciar los contenedores
+docker-compose up -d --build
+
+# Ver logs
+docker-compose logs -f
+
+# Detener contenedores
+docker-compose down</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <h3>Paso 4: Tareas Post-Despliegue</h3>
+    <p>Después del despliegue, hay algunas tareas importantes que debes realizar para mantener tu API funcionando de forma segura y eficiente.</p>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Monitoreo</h4>
+        </div>
+        <div class="card-body">
+            <p>Configurar monitoreo para detectar problemas rápidamente:</p>
+            <ul>
+                <li>
+                    <strong>Uptime Monitoring:</strong> Servicios como Uptime Robot, Pingdom o New Relic para monitorear el estado de tu API.
+                </li>
+                <li>
+                    <strong>Logs:</strong> Configurar rotación de logs y centralización con herramientas como ELK Stack o Graylog.
+                </li>
+                <li>
+                    <strong>Métricas:</strong> Usar Prometheus y Grafana para monitorear el rendimiento del sistema.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Respaldos</h4>
+        </div>
+        <div class="card-body">
+            <p>Configurar respaldos programados de la base de datos:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-bash"># Ejemplo de script de respaldo para MySQL
+#!/bin/bash
+NOW=$(date +"%Y%m%d_%H%M%S")
+BACKUP_DIR="/path/to/backups"
+mysqldump -u django_user -p'tu_contraseña' api_django_db > $BACKUP_DIR/backup_$NOW.sql
+gzip $BACKUP_DIR/backup_$NOW.sql
+
+# Eliminar respaldos antiguos (más de 30 días)
+find $BACKUP_DIR -name "backup_*.sql.gz" -mtime +30 -delete</code></pre>
+            </div>
+            
+            <p>Añade este script a cron para que se ejecute automáticamente:</p>
+            
+            <div class="code-block">
+                <pre><code class="language-bash">crontab -e
+# Añade esta línea para ejecutar el respaldo todos los días a las 2 AM
+0 2 * * * /path/to/backup_script.sh</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h4 class="card-title mb-0">Seguridad</h4>
+        </div>
+        <div class="card-body">
+            <p>Algunas medidas de seguridad adicionales:</p>
+            <ul>
+                <li>
+                    <strong>Firewall:</strong> Configurar UFW o iptables para limitar el acceso.
+                    <pre><code class="language-bash"># Configuración básica de UFW
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow ssh
+sudo ufw allow http
+sudo ufw allow https
+sudo ufw enable</code></pre>
+                </li>
+                <li>
+                    <strong>Actualizaciones automáticas:</strong> Configurar actualizaciones automáticas para paquetes de seguridad.
+                    <pre><code class="language-bash">sudo apt install unattended-upgrades
+sudo dpkg-reconfigure unattended-upgrades</code></pre>
+                </li>
+                <li>
+                    <strong>Fail2Ban:</strong> Proteger contra ataques de fuerza bruta.
+                    <pre><code class="language-bash">sudo apt install fail2ban
+sudo systemctl enable fail2ban
+sudo systemctl start fail2ban</code></pre>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="alert alert-success mt-4">
+        <i class="fas fa-check-circle me-2"></i>
+        <strong>¡Felicidades!</strong> Has completado el tutorial completo sobre cómo crear una API REST con Django y MySQL. Ahora tienes conocimientos sobre cómo configurar, desarrollar, probar y desplegar una API robusta y segura. ¡Continúa aprendiendo y mejorando tus habilidades en el desarrollo de APIs!
+    </div>
+
+    <div class="tutorial-nav mt-5">        <a href="javascript:loadStep(8)" class="btn btn-outline-primary"><i class="fas fa-arrow-left"></i> Paso anterior</a>
+        <a href="javascript:loadStep(0)" class="btn btn-outline-secondary">Volver al inicio</a>
+    </div>
+</div>
